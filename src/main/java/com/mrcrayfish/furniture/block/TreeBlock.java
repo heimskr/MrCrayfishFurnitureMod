@@ -41,11 +41,11 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class TreeBlock extends FurnitureBlock {
-    private static final AxisAlignedBB BOUNDING_BOX_BOTTOM = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 2.0, 0.9375);
-    private static final AxisAlignedBB BOUNDING_BOX_BOTTOM_ALT = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 1.0, 0.9375);
-    private static final AxisAlignedBB BOUNDING_BOX_TOP = new AxisAlignedBB(0.0625, -1.0, 0.0625, 0.9375, 1.0, 0.9375);
+    // private static final AxisAlignedBB BOUNDING_BOX_BOTTOM = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 2.0, 0.9375);
+    // private static final AxisAlignedBB BOUNDING_BOX_BOTTOM_ALT = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 1.0, 0.9375);
+    // private static final AxisAlignedBB BOUNDING_BOX_TOP = new AxisAlignedBB(0.0625, -1.0, 0.0625, 0.9375, 1.0, 0.9375);
 
-    public static final VoxelShape SHAPE = VoxelShapeHelper.combineAll(Arrays.asList(Block.makeCuboidShape(0.0, 11.0, 0.0, 16.0, 160.0, 16.0), Block.makeCuboidShape(1.5, 0.0, 1.5, 14.5, 11.0, 14.5)));
+    public static final VoxelShape SHAPE = VoxelShapeHelper.combineAll(Arrays.asList(Block.makeCuboidShape(0.0, 0.001, 0.0, 16.0, 32.0, 16.0)));
     public static final DirectionProperty DIRECTION = BlockStateProperties.HORIZONTAL_FACING;
 
 //    public static final BooleanProperty BOTTOM = BooleanProperty.create("BOTTOM");
