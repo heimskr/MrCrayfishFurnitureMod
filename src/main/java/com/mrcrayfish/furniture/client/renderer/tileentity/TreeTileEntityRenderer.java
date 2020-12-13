@@ -50,7 +50,7 @@ public class TreeTileEntityRenderer extends TileEntityRenderer<TreeTileEntity> {
 //              GL11.glPushMatrix();
                 matrixStack.push();
 
-                GL11.glDisable(GL11.GL_LIGHTING);
+//                GL11.glDisable(GL11.GL_LIGHTING);
 
 
 //              GL11.glRotatef(-90 * i, 0, 1, 0);
@@ -67,7 +67,7 @@ public class TreeTileEntityRenderer extends TileEntityRenderer<TreeTileEntity> {
 //              Minecraft.getMinecraft().getRenderManager().renderEntity(ornament, 0.0D, 0.0D, 0.0D, 180.0F, 0.0F, false);
                 Minecraft.getInstance().getItemRenderer().renderItem(ornament.getItem(), ItemCameraTransforms.TransformType.FIXED, i0, i1, matrixStack, renderTypeBuffer);
 
-                GL11.glEnable(GL11.GL_LIGHTING);
+//                GL11.glEnable(GL11.GL_LIGHTING);
 
 //              GL11.glPopMatrix();
                 matrixStack.pop();

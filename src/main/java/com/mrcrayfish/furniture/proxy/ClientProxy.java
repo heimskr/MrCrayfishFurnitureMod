@@ -68,7 +68,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(ModBlocks.HEDGE_JUNGLE, leavesPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.HEDGE_ACACIA, leavesPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.HEDGE_DARK_OAK, leavesPredicate);
-        
+
         Predicate<RenderType> cutoutPredicate = renderType -> renderType == RenderType.getCutout();
         RenderTypeLookup.setRenderLayer(ModBlocks.TRAMPOLINE_WHITE, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.TRAMPOLINE_ORANGE, cutoutPredicate);
@@ -104,12 +104,11 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(ModBlocks.GRILL_BLACK, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.POST_BOX, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.TREE, cutoutPredicate);
-//        RenderTypeLookup.setRenderLayer(ModBlocks.TREE_BOTTOM, cutoutPredicate);
-//        RenderTypeLookup.setRenderLayer(ModBlocks.TREE_TOP, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.TREE, leavesPredicate);
 
         this.registerColors();
 
-        if(!ModList.get().isLoaded("filters")) {
+        if (!ModList.get().isLoaded("filters")) {
             MinecraftForge.EVENT_BUS.register(new CreativeScreenEvents());
         } else {
             //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "general"), new ItemStack(ModBlocks.CHAIR_OAK));
@@ -282,8 +281,7 @@ public class ClientProxy extends CommonProxy {
             ModBlocks.FRIDGE_LIGHT,
             ModBlocks.FREEZER_LIGHT,
             ModBlocks.FRIDGE_DARK,
-            ModBlocks.FREEZER_DARK,
-            ModBlocks.TREE
+            ModBlocks.FREEZER_DARK
         );
 
         Minecraft.getInstance().getItemColors().register((stack, i) -> i == 1 ? 0xCCCCCC : 0,
@@ -294,7 +292,8 @@ public class ClientProxy extends CommonProxy {
         );
 
         Minecraft.getInstance().getBlockColors().register((state, reader, pos, i) -> FoliageColors.getSpruce(),
-            ModBlocks.HEDGE_SPRUCE);
+            ModBlocks.HEDGE_SPRUCE,
+            ModBlocks.TREE);
 
         Minecraft.getInstance().getBlockColors().register((state, reader, pos, i) -> FoliageColors.getBirch(),
             ModBlocks.HEDGE_BIRCH);
@@ -305,19 +304,20 @@ public class ClientProxy extends CommonProxy {
             ModBlocks.HEDGE_ACACIA,
             ModBlocks.HEDGE_DARK_OAK);
 
-        Minecraft.getInstance().getItemColors().register((stack, i) -> {
-            BlockState state = ((BlockItem)stack.getItem()).getBlock().getDefaultState();
-            return Minecraft.getInstance().getBlockColors().getColor(state, null, null, i);
-        }, ModBlocks.HEDGE_OAK, ModBlocks.HEDGE_SPRUCE, ModBlocks.HEDGE_BIRCH, ModBlocks.HEDGE_JUNGLE, ModBlocks.HEDGE_ACACIA, ModBlocks.HEDGE_DARK_OAK);
+        Minecraft.getInstance().getItemColors().register((stack, i) -> Minecraft.getInstance().getBlockColors().getColor(((BlockItem) stack.getItem()).getBlock().getDefaultState(), null, null, i),
+            ModBlocks.HEDGE_OAK,
+            ModBlocks.HEDGE_SPRUCE,
+            ModBlocks.HEDGE_BIRCH,
+            ModBlocks.HEDGE_JUNGLE,
+            ModBlocks.HEDGE_ACACIA,
+            ModBlocks.HEDGE_DARK_OAK,
+            ModBlocks.TREE);
     }
 
     @Override
-    public void updateMailBoxes(CompoundNBT compound)
-    {
-        if(Minecraft.getInstance().currentScreen instanceof PostBoxScreen)
-        {
-            if(compound.contains("MailBoxes", Constants.NBT.TAG_LIST))
-            {
+    public void updateMailBoxes(CompoundNBT compound) {
+        if (Minecraft.getInstance().currentScreen instanceof PostBoxScreen) {
+            if (compound.contains("MailBoxes", Constants.NBT.TAG_LIST)) {
                 List<MailBoxEntry> entries = new ArrayList<>();
                 ListNBT mailBoxList = compound.getList("MailBoxes", Constants.NBT.TAG_COMPOUND);
                 mailBoxList.forEach(nbt -> entries.add(new MailBoxEntry((CompoundNBT) nbt)));
@@ -327,33 +327,25 @@ public class ClientProxy extends CommonProxy {
     }
 
     @Override
-    public boolean useFancyGraphics()
-    {
+    public boolean useFancyGraphics() {
         Minecraft mc = Minecraft.getInstance();
         return mc.gameSettings.graphicFanciness.func_238162_a_() > 0;
     }
 
     @Override
-    public void setGrillFlipping(BlockPos pos, int position)
-    {
+    public void setGrillFlipping(BlockPos pos, int position) {
         Minecraft minecraft = Minecraft.getInstance();
-        if(minecraft.world != null)
-        {
+        if (minecraft.world != null) {
             TileEntity tileEntity = minecraft.world.getTileEntity(pos);
-            if(tileEntity instanceof GrillTileEntity)
-            {
+            if (tileEntity instanceof GrillTileEntity)
                 ((GrillTileEntity) tileEntity).setFlipping(position);
-            }
         }
     }
 
     @Override
-    public void showDoorMatScreen(World world, BlockPos pos)
-    {
+    public void showDoorMatScreen(World world, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof DoorMatTileEntity)
-        {
+        if (tileEntity instanceof DoorMatTileEntity)
             Minecraft.getInstance().displayGuiScreen(new DoorMatScreen((DoorMatTileEntity) tileEntity));
-        }
     }
 }
