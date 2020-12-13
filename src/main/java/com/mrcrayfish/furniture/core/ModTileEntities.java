@@ -33,6 +33,7 @@ public class ModTileEntities {
     public static final TileEntityType<FridgeTileEntity> FRIDGE = buildType(Names.TileEntity.FRIDGE, TileEntityType.Builder.create(FridgeTileEntity::new, ModBlocks.FRIDGE_LIGHT, ModBlocks.FRIDGE_DARK));
     public static final TileEntityType<FreezerTileEntity> FREEZER = buildType(Names.TileEntity.FREEZER, TileEntityType.Builder.create(FreezerTileEntity::new, ModBlocks.FREEZER_LIGHT, ModBlocks.FREEZER_DARK));
     public static final TileEntityType<TreeTileEntity> TREE = buildType(Names.TileEntity.TREE, TileEntityType.Builder.create(TreeTileEntity::new, ModBlocks.TREE));
+    public static final TileEntityType<PhotoFrameTileEntity> PHOTO_FRAME = buildType(Names.TileEntity.PHOTO_FRAME, TileEntityType.Builder.create(PhotoFrameTileEntity::new, ModBlocks.PHOTO_FRAME));
 
     private static <T extends TileEntity> TileEntityType<T> buildType(String id, TileEntityType.Builder<T> builder) {
         TileEntityType<T> type = builder.build(null); //TODO may not allow null
