@@ -18,45 +18,37 @@ import java.util.Set;
 /**
  * Author: MrCrayfish
  */
-public class TrampolineTileEntity extends TileEntity
-{
+public class TrampolineTileEntity extends TileEntity {
     private int count = 1;
 
-    public TrampolineTileEntity()
-    {
+    public TrampolineTileEntity() {
         super(ModTileEntities.TRAMPOLINE);
     }
 
     @Override
-    public void onLoad()
-    {
+    public void onLoad() {
         TileEntityUtil.sendUpdatePacket(this);
     }
 
-    public void setCount(int count)
-    {
+    public void setCount(int count) {
         this.count = count;
         TileEntityUtil.sendUpdatePacket(this);
     }
 
-    public int getCount()
-    {
+    public int getCount() {
         return count;
     }
 
-    public void updateCount()
-    {
+    public void updateCount() {
         Set<TrampolineTileEntity> trampolines = new HashSet<>();
         this.isTrampoline(trampolines, this.pos);
         trampolines.forEach(trampoline -> trampoline.setCount(trampolines.size()));
     }
 
-    private void isTrampoline(Set<TrampolineTileEntity> trampolines, BlockPos pos)
-    {
+    private void isTrampoline(Set<TrampolineTileEntity> trampolines, BlockPos pos) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        if(tileEntity instanceof TrampolineTileEntity)
-        {
-            if(trampolines.contains(tileEntity))
+        if (tileEntity instanceof TrampolineTileEntity) {
+            if (trampolines.contains(tileEntity))
                 return;
 
             trampolines.add((TrampolineTileEntity) tileEntity);
@@ -68,49 +60,41 @@ public class TrampolineTileEntity extends TileEntity
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound)
-    {
+    public void read(BlockState blockState, CompoundNBT compound) {
         super.read(blockState, compound);
         this.readData(compound);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound)
-    {
+    public CompoundNBT write(CompoundNBT compound) {
         this.writeData(compound);
         return super.write(compound);
     }
 
     @Override
-    public CompoundNBT getUpdateTag()
-    {
+    public CompoundNBT getUpdateTag() {
         return this.write(new CompoundNBT());
     }
 
     @Nullable
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket()
-    {
+    public SUpdateTileEntityPacket getUpdatePacket() {
         return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
-    {
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         CompoundNBT compound = pkt.getNbtCompound();
         this.readData(compound);
     }
 
-    private void readData(CompoundNBT compound)
-    {
-        if(compound.contains("Count", Constants.NBT.TAG_INT))
-        {
+    private void readData(CompoundNBT compound) {
+        if (compound.contains("Count", Constants.NBT.TAG_INT)) {
             this.count = compound.getInt("Count");
         }
     }
 
-    private CompoundNBT writeData(CompoundNBT compound)
-    {
+    private CompoundNBT writeData(CompoundNBT compound) {
         compound.putInt("Count", this.count);
         return compound;
     }

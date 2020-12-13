@@ -26,8 +26,7 @@ import java.util.function.Function;
  * Author: MrCrayfish
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModBlocks
-{
+public class ModBlocks {
     public static final Material WOOD = new Material(MaterialColor.WOOD, false, false, false, false,  true, false, PushReaction.NORMAL);
     public static final Material STONE = new Material(MaterialColor.STONE, false, false, false, false,  true, false, PushReaction.NORMAL);
     public static final Material WOOL = new Material(MaterialColor.WOOL, false, false, false, false,  true, false, PushReaction.NORMAL);
@@ -426,7 +425,10 @@ public class ModBlocks
     public static final Block FREEZER_LIGHT = register(Names.Block.FREEZER_LIGHT, new FreezerBlock(Block.Properties.from(Blocks.IRON_BLOCK), FRIDGE_LIGHT), (BlockItem) null);
     public static final Block FRIDGE_DARK = register(Names.Block.FRIDGE_DARK, new FridgeBlock(Block.Properties.from(Blocks.IRON_BLOCK), () -> ModBlocks.FREEZER_DARK), block -> new BlockSupplierItem(new Item.Properties().group(FurnitureMod.GROUP), block, () -> ModBlocks.FREEZER_DARK));
     public static final Block FREEZER_DARK = register(Names.Block.FREEZER_DARK, new FreezerBlock(Block.Properties.from(Blocks.IRON_BLOCK), FRIDGE_DARK), (BlockItem) null);
-    
+
+    public static final Block TREE_TOP = register(Names.Block.TREE + "_top", new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
+    public static final Block TREE_BOTTOM = register(Names.Block.TREE + "_bottom", new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
+
     private static Block register(String name, Block block)
     {
         return register(name, block, new Item.Properties().group(FurnitureMod.GROUP));

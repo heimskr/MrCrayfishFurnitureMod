@@ -456,6 +456,9 @@ public class Names
         public static final String DIGITAL_CLOCK = Reference.MOD_ID + ":digital_clock"; //TODO flatten
         public static final String PHOTO_FRAME = Reference.MOD_ID + ":photo_frame"; //TODO flatten
         public static final String TV_STAND = Reference.MOD_ID + ":tv_stand";
+
+        public static final String TREE_TOP = Reference.MOD_ID + ":tree_top"; // ???
+        public static final String TREE_BOTTOM = Reference.MOD_ID + ":tree_bottom"; // ???
     }
 
     public static class Item
@@ -468,16 +471,14 @@ public class Names
         public static final String SEAT = Reference.MOD_ID + ":seat";
     }
 
-    public static class Container
-    {
+    public static class Container {
         public static final String CRATE = Reference.MOD_ID + ":crate";
         public static final String POST_BOX = Reference.MOD_ID + ":post_box";
         public static final String MAIL_BOX = Reference.MOD_ID + ":mail_box";
         public static final String FREEZER = Reference.MOD_ID + ":freezer";
     }
 
-    public static class TileEntity
-    {
+    public static class TileEntity {
         public static final String CABINET = Reference.MOD_ID + ":cabinet";
         public static final String BEDSIDE_CABINET = Reference.MOD_ID + ":bedside_cabinet";
         public static final String DESK_CABINET = Reference.MOD_ID + ":desk_cabinet";
@@ -491,10 +492,10 @@ public class Names
         public static final String KITCHEN_SINK = Reference.MOD_ID + ":kitchen_sink";
         public static final String FRIDGE = Reference.MOD_ID + ":fridge";
         public static final String FREEZER = Reference.MOD_ID + ":freezer";
+        public static final String TREE = Reference.MOD_ID + ":tree";
     }
 
-    public static class Sound
-    {
+    public static class Sound {
         public static final String CABINET_OPEN = Reference.MOD_ID + ":block.cabinet.open";
         public static final String CABINET_CLOSE = Reference.MOD_ID + ":block.cabinet.close";
         public static final String BEDSIDE_CABINET_OPEN = Reference.MOD_ID + ":block.bedside_cabinet.open";

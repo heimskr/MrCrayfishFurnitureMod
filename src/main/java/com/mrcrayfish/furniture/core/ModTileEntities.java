@@ -16,8 +16,7 @@ import java.util.List;
  * Author: MrCrayfish
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModTileEntities
-{
+public class ModTileEntities {
     private static final List<TileEntityType> TILE_ENTITY_TYPES = new ArrayList<>();
 
     public static final TileEntityType<CabinetTileEntity> CABINET = buildType(Names.TileEntity.CABINET, TileEntityType.Builder.create(CabinetTileEntity::new, ModBlocks.CABINET_OAK, ModBlocks.CABINET_SPRUCE, ModBlocks.CABINET_BIRCH, ModBlocks.CABINET_JUNGLE, ModBlocks.CABINET_ACACIA, ModBlocks.CABINET_DARK_OAK, ModBlocks.CABINET_STONE, ModBlocks.CABINET_GRANITE, ModBlocks.CABINET_DIORITE, ModBlocks.CABINET_ANDESITE, ModBlocks.CABINET_STRIPPED_OAK, ModBlocks.CABINET_STRIPPED_SPRUCE, ModBlocks.CABINET_STRIPPED_BIRCH, ModBlocks.CABINET_STRIPPED_JUNGLE, ModBlocks.CABINET_STRIPPED_ACACIA, ModBlocks.CABINET_STRIPPED_DARK_OAK));
@@ -33,9 +32,9 @@ public class ModTileEntities
     public static final TileEntityType<KitchenSinkTileEntity> KITCHEN_SINK = buildType(Names.TileEntity.KITCHEN_SINK, TileEntityType.Builder.create(KitchenSinkTileEntity::new, ModBlocks.KITCHEN_SINK_LIGHT_OAK, ModBlocks.KITCHEN_SINK_LIGHT_SPRUCE, ModBlocks.KITCHEN_SINK_LIGHT_BIRCH, ModBlocks.KITCHEN_SINK_LIGHT_JUNGLE, ModBlocks.KITCHEN_SINK_LIGHT_ACACIA, ModBlocks.KITCHEN_SINK_LIGHT_DARK_OAK, ModBlocks.KITCHEN_SINK_LIGHT_STRIPPED_OAK, ModBlocks.KITCHEN_SINK_LIGHT_STRIPPED_SPRUCE, ModBlocks.KITCHEN_SINK_LIGHT_STRIPPED_BIRCH, ModBlocks.KITCHEN_SINK_LIGHT_STRIPPED_JUNGLE, ModBlocks.KITCHEN_SINK_LIGHT_STRIPPED_ACACIA, ModBlocks.KITCHEN_SINK_LIGHT_STRIPPED_DARK_OAK, ModBlocks.KITCHEN_SINK_DARK_OAK, ModBlocks.KITCHEN_SINK_DARK_SPRUCE, ModBlocks.KITCHEN_SINK_DARK_BIRCH, ModBlocks.KITCHEN_SINK_DARK_JUNGLE, ModBlocks.KITCHEN_SINK_DARK_ACACIA, ModBlocks.KITCHEN_SINK_DARK_DARK_OAK, ModBlocks.KITCHEN_SINK_DARK_STRIPPED_OAK, ModBlocks.KITCHEN_SINK_DARK_STRIPPED_SPRUCE, ModBlocks.KITCHEN_SINK_DARK_STRIPPED_BIRCH, ModBlocks.KITCHEN_SINK_DARK_STRIPPED_JUNGLE, ModBlocks.KITCHEN_SINK_DARK_STRIPPED_ACACIA, ModBlocks.KITCHEN_SINK_DARK_STRIPPED_DARK_OAK, ModBlocks.KITCHEN_SINK_WHITE, ModBlocks.KITCHEN_SINK_ORANGE, ModBlocks.KITCHEN_SINK_MAGENTA, ModBlocks.KITCHEN_SINK_LIGHT_BLUE, ModBlocks.KITCHEN_SINK_YELLOW, ModBlocks.KITCHEN_SINK_LIME, ModBlocks.KITCHEN_SINK_PINK, ModBlocks.KITCHEN_SINK_GRAY, ModBlocks.KITCHEN_SINK_LIGHT_GRAY, ModBlocks.KITCHEN_SINK_CYAN, ModBlocks.KITCHEN_SINK_PURPLE, ModBlocks.KITCHEN_SINK_BLUE, ModBlocks.KITCHEN_SINK_BROWN, ModBlocks.KITCHEN_SINK_GREEN, ModBlocks.KITCHEN_SINK_RED, ModBlocks.KITCHEN_SINK_BLACK));
     public static final TileEntityType<FridgeTileEntity> FRIDGE = buildType(Names.TileEntity.FRIDGE, TileEntityType.Builder.create(FridgeTileEntity::new, ModBlocks.FRIDGE_LIGHT, ModBlocks.FRIDGE_DARK));
     public static final TileEntityType<FreezerTileEntity> FREEZER = buildType(Names.TileEntity.FREEZER, TileEntityType.Builder.create(FreezerTileEntity::new, ModBlocks.FREEZER_LIGHT, ModBlocks.FREEZER_DARK));
+    public static final TileEntityType<TreeTileEntity> TREE = buildType(Names.TileEntity.TREE, TileEntityType.Builder.create(TreeTileEntity::new, ModBlocks.TREE_TOP, ModBlocks.TREE_BOTTOM));
 
-    private static <T extends TileEntity> TileEntityType<T> buildType(String id, TileEntityType.Builder<T> builder)
-    {
+    private static <T extends TileEntity> TileEntityType<T> buildType(String id, TileEntityType.Builder<T> builder) {
         TileEntityType<T> type = builder.build(null); //TODO may not allow null
         type.setRegistryName(id);
         TILE_ENTITY_TYPES.add(type);
@@ -44,8 +43,7 @@ public class ModTileEntities
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public static void registerTypes(final RegistryEvent.Register<TileEntityType<?>> event)
-    {
+    public static void registerTypes(final RegistryEvent.Register<TileEntityType<?>> event) {
         TILE_ENTITY_TYPES.forEach(type -> event.getRegistry().register(type));
         TILE_ENTITY_TYPES.clear();
     }
