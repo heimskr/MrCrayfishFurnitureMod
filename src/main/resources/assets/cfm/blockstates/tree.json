@@ -1,8 +1,8 @@
 {
     "variants": {
-        "facing=north": {"model": "cfm:tree"},
-        "facing=south": { "model": "cfm:tree", "y": 180},
-        "facing=east": { "model": "cfm:tree", "y": 90},
-        "facing=west": { "model": "cfm:tree", "y": 270}
+        "facing=north": {"model": "cfm:block/tree"},
+        "facing=south": { "model": "cfm:block/tree", "y": 180},
+        "facing=east": { "model": "cfm:block/tree", "y": 90},
+        "facing=west": { "model": "cfm:block/tree", "y": 270}
     }
 }

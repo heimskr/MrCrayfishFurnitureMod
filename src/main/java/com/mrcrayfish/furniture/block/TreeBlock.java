@@ -11,15 +11,17 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItemUseContext;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.state.BooleanProperty;
+import net.minecraft.state.DirectionProperty;
+import net.minecraft.state.StateContainer;
+import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 // import net.minecraft.util.BlockRenderLayer;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Direction;
-import net.minecraft.util.Hand;
+import net.minecraft.util.*;
 import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
@@ -44,6 +46,7 @@ public class TreeBlock extends FurnitureBlock {
     private static final AxisAlignedBB BOUNDING_BOX_TOP = new AxisAlignedBB(0.0625, -1.0, 0.0625, 0.9375, 1.0, 0.9375);
 
     public static final VoxelShape SHAPE = VoxelShapeHelper.combineAll(Arrays.asList(Block.makeCuboidShape(0.0, 11.0, 0.0, 16.0, 160.0, 16.0), Block.makeCuboidShape(1.5, 0.0, 1.5, 14.5, 11.0, 14.5)));
+    public static final DirectionProperty DIRECTION = BlockStateProperties.HORIZONTAL_FACING;
 
 //    public static final BooleanProperty BOTTOM = BooleanProperty.create("BOTTOM");
 
@@ -53,6 +56,27 @@ public class TreeBlock extends FurnitureBlock {
 //        this.setLightLevel(0.3F);
 //        if (top)
 //            this.setCreativeTab(null);
+    }
+
+    @Override
+    public BlockState getStateForPlacement(BlockItemUseContext context) {
+        return super.getStateForPlacement(context).with(DIRECTION, context.getPlacementHorizontalFacing());
+    }
+
+    @Override
+    public BlockState rotate(BlockState state, Rotation rotation) {
+        return state.with(DIRECTION, rotation.rotate(state.get(DIRECTION)));
+    }
+
+    @Override
+    public BlockState mirror(BlockState state, Mirror mirror) {
+        return state.rotate(mirror.toRotation(state.get(DIRECTION)));
+    }
+
+    @Override
+    protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
+        super.fillStateContainer(builder);
+        builder.add(DIRECTION);
     }
 
     @OnlyIn(Dist.CLIENT)
