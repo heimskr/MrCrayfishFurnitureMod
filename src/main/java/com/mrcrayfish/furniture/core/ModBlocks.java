@@ -426,33 +426,27 @@ public class ModBlocks {
     public static final Block FRIDGE_DARK = register(Names.Block.FRIDGE_DARK, new FridgeBlock(Block.Properties.from(Blocks.IRON_BLOCK), () -> ModBlocks.FREEZER_DARK), block -> new BlockSupplierItem(new Item.Properties().group(FurnitureMod.GROUP), block, () -> ModBlocks.FREEZER_DARK));
     public static final Block FREEZER_DARK = register(Names.Block.FREEZER_DARK, new FreezerBlock(Block.Properties.from(Blocks.IRON_BLOCK), FRIDGE_DARK), (BlockItem) null);
 
-    public static final Block TREE_TOP = register(Names.Block.TREE + "_top", new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
-    public static final Block TREE_BOTTOM = register(Names.Block.TREE + "_bottom", new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
+    public static final Block TREE = register(Names.Block.TREE, new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
+//    public static final Block TREE_BOTTOM = register(Names.Block.TREE + "_bottom", new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
 
-    private static Block register(String name, Block block)
-    {
+    private static Block register(String name, Block block) {
         return register(name, block, new Item.Properties().group(FurnitureMod.GROUP));
     }
 
-    private static Block register(String name, Block block, Item.Properties properties)
-    {
+    private static Block register(String name, Block block, Item.Properties properties) {
         return register(name, block, new BlockItem(block, properties));
     }
 
-    private static Block register(String name, Block block, BlockItem item)
-    {
+    private static Block register(String name, Block block, BlockItem item) {
         return register(name, block, block1 -> item);
     }
 
-    private static Block register(String name, Block block, Function<Block, BlockItem> function)
-    {
+    private static Block register(String name, Block block, Function<Block, BlockItem> function) {
         block.setRegistryName(name);
         BLOCKS.add(block);
-        if(block.getRegistryName() != null)
-        {
+        if (block.getRegistryName() != null) {
             Item item = function.apply(block);
-            if(item != null)
-            {
+            if (item != null) {
                 item.setRegistryName(name);
                 ITEMS.add(item);
             }
@@ -462,16 +456,14 @@ public class ModBlocks {
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public static void registerBlocks(final RegistryEvent.Register<Block> event)
-    {
+    public static void registerBlocks(final RegistryEvent.Register<Block> event) {
         BLOCKS.forEach(block -> event.getRegistry().register(block));
         BLOCKS.clear();
     }
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public static void registerItems(final RegistryEvent.Register<Item> event)
-    {
+    public static void registerItems(final RegistryEvent.Register<Item> event) {
         ITEMS.forEach(item -> event.getRegistry().register(item));
         ITEMS.clear();
     }

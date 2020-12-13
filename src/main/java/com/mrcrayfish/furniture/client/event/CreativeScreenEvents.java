@@ -30,8 +30,7 @@ import java.util.*;
 /**
  * Author: MrCrayfish
  */
-public class CreativeScreenEvents
-{
+public class CreativeScreenEvents {
     private static final ResourceLocation ICONS = new ResourceLocation(Reference.MOD_ID, "textures/gui/icons.png");
     private static int startIndex;
 
@@ -52,12 +51,9 @@ public class CreativeScreenEvents
     }
 
     @SubscribeEvent
-    public void onScreenInit(GuiScreenEvent.InitGuiEvent.Post event)
-    {
-        if(event.getGui() instanceof CreativeScreen)
-        {
-            if(this.filters == null)
-            {
+    public void onScreenInit(GuiScreenEvent.InitGuiEvent.Post event) {
+        if(event.getGui() instanceof CreativeScreen) {
+            if(this.filters == null) {
                 this.compileItems();
             }
 
@@ -104,8 +100,7 @@ public class CreativeScreenEvents
             this.updateTagButtons();
 
             CreativeScreen screen = (CreativeScreen) event.getGui();
-            if(screen.getSelectedTabIndex() == FurnitureMod.GROUP.getIndex())
-            {
+            if(screen.getSelectedTabIndex() == FurnitureMod.GROUP.getIndex()) {
                 this.btnScrollUp.visible = true;
                 this.btnScrollDown.visible = true;
                 this.btnEnableAll.visible = true;
@@ -118,19 +113,14 @@ public class CreativeScreenEvents
     }
 
     @SubscribeEvent
-    public void onScreenClick(GuiScreenEvent.MouseClickedEvent.Pre event)
-    {
+    public void onScreenClick(GuiScreenEvent.MouseClickedEvent.Pre event) {
         if(event.getButton() != GLFW.GLFW_MOUSE_BUTTON_LEFT)
             return;
 
-        if(event.getGui() instanceof CreativeScreen)
-        {
-            for(Button button : this.buttons)
-            {
-                if(button.isMouseOver(event.getMouseX(), event.getMouseY()))
-                {
-                    if(button.mouseClicked(event.getMouseX(), event.getMouseY(), event.getButton()))
-                    {
+        if(event.getGui() instanceof CreativeScreen) {
+            for(Button button : this.buttons) {
+                if(button.isMouseOver(event.getMouseX(), event.getMouseY())) {
+                    if(button.mouseClicked(event.getMouseX(), event.getMouseY(), event.getButton())) {
                         return;
                     }
                 }
@@ -200,9 +190,7 @@ public class CreativeScreenEvents
                 {
                     screen.renderTooltip(event.getMatrixStack(), ITextComponent.getTextComponentOrEmpty(this.btnDisableAll.getMessage().getString()), event.getMouseX(), event.getMouseY());
                 }
-            }
-            else
-            {
+            } else {
                 this.btnScrollUp.visible = false;
                 this.btnScrollDown.visible = false;
                 this.btnEnableAll.visible = false;
@@ -262,17 +250,11 @@ public class CreativeScreenEvents
         ForgeRegistries.ITEMS.getValues().stream()
             .filter(item -> item.getGroup() == FurnitureMod.GROUP)
             .filter(item -> item.getRegistryName().getNamespace().equals(Reference.MOD_ID))
-            .forEach(item ->
-            {
-                item.getTags().forEach(location ->
-                {
+            .forEach(item -> {
+                item.getTags().forEach(location -> {
                     for(TagFilter filter : filters)
-                    {
                         if(location.equals(filter.getTag()))
-                        {
                             filter.add(item);
-                        }
-                    }
                 });
             });
 
@@ -283,16 +265,14 @@ public class CreativeScreenEvents
     /**
      * Author: MrCrayfish
      */
-    public static class TagFilter
-    {
+    public static class TagFilter {
         private ResourceLocation tag;
         private String translationKey;
         private ItemStack icon;
         private boolean enabled = true;
         private List<Item> items = Lists.newArrayList();
 
-        public TagFilter(ResourceLocation tag, ItemStack icon)
-        {
+        public TagFilter(ResourceLocation tag, ItemStack icon) {
             this.tag = tag;
             this.translationKey = String.format("gui.tag_filter.%s.%s", tag.getNamespace(), tag.getPath().replace("/", "."));
             this.icon = icon;

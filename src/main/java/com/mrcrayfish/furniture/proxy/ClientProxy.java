@@ -11,6 +11,7 @@ import com.mrcrayfish.furniture.client.renderer.SeatRenderer;
 import com.mrcrayfish.furniture.client.renderer.tileentity.DoorMatTileEntityRenderer;
 import com.mrcrayfish.furniture.client.renderer.tileentity.GrillTileEntityRenderer;
 import com.mrcrayfish.furniture.client.renderer.tileentity.KitchenSinkTileEntityRenderer;
+import com.mrcrayfish.furniture.client.renderer.tileentity.TreeTileEntityRenderer;
 import com.mrcrayfish.furniture.core.ModBlocks;
 import com.mrcrayfish.furniture.core.ModContainers;
 import com.mrcrayfish.furniture.core.ModEntities;
@@ -43,16 +44,15 @@ import java.util.function.Predicate;
 /**
  * Author: MrCrayfish
  */
-public class ClientProxy extends CommonProxy
-{
+public class ClientProxy extends CommonProxy {
     @Override
-    public void onSetupClient()
-    {
+    public void onSetupClient() {
         super.onSetupClient();
 
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.GRILL, GrillTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.DOOR_MAT, DoorMatTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.KITCHEN_SINK, KitchenSinkTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.TREE, TreeTileEntityRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.SEAT, SeatRenderer::new);
 
@@ -103,15 +103,13 @@ public class ClientProxy extends CommonProxy
         RenderTypeLookup.setRenderLayer(ModBlocks.GRILL_RED, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.GRILL_BLACK, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.POST_BOX, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.TREE, cutoutPredicate);
 
         this.registerColors();
 
-        if(!ModList.get().isLoaded("filters"))
-        {
+        if(!ModList.get().isLoaded("filters")) {
             MinecraftForge.EVENT_BUS.register(new CreativeScreenEvents());
-        }
-        else
-        {
+        } else {
             //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "general"), new ItemStack(ModBlocks.CHAIR_OAK));
             //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "storage"), new ItemStack(ModBlocks.CABINET_OAK));
             //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "bedroom"), new ItemStack(ModBlocks.DESK_OAK));
@@ -121,8 +119,7 @@ public class ClientProxy extends CommonProxy
         }
     }
 
-    private void registerColors()
-    {
+    private void registerColors() {
         Minecraft.getInstance().getBlockColors().register((state, reader, pos, i) -> i == 1 ? 0xCCCCCC : 0,
                 ModBlocks.PICKET_FENCE_WHITE,
                 ModBlocks.PICKET_FENCE_ORANGE,
@@ -283,7 +280,8 @@ public class ClientProxy extends CommonProxy
                 ModBlocks.FRIDGE_LIGHT,
                 ModBlocks.FREEZER_LIGHT,
                 ModBlocks.FRIDGE_DARK,
-                ModBlocks.FREEZER_DARK
+                ModBlocks.FREEZER_DARK,
+                ModBlocks.TREE
         );
 
         Minecraft.getInstance().getItemColors().register((stack, i) -> i == 1 ? 0xCCCCCC : 0,

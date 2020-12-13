@@ -1,8 +1,11 @@
 package com.mrcrayfish.furniture.block;
 
 import com.mrcrayfish.furniture.core.ModBlocks;
+import com.mrcrayfish.furniture.tileentity.GrillTileEntity;
 import com.mrcrayfish.furniture.tileentity.TreeTileEntity;
 import com.mrcrayfish.furniture.util.TileEntityUtil;
+import com.mrcrayfish.furniture.util.VoxelShapeHelper;
+import net.minecraft.block.Block;
 import net.minecraft.block.SoundType;
 import net.minecraft.block.material.Material;
 import net.minecraft.block.BlockState;
@@ -11,6 +14,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.state.BooleanProperty;
 import net.minecraft.tileentity.TileEntity;
 // import net.minecraft.util.BlockRenderLayer;
 import net.minecraft.util.ActionResultType;
@@ -20,20 +24,28 @@ import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 // import net.minecraftforge.fml.relauncher.Side;
 // import net.minecraftforge.fml.relauncher.SideOnly;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 import java.util.Random;
 
-public class TreeBlock extends FurnitureBlock
-{
+public class TreeBlock extends FurnitureBlock {
     private static final AxisAlignedBB BOUNDING_BOX_BOTTOM = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 2.0, 0.9375);
     private static final AxisAlignedBB BOUNDING_BOX_BOTTOM_ALT = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 1.0, 0.9375);
     private static final AxisAlignedBB BOUNDING_BOX_TOP = new AxisAlignedBB(0.0625, -1.0, 0.0625, 0.9375, 1.0, 0.9375);
+
+    public static final VoxelShape SHAPE = VoxelShapeHelper.combineAll(Arrays.asList(Block.makeCuboidShape(0.0, 11.0, 0.0, 16.0, 160.0, 16.0), Block.makeCuboidShape(1.5, 0.0, 1.5, 14.5, 11.0, 14.5)));
+
+//    public static final BooleanProperty BOTTOM = BooleanProperty.create("BOTTOM");
 
     public TreeBlock(Properties properties) {
         super(properties);
@@ -41,6 +53,16 @@ public class TreeBlock extends FurnitureBlock
 //        this.setLightLevel(0.3F);
 //        if (top)
 //            this.setCreativeTab(null);
+    }
+
+    @OnlyIn(Dist.CLIENT)
+    public float func_220080_a(BlockState state, IBlockReader worldIn, BlockPos pos) {
+        return 1.0F;
+    }
+
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return SHAPE;
     }
 
     @Override
@@ -70,23 +92,23 @@ public class TreeBlock extends FurnitureBlock
         return ActionResultType.SUCCESS;
     }
 
-    @Override
-    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
-        if (this == ModBlocks.TREE_TOP) {
-            if (player.getHeldItemMainhand() != null) {
-                if (player.getHeldItemMainhand().getItem() != Items.SHEARS)
-                    worldIn.destroyBlock(pos.down(), false);
-                else
-                    player.getHeldItemMainhand().damageItem(1, player, (player1) -> {
-                        player1.sendBreakAnimation(Hand.MAIN_HAND);
-                    });
-            } else {
-                worldIn.destroyBlock(pos.down(), false);
-            }
-        } else {
-            worldIn.destroyBlock(pos.up(), false);
-        }
-    }
+    // @Override
+    // public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+//        if (this == ModBlocks.TREE_TOP) {
+//            if (player.getHeldItemMainhand() != null) {
+//                if (player.getHeldItemMainhand().getItem() != Items.SHEARS)
+//                    worldIn.destroyBlock(pos.down(), false);
+//                else
+//                    player.getHeldItemMainhand().damageItem(1, player, (player1) -> {
+//                        player1.sendBreakAnimation(Hand.MAIN_HAND);
+//                    });
+//            } else {
+//                worldIn.destroyBlock(pos.down(), false);
+//            }
+//        } else {
+//            worldIn.destroyBlock(pos.up(), false);
+//        }
+    // }
 
 //    @Override
 //    public AxisAlignedBB getBoundingBox(BlockState state, IWorldReader source, BlockPos pos) {
@@ -114,6 +136,12 @@ public class TreeBlock extends FurnitureBlock
     // public BlockRenderLayer getBlockLayer() {
     //     return BlockRenderLayer.CUTOUT;
     // }
+
+
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
 
     @Nullable
     @Override

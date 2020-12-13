@@ -39,8 +39,7 @@ import java.util.Optional;
 /**
  * Author: MrCrayfish
  */
-public class GrillTileEntity extends TileEntity implements IClearable, ITickableTileEntity, ISidedInventory
-{
+public class GrillTileEntity extends TileEntity implements IClearable, ITickableTileEntity, ISidedInventory {
     /* Used for animations on client only */
     public static final int MAX_FLIPPING_COUNTER = 15;
     public static final int[] ALL_SLOTS = new int[]{0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
@@ -59,63 +58,52 @@ public class GrillTileEntity extends TileEntity implements IClearable, ITickable
     private final boolean[] flipping = new boolean[4];
     private final int[] flippingCounter = new int[4];
 
-    public GrillTileEntity()
-    {
+    public GrillTileEntity() {
         super(ModTileEntities.GRILL);
     }
 
     @OnlyIn(Dist.CLIENT)
-    public void setFlipping(int position)
-    {
+    public void setFlipping(int position) {
         this.flipping[position] = true;
         this.flippingCounter[position] = 0;
     }
 
     @OnlyIn(Dist.CLIENT)
-    public boolean isFlipping(int position)
-    {
+    public boolean isFlipping(int position) {
         return this.flipping[position];
     }
 
     @OnlyIn(Dist.CLIENT)
-    public int getFlippingCount(int position)
-    {
+    public int getFlippingCount(int position) {
         return this.flippingCounter[position];
     }
 
-    public NonNullList<ItemStack> getGrill()
-    {
+    public NonNullList<ItemStack> getGrill() {
         return this.grill;
     }
 
-    public NonNullList<ItemStack> getFuel()
-    {
+    public NonNullList<ItemStack> getFuel() {
         return this.fuel;
     }
 
-    public byte[] getRotations()
-    {
+    public byte[] getRotations() {
         return this.rotations;
     }
 
-    public boolean isFlipped(int position)
-    {
+    public boolean isFlipped(int position) {
         return this.flipped[position];
     }
 
-    public boolean addItem(ItemStack stack, int position, int cookTime, float experience, byte rotation)
-    {
-        if(this.grill.get(position).isEmpty())
-        {
+    public boolean addItem(ItemStack stack, int position, int cookTime, float experience, byte rotation) {
+        if (this.grill.get(position).isEmpty()) {
             ItemStack copy = stack.copy();
             copy.setCount(1);
             this.grill.set(position, copy);
             this.resetPosition(position, cookTime, experience, rotation);
 
-            /* Play place sound */
+            // Play place sound
             World world = this.getWorld();
-            if(world != null)
-            {
+            if (world != null) {
                 world.playSound(null, this.pos.getX() + 0.5, this.pos.getY() + 1.0, this.pos.getZ() + 0.5, ModSounds.BLOCK_GRILL_PLACE, SoundCategory.BLOCKS, 0.75F, world.rand.nextFloat() * 0.2F + 0.9F);
             }
 
@@ -124,15 +112,14 @@ public class GrillTileEntity extends TileEntity implements IClearable, ITickable
         return false;
     }
 
-    private void resetPosition(int position, int cookTime, float experience, byte rotation)
-    {
+    private void resetPosition(int position, int cookTime, float experience, byte rotation) {
         this.cookingTimes[position] = 0;
         this.cookingTotalTimes[position] = cookTime / 2; //Half the time because it has to cook both sides
         this.flipped[position] = false;
         this.experience[position] = experience;
         this.rotations[position] = rotation;
 
-        /* Send updates to client */
+        // Send updates to client
         CompoundNBT compound = new CompoundNBT();
         this.writeItems(compound);
         this.writeCookingTimes(compound);
@@ -142,17 +129,14 @@ public class GrillTileEntity extends TileEntity implements IClearable, ITickable
         TileEntityUtil.sendUpdatePacket(this, super.write(compound));
     }
 
-    public boolean addFuel(ItemStack stack)
-    {
-        for(int i = 0; i < this.fuel.size(); i++)
-        {
-            if(this.fuel.get(i).isEmpty())
-            {
+    public boolean addFuel(ItemStack stack) {
+        for (int i = 0; i < this.fuel.size(); i++) {
+            if (this.fuel.get(i).isEmpty()) {
                 ItemStack fuel = stack.copy();
                 fuel.setCount(1);
                 this.fuel.set(i, fuel);
 
-                /* Send updates to client */
+                // Send updates to client
                 CompoundNBT compound = new CompoundNBT();
                 this.writeFuel(compound);
                 TileEntityUtil.sendUpdatePacket(this, super.write(compound));
@@ -163,12 +147,9 @@ public class GrillTileEntity extends TileEntity implements IClearable, ITickable
         return false;
     }
 
-    public void flipItem(int position)
-    {
-        if(!this.grill.get(position).isEmpty())
-        {
-            if(!this.flipped[position] && this.cookingTimes[position] == this.cookingTotalTimes[position])
-            {
+    public void flipItem(int position) {
+        if (!this.grill.get(position).isEmpty()) {
+            if (!this.flipped[position] && this.cookingTimes[position] == this.cookingTotalTimes[position]) {
                 this.flipped[position] = true;
                 this.cookingTimes[position] = 0;
 
@@ -183,20 +164,15 @@ public class GrillTileEntity extends TileEntity implements IClearable, ITickable
 
                 /* Play flip sound */
                 World world = this.getWorld();
-                if(world != null)
-                {
+                if (world != null) {
                     world.playSound(null, this.pos.getX() + 0.5, this.pos.getY() + 1.0, this.pos.getZ() + 0.5, ModSounds.BLOCK_GRILL_FLIP, SoundCategory.BLOCKS, 0.75F, 1.0F);
                 }
-            }
-            else if(this.flipped[position] && this.cookingTimes[position] == this.cookingTotalTimes[position])
-            {
+            } else if(this.flipped[position] && this.cookingTimes[position] == this.cookingTotalTimes[position])
                 this.removeItem(position);
-            }
         }
     }
 
-    public void flipItems()
-    {
+    public void flipItems() {
         for(int i = 0; i < 4; i++)
         {
             if(!this.grill.get(i).isEmpty())
