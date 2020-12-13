@@ -1,8 +1,12 @@
 {
     "variants": {
-        "facing=north": {"model": "cfm:block/tree"},
-        "facing=south": { "model": "cfm:block/tree", "y": 180},
-        "facing=east": { "model": "cfm:block/tree", "y": 90},
-        "facing=west": { "model": "cfm:block/tree", "y": 270}
+        "facing=north,top=true": {"model": "cfm:block/tree_top"},
+        "facing=south,top=true": { "model": "cfm:block/tree_top", "y": 180},
+        "facing=east,top=true": { "model": "cfm:block/tree_top", "y": 90},
+        "facing=west,top=true": { "model": "cfm:block/tree_top", "y": 270},
+        "facing=north,top=false": {"model": "cfm:block/tree_bottom"},
+        "facing=south,top=false": { "model": "cfm:block/tree_bottom", "y": 180},
+        "facing=east,top=false": { "model": "cfm:block/tree_bottom", "y": 90},
+        "facing=west,top=false": { "model": "cfm:block/tree_bottom", "y": 270}
     }
 }

@@ -41,26 +41,27 @@ import java.util.Arrays;
 import java.util.Random;
 
 public class TreeBlock extends FurnitureBlock {
-    // private static final AxisAlignedBB BOUNDING_BOX_BOTTOM = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 2.0, 0.9375);
-    // private static final AxisAlignedBB BOUNDING_BOX_BOTTOM_ALT = new AxisAlignedBB(0.0625, 0.0, 0.0625, 0.9375, 1.0, 0.9375);
-    // private static final AxisAlignedBB BOUNDING_BOX_TOP = new AxisAlignedBB(0.0625, -1.0, 0.0625, 0.9375, 1.0, 0.9375);
+    public static final VoxelShape SHAPE_TOP = VoxelShapeHelper.combineAll(Arrays.asList(Block.makeCuboidShape(4.5, 0.0 - 16.0, 4.5, 11.5, 1.0 - 16.0, 11.5), Block.makeCuboidShape(11.0, 0.5 - 16.0, 4.5, 12.0, 5.5 - 16.0, 11.5), Block.makeCuboidShape(4.0, 0.5 - 16.0, 4.5, 5.0, 5.5 - 16.0, 11.5), Block.makeCuboidShape(4.5, 0.5 - 16.0, 4.0, 11.5, 5.5 - 16.0, 5.0), Block.makeCuboidShape(4.5, 0.5 - 16.0, 11.0, 11.5, 5.5 - 16.0, 12.0), Block.makeCuboidShape(5.0, 4.0 - 16.0, 5.0, 11.0, 5.0 - 16.0, 11.0), Block.makeCuboidShape(7.0, 5.0 - 16.0, 7.0, 9.0, 16.0 - 16.0, 9.0), Block.makeCuboidShape(1.0, 7.0 - 16.0, 1.0, 15.0, 10.0 - 16.0, 15.0), Block.makeCuboidShape(2.0, 10.0 - 16.0, 2.0, 14.0, 13.0 - 16.0, 14.0), Block.makeCuboidShape(3.0, 13.0 - 16.0, 3.0, 13.0, 16.0 - 16.0, 13.0), Block.makeCuboidShape(4.0, 16.0 - 16.0, 4.0, 12.0, 19.0 - 16.0, 12.0), Block.makeCuboidShape(5.0, 19.0 - 16.0, 5.0, 11.0, 22.0 - 16.0, 11.0), Block.makeCuboidShape(6.0, 22.0 - 16.0, 6.0, 10.0, 25.0 - 16.0, 10.0), Block.makeCuboidShape(7.0, 25.0 - 16.0, 7.0, 9.0, 28.0 - 16.0, 9.0), Block.makeCuboidShape(6.0, 27.0 - 16.0, 7.5, 10.0, 31.0 - 16.0, 8.5)));
+    public static final VoxelShape SHAPE_BOTTOM = VoxelShapeHelper.combineAll(Arrays.asList(Block.makeCuboidShape(4.5, 0.0, 4.5, 11.5, 1.0, 11.5), Block.makeCuboidShape(11.0, 0.5, 4.5, 12.0, 5.5, 11.5), Block.makeCuboidShape(4.0, 0.5, 4.5, 5.0, 5.5, 11.5), Block.makeCuboidShape(4.5, 0.5, 4.0, 11.5, 5.5, 5.0), Block.makeCuboidShape(4.5, 0.5, 11.0, 11.5, 5.5, 12.0), Block.makeCuboidShape(5.0, 4.0, 5.0, 11.0, 5.0, 11.0), Block.makeCuboidShape(7.0, 5.0, 7.0, 9.0, 16.0, 9.0), Block.makeCuboidShape(1.0, 7.0, 1.0, 15.0, 10.0, 15.0), Block.makeCuboidShape(2.0, 10.0, 2.0, 14.0, 13.0, 14.0), Block.makeCuboidShape(3.0, 13.0, 3.0, 13.0, 16.0, 13.0), Block.makeCuboidShape(4.0, 16.0, 4.0, 12.0, 19.0, 12.0), Block.makeCuboidShape(5.0, 19.0, 5.0, 11.0, 22.0, 11.0), Block.makeCuboidShape(6.0, 22.0, 6.0, 10.0, 25.0, 10.0), Block.makeCuboidShape(7.0, 25.0, 7.0, 9.0, 28.0, 9.0), Block.makeCuboidShape(6.0, 27.0, 7.5, 10.0, 31.0, 8.5)));
 
-    public static final VoxelShape SHAPE = VoxelShapeHelper.combineAll(Arrays.asList(Block.makeCuboidShape(0.0, 0.001, 0.0, 16.0, 32.0, 16.0)));
     public static final DirectionProperty DIRECTION = BlockStateProperties.HORIZONTAL_FACING;
+    public static final BooleanProperty TOP = BooleanProperty.create("top");
 
-//    public static final BooleanProperty BOTTOM = BooleanProperty.create("BOTTOM");
 
     public TreeBlock(Properties properties) {
         super(properties);
-//        super(material);
-//        this.setLightLevel(0.3F);
-//        if (top)
-//            this.setCreativeTab(null);
+        this.setDefaultState(this.getStateContainer().getBaseState().with(TOP, false));
     }
 
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
         return super.getStateForPlacement(context).with(DIRECTION, context.getPlacementHorizontalFacing());
+    }
+    
+
+    @Override
+    public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+        worldIn.setBlockState(pos.up(), this.getDefaultState().with(TOP, true).with(DIRECTION, placer.getHorizontalFacing()));
     }
 
     @Override
@@ -77,6 +78,7 @@ public class TreeBlock extends FurnitureBlock {
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {
         super.fillStateContainer(builder);
         builder.add(DIRECTION);
+        builder.add(TOP);
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -86,21 +88,13 @@ public class TreeBlock extends FurnitureBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        return SHAPE;
+        return state.get(TOP)? SHAPE_TOP : SHAPE_BOTTOM;
     }
 
     @Override
     public boolean isValidPosition(BlockState state, IWorldReader reader, BlockPos pos) {
         return reader.getBlockState(pos.up()).isAir();
     }
-
-//    @Override
-//    public BlockState getStateForPlacement(World world, BlockPos pos, Direction facing, float hitX, float hitY, float hitZ, int meta, LivingEntity placer) {
-//        if (this == ModBlocks.TREE_BOTTOM) {
-//            world.setBlockState(pos.up(), ModBlocks.TREE_TOP.getDefaultState().withProperty(FACING, placer.getHorizontalFacing()));
-//        }
-//        return super.getStateForPlacement(world, pos, facing, hitX, hitY, hitZ, meta, placer);
-//    }
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity playerIn, Hand hand, BlockRayTraceResult result) {
@@ -116,8 +110,10 @@ public class TreeBlock extends FurnitureBlock {
         return ActionResultType.SUCCESS;
     }
 
-    // @Override
-    // public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+    @Override
+    public void onBlockHarvested(World worldIn, BlockPos pos, BlockState state, PlayerEntity player) {
+        worldIn.destroyBlock(state.get(TOP)? pos.down() : pos.up(), false);
+    }
 //        if (this == ModBlocks.TREE_TOP) {
 //            if (player.getHeldItemMainhand() != null) {
 //                if (player.getHeldItemMainhand().getItem() != Items.SHEARS)
@@ -133,18 +129,6 @@ public class TreeBlock extends FurnitureBlock {
 //            worldIn.destroyBlock(pos.up(), false);
 //        }
     // }
-
-//    @Override
-//    public AxisAlignedBB getBoundingBox(BlockState state, IWorldReader source, BlockPos pos) {
-//        if (this == ModBlocks.TREE_BOTTOM) {
-//            if (source.getBlockState(pos.up()).getBlock() == ModBlocks.TREE_TOP)
-//                return BOUNDING_BOX_BOTTOM;
-//            else
-//                return BOUNDING_BOX_BOTTOM_ALT;
-//        } else {
-//            return BOUNDING_BOX_TOP;
-//        }
-//    }
 
 //    @Override
 //    public Item getItemDropped(BlockState state, Random rand, int fortune) {
@@ -164,7 +148,7 @@ public class TreeBlock extends FurnitureBlock {
 
     @Override
     public boolean hasTileEntity(BlockState state) {
-        return true;
+        return state.get(TOP);
     }
 
     @Nullable
