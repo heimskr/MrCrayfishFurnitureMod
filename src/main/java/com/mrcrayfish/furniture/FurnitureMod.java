@@ -14,14 +14,12 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 @Mod(Reference.MOD_ID)
-public class FurnitureMod
-{
+public class FurnitureMod {
     public static final Logger LOGGER = LogManager.getLogger(Reference.MOD_ID);
     public static final ItemGroup GROUP = new FurnitureGroup(Reference.MOD_ID);
     public static final CommonProxy PROXY = DistExecutor.runForDist(() -> ClientProxy::new, () -> CommonProxy::new);
 
-    public FurnitureMod()
-    {
+    public FurnitureMod() {
         ModLoadingContext.get().registerConfig(ModConfig.Type.CLIENT, FurnitureConfig.clientSpec);
         ModLoadingContext.get().registerConfig(ModConfig.Type.COMMON, FurnitureConfig.commonSpec);
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onCommonSetup);

@@ -8,10 +8,7 @@ import com.mrcrayfish.furniture.client.gui.screen.inventory.FreezerScreen;
 import com.mrcrayfish.furniture.client.gui.screen.inventory.MailBoxScreen;
 import com.mrcrayfish.furniture.client.gui.screen.inventory.PostBoxScreen;
 import com.mrcrayfish.furniture.client.renderer.SeatRenderer;
-import com.mrcrayfish.furniture.client.renderer.tileentity.DoorMatTileEntityRenderer;
-import com.mrcrayfish.furniture.client.renderer.tileentity.GrillTileEntityRenderer;
-import com.mrcrayfish.furniture.client.renderer.tileentity.KitchenSinkTileEntityRenderer;
-import com.mrcrayfish.furniture.client.renderer.tileentity.TreeTileEntityRenderer;
+import com.mrcrayfish.furniture.client.renderer.tileentity.*;
 import com.mrcrayfish.furniture.core.ModBlocks;
 import com.mrcrayfish.furniture.core.ModContainers;
 import com.mrcrayfish.furniture.core.ModEntities;
@@ -105,6 +102,8 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(ModBlocks.GRILL_BLACK, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.POST_BOX, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.TREE, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PHOTO_FRAME, cutoutPredicate);
+
         RenderTypeLookup.setRenderLayer(ModBlocks.TREE, leavesPredicate);
 
         this.registerColors();

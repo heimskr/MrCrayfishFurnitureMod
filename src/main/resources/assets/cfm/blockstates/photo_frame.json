@@ -1,0 +1,12 @@
+{
+    "forge_marker": 1,
+    "defaults": {
+        "model": "cfm:photo_frame"
+    },
+    "variants": {
+        "facing=north": { "model": "cfm:photo_frame", "y": 0   },
+        "facing=east":  { "model": "cfm:photo_frame", "y": 90  },
+        "facing=south": { "model": "cfm:photo_frame", "y": 180 },
+        "facing=west":  { "model": "cfm:photo_frame", "y": 270 }
+    }
+}

@@ -427,6 +427,7 @@ public class ModBlocks {
     public static final Block FREEZER_DARK = register(Names.Block.FREEZER_DARK, new FreezerBlock(Block.Properties.from(Blocks.IRON_BLOCK), FRIDGE_DARK), (BlockItem) null);
 
     public static final Block TREE = register(Names.Block.TREE, new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
+    public static final Block PHOTO_FRAME = register(Names.Block.PHOTO_FRAME, new PhotoFrameBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
     // public static final Block TREE_BOTTOM = register(Names.Block.TREE + "_bottom", new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD), false));
     // public static final Block TREE_TOP    = register(Names.Block.TREE + "_top",    new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD), true), block -> new BlockSupplierItem(new Item.Properties().group(FurnitureMod.GROUP), block, () -> ModBlocks.TREE_BOTTOM));
 
