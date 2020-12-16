@@ -40,38 +40,19 @@ import java.util.Arrays;
 public class PhotoFrameBlock extends FurnitureTileBlock {
     public static final IntegerProperty COLOR = IntegerProperty.create("color", 0, 15);
     public static final DirectionProperty DIRECTION = BlockStateProperties.HORIZONTAL_FACING;
-
     private static final Bounds BOUNDS = new Bounds(15, 0, 0, 16, 16, 16);
-
-//    public static final VoxelShape SHAPE = Block.makeCuboidShape(15.0, 0.0, 0.0, 16.0, 16.0, 16.0);
-
-//    private static final AxisAlignedBB[] BOUNDING_BOX = new Bounds(15, 0, 0, 16, 16, 16).getRotatedBounds();
 
     public PhotoFrameBlock(Properties properties) {
         super(properties);
-//        this.setUnlocalizedName("photo_frame");
-//        this.setRegistryName("photo_frame");
         this.setDefaultState(this.getStateContainer().getBaseState().with(DIRECTION, Direction.NORTH));
     }
-
-//    @Override
-//    public boolean canPlaceBlockOnSide(World worldIn, BlockPos pos, Direction side) {
-//        return side.getHorizontalIndex() != -1;
-//    }
-
-//    @Override
-//    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-//        return BOUNDING_BOX[state.getValue(FACING).getHorizontalIndex()];
-//    }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-//        BlockState state = this.getStateFromMeta(meta);
         BlockState state = super.getStateForPlacement(context);
-        if (context.getPlacementHorizontalFacing().getHorizontalIndex() != -1) {
+        if (context.getPlacementHorizontalFacing().getHorizontalIndex() != -1)
             return state.with(DIRECTION, context.getPlacementHorizontalFacing().getOpposite());
-        }
         return state;
     }
 
@@ -106,16 +87,8 @@ public class PhotoFrameBlock extends FurnitureTileBlock {
         }
     }
 
-//    @Override
-//    public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items) {
-//        for (int i = 0; i < DyeColor.values().length; i++) {
-//            items.add(new ItemStack(this, 1, i));
-//        }
-//    }
-
     @Override
     public ItemStack getPickBlock(BlockState state, RayTraceResult target, IBlockReader world, BlockPos pos, PlayerEntity player) {
-        int metadata = 0;
         TileEntity tileEntity = world.getTileEntity(pos);
         ItemStack stack = new ItemStack(this, 1);
         CompoundNBT tag = stack.getOrCreateTag();
@@ -131,29 +104,9 @@ public class PhotoFrameBlock extends FurnitureTileBlock {
         if (world.isRemote) {
             ItemStack heldItem = playerIn.getHeldItem(hand);
             TileEntity tileEntity = world.getTileEntity(pos);
-            if (tileEntity instanceof PhotoFrameTileEntity) {
-                PhotoFrameTileEntity photoFrame = (PhotoFrameTileEntity) tileEntity;
-                if (!heldItem.isEmpty()) {
-                    if (heldItem.getItem() instanceof DyeItem) {
-                        DyeItem dye = (DyeItem) heldItem.getItem();
-                        if (photoFrame.getColor() != dye.getDyeColor().getColorValue()) {
-                            photoFrame.setColor(dye.getDyeColor().getColorValue());
-                            if (!playerIn.isCreative())
-                                heldItem.shrink(1);
-                            TileEntityUtil.markBlockForUpdate(world, pos);
-                        }
-                        return ActionResultType.SUCCESS;
-                    }
-                }
-            }
 
-            if (tileEntity instanceof PhotoFrameTileEntity) {
-                if (!((PhotoFrameTileEntity) tileEntity).isDisabled()) {
-                    System.out.println("Before GUI: url=" + ((PhotoFrameTileEntity) tileEntity).getUrl());
-                    System.out.println("Before GUI: stretch=" + ((PhotoFrameTileEntity) tileEntity).isStretched());
-                    FurnitureMod.PROXY.showPhotoFrameScreen(world, pos);
-                }
-            }
+            if (tileEntity instanceof PhotoFrameTileEntity && !((PhotoFrameTileEntity) tileEntity).isDisabled())
+                FurnitureMod.PROXY.showPhotoFrameScreen(world, pos);
         }
         return ActionResultType.SUCCESS;
     }
