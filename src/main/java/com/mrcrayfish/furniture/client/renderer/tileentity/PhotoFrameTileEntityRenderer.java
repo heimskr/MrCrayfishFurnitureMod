@@ -49,6 +49,8 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
         if (!state.getProperties().contains(PhotoFrameBlock.DIRECTION))
             return;
 
+        RenderSystem.enableDepthTest();
+
         stack.push();
         {
             double frameWidth = 14;
@@ -180,5 +182,7 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
             }
         }
         stack.pop();
+
+        RenderSystem.disableDepthTest();
     }
 }
