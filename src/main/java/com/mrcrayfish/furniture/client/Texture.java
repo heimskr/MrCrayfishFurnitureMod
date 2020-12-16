@@ -49,6 +49,7 @@ public class Texture {
                 buffer = createBuffer(imageData);
 
                 Minecraft.getInstance().deferTask(() -> { // ??? Previously addScheduledTask
+                    System.out.println("Deferred task: binding texture.");
                     GlStateManager.bindTexture(getTextureId());
                     GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
                 });

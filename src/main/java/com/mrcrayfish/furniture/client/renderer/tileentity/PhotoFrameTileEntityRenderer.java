@@ -4,6 +4,7 @@ import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.mrcrayfish.furniture.block.PhotoFrameBlock;
 import com.mrcrayfish.furniture.client.ImageCache;
 import com.mrcrayfish.furniture.client.ImageDownloadThread;
@@ -14,7 +15,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.NativeImage;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -22,9 +27,11 @@ import net.minecraft.client.resources.I18n;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 import org.lwjgl.opengl.GL11;
 
+import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Random;
 
@@ -34,6 +41,7 @@ import java.util.Random;
 public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameTileEntity> {
     private static final ResourceLocation NOISE = new ResourceLocation("cfm:textures/noise.png");
     private static final Random RAND = new Random();
+    private BufferedImage bufferedImage = null;
 
     public PhotoFrameTileEntityRenderer(TileEntityRendererDispatcher dispatcher) {
         super(dispatcher);
@@ -48,6 +56,8 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
 //            System.out.println("Photo URL is null!");
             return;
         }
+
+        System.out.println("Congratulations.");
 
         BlockPos pos = te.getPos();
         BlockState state = te.getWorld().getBlockState(pos);
@@ -69,6 +79,7 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
 
             ImageDownloadThread.ImageDownloadResult result = te.getResult();
             if (result != null && result != ImageDownloadThread.ImageDownloadResult.SUCCESS) {
+                System.out.println("result isn't null and isn't SUCCESS");
                 //GlStateManager.translate(x, y, z);
                 stack.translate(x, y, z);
 
@@ -105,22 +116,36 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
 //                    renderer.drawString(stack, lines.get(i), 0, renderer.FONT_HEIGHT * i, 16777215);
                 renderer.drawString(stack, message, 0, 0, 16777215); // TODO: fix this garbage.
             } else {
+                System.out.println("Result is null or is SUCCESS");
                 //GlStateManager.translate(x, y, z);
                 stack.translate(x, y, z);
                 //GlStateManager.enableBlend();
+
+                RenderSystem.pushLightingAttributes();
+
                 RenderSystem.enableBlend();
+
                 //GlStateManager.color(0.65F, 0.65F, 0.65F, 1.0F);
                 //OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
+                RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
+
                 //GlStateManager.disableLighting();
+
                 RenderSystem.disableLighting();
+
+                RenderSystem.enableTexture();
 
                 double startX = 0.0;
                 double startY = 0.0;
 
                 if (te.isLoading()) {
+                    System.out.println("TileEntity is loading.");
                     Minecraft.getInstance().getTextureManager().bindTexture(NOISE);
-                    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-                    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+//                    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+                    RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+//                    GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+                    RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
                     // Setups translations
                     //GlStateManager.translate(8 * 0.0625, frameYOffset * 0.0625, 8 * 0.0625);
@@ -157,23 +182,34 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
                     buffer.pos(startX + frameWidth, startY, 0).tex((float) (u + scaledWidth * pixelScale), (float) v).endVertex();
                     tessellator.draw();
                 } else if (te.isLoaded()) {
-                    Texture texture = ImageCache.INSTANCE.get(te.getPhoto());
-                    if (texture != null) {
-                        texture.bind();
+                    System.out.println("TileEntity is loaded. URL[" + te.getPhoto() + "]");
+                    DynamicTexture dynamicTexture = ImageCache.INSTANCE.getDynamic(te.getPhoto());
+                    if (dynamicTexture != null) {
+                        NativeImage nativeImage = dynamicTexture.getTextureData();
+//                        TextureManager textureManager = Minecraft.getInstance().getTextureManager();
+//                        ResourceLocation resource = textureManager.getDynamicTextureLocation("cfm_photo", dynamicTexture);
+//                        textureManager.bindTexture(resource);
+                        dynamicTexture.bindTexture();
 
-                        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-                        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+//                        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+                        RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+//                        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+                        RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
+
+
 
                         double imageWidth = frameWidth;
                         double imageHeight = frameHeight;
 
                         if (!te.isStretched()) {
                             //Calculates the positioning and scale so the GIF keeps its ratio and renders within the screen
-                            double scaleWidth = frameWidth / (double) texture.getWidth();
-                            double scaleHeight = frameWidth / (double) texture.getHeight();
+                            int nativeWidth = nativeImage.getWidth();
+                            int nativeHeight = nativeImage.getHeight();
+                            double scaleWidth = frameWidth / (double) nativeWidth;
+                            double scaleHeight = frameWidth / (double) nativeHeight;
                             double scale = Math.min(scaleWidth, scaleHeight);
-                            imageWidth = texture.getWidth() * scale;
-                            imageHeight = texture.getHeight() * scale;
+                            imageWidth = nativeWidth * scale;
+                            imageHeight = nativeHeight * scale;
                             startX = (frameWidth - imageWidth) / 2.0;
                             startY = (frameHeight - imageHeight) / 2.0;
                         }
@@ -183,19 +219,22 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
                         imageWidth *= 0.0625;
                         imageHeight *= 0.0625;
 
-                        // Setup translations
+                        // Set up translations
+
                         //GlStateManager.translate(8 * 0.0625, frameYOffset * 0.0625, 8 * 0.0625);
                         stack.translate(8 * 0.0625, frameYOffset * 0.0625, 8 * 0.0625);
                         //EnumFacing facing = state.getValue(BlockFurnitureTile.FACING);
                         Direction facing = state.get(PhotoFrameBlock.DIRECTION);
                         //GlStateManager.rotate(facing.getHorizontalIndex() * -90F, 0, 1, 0);
-                        stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalIndex() * -90F));
+                        stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalIndex() * -90F /*!/- 90F/*!*/));
                         //GlStateManager.translate(-frameWidth / 2 * 0.0625, 0, 0);
                         stack.translate(-frameWidth / 2 * 0.0625, 0, 0);
                         //GlStateManager.translate(0, 0, frameZOffset * 0.0625);
                         stack.translate(0, 0, frameZOffset * 0.0625);
 
-                        //Render a black quad
+//                        stack.translate(1, 1, 1); ////
+
+                        // Render a black quad
                         Tessellator tessellator = Tessellator.getInstance();
                         BufferBuilder buffer = tessellator.getBuffer();
                         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
@@ -205,27 +244,39 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
                         buffer.pos(imageWidth * 0.0625, 0, 0).color(0, 0, 0, 255).endVertex();
                         tessellator.draw();
 
-                        //Render the Image
+                        // Render the Image
                         //GlStateManager.translate(0, 0, -0.01 * 0.0625);
                         stack.translate(0, 0, -0.01 * 0.0625);
+//                        stack.translate(1, 1, 1); ////
+
                         buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
                         buffer.pos(startX, startY, 0).tex(0, 0).endVertex();
                         buffer.pos(startX, startY + imageHeight, 0).tex(0, 1).endVertex();
                         buffer.pos(startX + imageWidth, startY + imageHeight, 0).tex(1, 1).endVertex();
                         buffer.pos(startX + imageWidth, startY, 0).tex(1, 0).endVertex();
                         tessellator.draw();
+
+//                        textureManager.deleteTexture(resource);
+
+
+
+
                     } else {
+                        System.out.println("Oh no.");
                         String photo = te.getPhoto();
                         if (photo != null)
                             te.loadUrl(photo);
                     }
                 } else {
+                    System.out.println("TileEntity is neither loaded nor loading.");
 //                    System.out.println("Sad state of affairs here.");
                 }
                 //GlStateManager.disableBlend();
                 RenderSystem.disableBlend();
                 //GlStateManager.enableLighting();
                 RenderSystem.enableLighting();
+
+                RenderSystem.popAttributes();
             }
         }
         //GlStateManager.popMatrix();

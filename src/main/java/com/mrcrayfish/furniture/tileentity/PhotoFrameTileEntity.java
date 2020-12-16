@@ -41,13 +41,6 @@ public class PhotoFrameTileEntity extends TileEntity {
     @Override
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
-
-
-        if (getWorld() == null)
-            System.out.println("Writing PhotoFrameTileEntity (null)");
-        else
-            System.out.println("Writing PhotoFrameTileEntity (" + (getWorld().isRemote? "remote" : "local") + ")");
-
         if (this.url != null)
             compound.putString("Photo", this.url);
         compound.putBoolean("Stretch", this.stretch);
@@ -59,12 +52,6 @@ public class PhotoFrameTileEntity extends TileEntity {
     @Override
     public void read(BlockState state, CompoundNBT compound) {
         super.read(state, compound);
-
-        if (getWorld() == null)
-            System.out.println("Reading PhotoFrameTileEntity (null)");
-        else
-            System.out.println("Reading PhotoFrameTileEntity (" + (getWorld().isRemote? "remote" : "local") + ")");
-
         if (compound.contains("Photo", Constants.NBT.TAG_STRING))
             this.url = compound.getString("Photo");
         if (compound.contains("Stretch", Constants.NBT.TAG_BYTE))

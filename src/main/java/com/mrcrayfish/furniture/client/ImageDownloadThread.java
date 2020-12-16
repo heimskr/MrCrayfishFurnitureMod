@@ -82,7 +82,7 @@ public class ImageDownloadThread extends Thread {
 
             setLoading(url, true);
             byte[] data = IOUtils.toByteArray(connection);
-            if (ImageCache.INSTANCE.add(url, data)) {
+            if (ImageCache.INSTANCE.addDynamic(url, data)) {
                 setLoading(url, false);
                 processor.process(ImageDownloadResult.SUCCESS, "Successfully processed image");
                 return;

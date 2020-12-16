@@ -1,15 +1,21 @@
 package com.mrcrayfish.furniture.client;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.DynamicTexture;
+import net.minecraft.client.renderer.texture.NativeImage;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import javax.annotation.Nullable;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +29,8 @@ public final class ImageCache {
 
     private final File cache;
     private Map<String, Texture> cacheMap = new HashMap<>();
+
+    private Map<String, DynamicTexture> dynamicMap = new HashMap<>();
 
     private ImageCache() {
         cache = new File(Minecraft.getInstance().gameDir, "photo-frame-cache");
@@ -38,13 +46,26 @@ public final class ImageCache {
         }
     }
 
+    /*
     @Nullable
     public Texture get(String url) {
         if (url == null)
             return null;
-
         synchronized (this) {
             Texture texture = cacheMap.get(url);
+            if (texture != null)
+                return texture;
+        }
+        return null;
+    }
+    //*/
+
+    @Nullable
+    public DynamicTexture getDynamic(String url) {
+        if (url == null)
+            return null;
+        synchronized (this) {
+            DynamicTexture texture = dynamicMap.get(url);
             if (texture != null)
                 return texture;
         }
@@ -53,13 +74,21 @@ public final class ImageCache {
 
     public void add(String url, File file) {
         synchronized (this) {
-            if (!cacheMap.containsKey(url)) {
-                Texture texture = new Texture(file);
-                cacheMap.put(url, texture);
+//            if (!cacheMap.containsKey(url)) {
+//                Texture texture = new Texture(file);
+//                cacheMap.put(url, texture);
+//            }
+            if (!dynamicMap.containsKey(url)) {
+                try {
+                    this.addDynamic(url, IOUtils.toByteArray(new FileInputStream(file)));
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
+    /*
     public boolean add(String url, byte[] data) {
         synchronized (this) {
             try {
@@ -78,10 +107,33 @@ public final class ImageCache {
             return false;
         }
     }
+    //*/
+
+    public boolean addDynamic(String url, byte[] data) {
+        synchronized (this) {
+            System.out.println("addDynamic(\"" + url + "\")");
+            try {
+                if (!dynamicMap.containsKey(url)) {
+                    String id = DigestUtils.sha1Hex(url.getBytes());
+                    File image = new File(getCache(), id);
+                    FileUtils.writeByteArrayToFile(image, data);
+                    NativeImage nativeImage = NativeImage.read(new FileInputStream(image));
+                    DynamicTexture dynamicTexture = new DynamicTexture(nativeImage);
+                    dynamicMap.put(url, dynamicTexture);
+                    Minecraft.getInstance().deferTask(dynamicTexture::updateDynamicTexture);
+                }
+                return true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+    }
 
     private void tick() {
         synchronized (this) {
             cacheMap.values().forEach(Texture::update);
+            dynamicMap.values().forEach(DynamicTexture::updateDynamicTexture);
         }
     }
 
@@ -93,7 +145,7 @@ public final class ImageCache {
 
     public boolean loadCached(String url) {
         synchronized (this) {
-            if (cacheMap.containsKey(url))
+            if (dynamicMap.containsKey(url))
                 return true;
         }
 
@@ -108,7 +160,7 @@ public final class ImageCache {
 
     public boolean isCached(String url) {
         synchronized (this) {
-            return cacheMap.containsKey(url);
+            return dynamicMap.containsKey(url);
         }
     }
 
