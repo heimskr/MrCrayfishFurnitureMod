@@ -3,7 +3,9 @@ package com.mrcrayfish.furniture.block;
 import com.mrcrayfish.furniture.FurnitureMod;
 import com.mrcrayfish.furniture.tileentity.IValueContainer;
 import com.mrcrayfish.furniture.tileentity.PhotoFrameTileEntity;
+import com.mrcrayfish.furniture.util.Bounds;
 import com.mrcrayfish.furniture.util.TileEntityUtil;
+import com.mrcrayfish.furniture.util.VoxelShapeHelper;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
@@ -20,13 +22,17 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.RayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Arrays;
 
 /**
  * Author: MrCrayfish
@@ -34,6 +40,10 @@ import javax.annotation.Nullable;
 public class PhotoFrameBlock extends FurnitureTileBlock {
     public static final IntegerProperty COLOR = IntegerProperty.create("color", 0, 15);
     public static final DirectionProperty DIRECTION = BlockStateProperties.HORIZONTAL_FACING;
+
+    private static final Bounds BOUNDS = new Bounds(15, 0, 0, 16, 16, 16);
+
+//    public static final VoxelShape SHAPE = Block.makeCuboidShape(15.0, 0.0, 0.0, 16.0, 16.0, 16.0);
 
 //    private static final AxisAlignedBB[] BOUNDING_BOX = new Bounds(15, 0, 0, 16, 16, 16).getRotatedBounds();
 
@@ -65,17 +75,11 @@ public class PhotoFrameBlock extends FurnitureTileBlock {
         return state;
     }
 
-    //    @Override
-//    public IBlockState getActualState(BlockState state, IBlockAccess worldIn, BlockPos pos) {
-//        TileEntity tileEntity = worldIn.getTileEntity(pos);
-//        if (tileEntity instanceof TileEntityPhotoFrame) {
-//            int colour = ((TileEntityPhotoFrame) tileEntity).getColour();
-//            state = state.withProperty(COLOUR, colour);
-//        }
-//        return state;
-//    }
-
-
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        AxisAlignedBB rotated = BOUNDS.getRotation(state.get(DIRECTION).getOpposite());
+        return Block.makeCuboidShape(rotated.minX * 16F, rotated.minY * 16F, rotated.minZ * 16F, rotated.maxX * 16F, rotated.maxY * 16F, rotated.maxZ * 16F);
+    }
 
     @Override
     public void onBlockPlacedBy(World worldIn, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
@@ -148,7 +152,6 @@ public class PhotoFrameBlock extends FurnitureTileBlock {
                     System.out.println("Before GUI: url=" + ((PhotoFrameTileEntity) tileEntity).getUrl());
                     System.out.println("Before GUI: stretch=" + ((PhotoFrameTileEntity) tileEntity).isStretched());
                     FurnitureMod.PROXY.showPhotoFrameScreen(world, pos);
-//                    playerIn.openGui(FurnitureMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
                 }
             }
         }
@@ -157,7 +160,7 @@ public class PhotoFrameBlock extends FurnitureTileBlock {
 
     @Nullable
     @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+    public TileEntity createNewTileEntity(IBlockReader world) {
         return new PhotoFrameTileEntity();
     }
 
@@ -166,14 +169,4 @@ public class PhotoFrameBlock extends FurnitureTileBlock {
         super.fillStateContainer(builder);
         builder.add(DIRECTION);
     }
-
-//    @Override
-//    public BlockRenderLayer getBlockLayer() {
-//        return BlockRenderLayer.CUTOUT;
-//    }
-
-//    @Override
-//    protected BlockStateContainer createBlockState() {
-//        return new BlockStateContainer(this, FACING, COLOUR);
-//    }
 }
