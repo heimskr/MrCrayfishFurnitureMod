@@ -2,31 +2,23 @@ package com.mrcrayfish.furniture.client.renderer.tileentity;
 
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
-import com.mojang.blaze3d.platform.GLX;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.mrcrayfish.furniture.block.PhotoFrameBlock;
 import com.mrcrayfish.furniture.client.ImageCache;
 import com.mrcrayfish.furniture.client.ImageDownloadThread;
-import com.mrcrayfish.furniture.client.Texture;
-import com.mrcrayfish.furniture.core.ModBlocks;
 import com.mrcrayfish.furniture.tileentity.PhotoFrameTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
 import net.minecraft.client.renderer.BufferBuilder;
 import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.model.ItemCameraTransforms;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;
-import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
 import net.minecraft.client.resources.I18n;
-import net.minecraft.item.ItemStack;
 import net.minecraft.util.Direction;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.math.BlockPos;
@@ -34,8 +26,6 @@ import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 import org.lwjgl.opengl.GL11;
 
-import java.awt.image.BufferedImage;
-import java.util.List;
 import java.util.Random;
 
 /**
@@ -44,7 +34,6 @@ import java.util.Random;
 public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameTileEntity> {
     private static final ResourceLocation NOISE = new ResourceLocation("cfm:textures/noise.png");
     private static final Random RAND = new Random();
-    private BufferedImage bufferedImage = null;
 
     public PhotoFrameTileEntityRenderer(TileEntityRendererDispatcher dispatcher) {
         super(dispatcher);

@@ -392,6 +392,8 @@
     "block.cfm.fridge_dark": "Fridge (Dark)",
     "block.cfm.freezer_dark": "Freezer (Dark)",
     "block.cfm.tree": "Christmas Tree",
+    "block.cfm.photo_frame": "Photo Frame",
+    "block.cfm.wreath": "Wreath",
     "item.cfm.spatula": "Spatula",
     "container.cfm.cabinet": "Cabinet",
     "container.cfm.bedside_cabinet": "Bedside Cabinet",

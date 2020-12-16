@@ -1,0 +1,16 @@
+{
+	"result": {
+		"item": "cfm:wreath"
+	},
+	"pattern": [
+		"LLL",
+		"L L",
+		"LLL"
+	],
+	"type": "minecraft:crafting_shaped",
+	"key": {
+		"L": {
+			"item": "minecraft:spruce_leaves"
+		}
+	}
+}

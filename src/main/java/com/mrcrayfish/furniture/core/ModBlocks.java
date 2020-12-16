@@ -27,9 +27,9 @@ import java.util.function.Function;
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
 public class ModBlocks {
-    public static final Material WOOD = new Material(MaterialColor.WOOD, false, false, false, false,  true, false, PushReaction.NORMAL);
+    public static final Material WOOD  = new Material(MaterialColor.WOOD,  false, false, false, false,  true, false, PushReaction.NORMAL);
     public static final Material STONE = new Material(MaterialColor.STONE, false, false, false, false,  true, false, PushReaction.NORMAL);
-    public static final Material WOOL = new Material(MaterialColor.WOOL, false, false, false, false,  true, false, PushReaction.NORMAL);
+    public static final Material WOOL  = new Material(MaterialColor.WOOL,  false, false, false, false,  true, false, PushReaction.NORMAL);
 
     private static final List<Block> BLOCKS = new ArrayList<>();
     private static final List<Item> ITEMS = new ArrayList<>();
@@ -428,6 +428,10 @@ public class ModBlocks {
 
     public static final Block TREE = register(Names.Block.TREE, new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
     public static final Block PHOTO_FRAME = register(Names.Block.PHOTO_FRAME, new PhotoFrameBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
+
+    public static final Block WREATH = register(Names.Block.WREATH, new WreathBlock(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.5F).sound(SoundType.PLANT)));
+
+
     // public static final Block TREE_BOTTOM = register(Names.Block.TREE + "_bottom", new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD), false));
     // public static final Block TREE_TOP    = register(Names.Block.TREE + "_top",    new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD), true), block -> new BlockSupplierItem(new Item.Properties().group(FurnitureMod.GROUP), block, () -> ModBlocks.TREE_BOTTOM));
 

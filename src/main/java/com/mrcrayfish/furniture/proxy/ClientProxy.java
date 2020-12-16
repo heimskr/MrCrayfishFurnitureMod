@@ -106,8 +106,10 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(ModBlocks.POST_BOX, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.TREE, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.PHOTO_FRAME, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.WREATH, cutoutPredicate);
 
         RenderTypeLookup.setRenderLayer(ModBlocks.TREE, leavesPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.WREATH, leavesPredicate);
 
         this.registerColors();
 
@@ -298,7 +300,8 @@ public class ClientProxy extends CommonProxy {
 
         Minecraft.getInstance().getBlockColors().register((state, reader, pos, i) -> FoliageColors.getSpruce(),
             ModBlocks.HEDGE_SPRUCE,
-            ModBlocks.TREE);
+            ModBlocks.TREE,
+            ModBlocks.WREATH);
 
         Minecraft.getInstance().getBlockColors().register((state, reader, pos, i) -> FoliageColors.getBirch(),
             ModBlocks.HEDGE_BIRCH);
@@ -316,7 +319,8 @@ public class ClientProxy extends CommonProxy {
             ModBlocks.HEDGE_JUNGLE,
             ModBlocks.HEDGE_ACACIA,
             ModBlocks.HEDGE_DARK_OAK,
-            ModBlocks.TREE);
+            ModBlocks.TREE,
+            ModBlocks.WREATH);
     }
 
     @Override
