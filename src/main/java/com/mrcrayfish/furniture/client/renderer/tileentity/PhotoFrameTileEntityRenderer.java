@@ -3,6 +3,7 @@ package com.mrcrayfish.furniture.client.renderer.tileentity;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.platform.GlStateManager;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.IVertexBuilder;
 import com.mrcrayfish.furniture.block.PhotoFrameBlock;
 import com.mrcrayfish.furniture.client.ImageCache;
 import com.mrcrayfish.furniture.client.ImageDownloadThread;
@@ -10,11 +11,11 @@ import com.mrcrayfish.furniture.tileentity.PhotoFrameTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.FontRenderer;
-import net.minecraft.client.renderer.BufferBuilder;
-import net.minecraft.client.renderer.IRenderTypeBuffer;
-import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.*;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;
+import net.minecraft.client.renderer.texture.OverlayTexture;
+import net.minecraft.client.renderer.texture.TextureManager;
 import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
 import net.minecraft.client.renderer.vertex.DefaultVertexFormats;
@@ -49,8 +50,6 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
         if (!state.getProperties().contains(PhotoFrameBlock.DIRECTION))
             return;
 
-        RenderSystem.enableDepthTest();
-
         stack.push();
         {
             double frameWidth = 14;
@@ -75,19 +74,14 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
 //                List<String> lines = renderer.listFormattedStringToWidth(message, (int) ((frameWidth - 2.0) * 6.3));
 //                for (int i = 0; i < lines.size(); i++)
 //                    renderer.drawString(stack, lines.get(i), 0, renderer.FONT_HEIGHT * i, 16777215);
-                renderer.drawString(stack, message, 0, 0, 16777215); // TODO: fix this garbage.
+                renderer.drawString(stack, message, 0, 0, 16777215); // TODO: fix this garbage (see DoorMatTileEntityRenderer).
             } else {
-                RenderSystem.pushLightingAttributes();
-                RenderSystem.enableBlend();
-                RenderSystem.blendFuncSeparate(GlStateManager.SourceFactor.SRC_ALPHA, GlStateManager.DestFactor.ONE_MINUS_SRC_ALPHA, GlStateManager.SourceFactor.ONE, GlStateManager.DestFactor.ZERO);
-                RenderSystem.disableLighting();
-                RenderSystem.enableTexture();
-
                 double startX = 0.0;
                 double startY = 0.0;
 
                 if (te.isLoading()) {
-                    Minecraft.getInstance().getTextureManager().bindTexture(NOISE);
+                    IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+                    IVertexBuilder builder = buffer.getBuffer(RenderType.getEntitySolid(NOISE));
 
                     RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
                     RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -95,7 +89,7 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
                     // Setups translations
                     stack.translate(8 * 0.0625, frameYOffset * 0.0625, 8 * 0.0625);
                     Direction facing = state.get(PhotoFrameBlock.DIRECTION);
-                    stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalIndex() * -90F));
+                    stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalIndex() * -90F + 180F));
                     stack.translate(-frameWidth / 2 * 0.0625, 0, 0);
                     stack.translate(0, 0, frameZOffset * 0.0625);
 
@@ -112,19 +106,19 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
 
                     // Render the image
                     stack.translate(0, 0, -0.01 * 0.0625);
-                    Tessellator tessellator = Tessellator.getInstance();
-                    BufferBuilder buffer = tessellator.getBuffer();
-                    buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-                    buffer.pos(startX, startY, 0).tex((float) u, (float) v).endVertex();
-                    buffer.pos(startX, startY + frameHeight, 0).tex((float) u, (float) (v + scaledHeight * pixelScale)).endVertex();
-                    buffer.pos(startX + frameWidth, startY + frameHeight, 0).tex((float) (u + scaledWidth * pixelScale), (float) (v + scaledHeight * pixelScale)).endVertex();
-                    buffer.pos(startX + frameWidth, startY, 0).tex((float) (u + scaledWidth * pixelScale), (float) v).endVertex();
-                    tessellator.draw();
+                    Matrix4f matrix4f = stack.getLast().getMatrix();
+                    builder.pos(matrix4f, (float) startX, (float) startY, 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex((float) u, (float) v).overlay(OverlayTexture.NO_OVERLAY).lightmap(i0).normal(0, 1, 0).endVertex();
+                    builder.pos(matrix4f, (float) startX, (float) (startY + frameHeight), 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex((float) u, (float) (v + scaledHeight * pixelScale)).overlay(OverlayTexture.NO_OVERLAY).lightmap(i0).normal(0, 1, 0).endVertex();
+                    builder.pos(matrix4f, (float) (startX + frameWidth), (float) (startY + frameHeight), 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex((float) (u + scaledWidth * pixelScale), (float) (v + scaledHeight * pixelScale)).overlay(OverlayTexture.NO_OVERLAY).lightmap(i0).normal(0, 1, 0).endVertex();
+                    builder.pos(matrix4f, (float) (startX + frameWidth), (float) startY, 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex((float) (u + scaledWidth * pixelScale), (float) v).overlay(OverlayTexture.NO_OVERLAY).lightmap(i0).normal(0, 1, 0).endVertex();
                 } else if (te.isLoaded()) {
-                    DynamicTexture dynamicTexture = ImageCache.INSTANCE.getDynamic(te.getPhoto());
+                    ImageCache.DynamicPair pair = ImageCache.INSTANCE.getDynamic(te.getPhoto());
+                    DynamicTexture dynamicTexture = pair.texture;
+                    ResourceLocation location = pair.location;
                     if (dynamicTexture != null) {
+                        IRenderTypeBuffer.Impl buffer = Minecraft.getInstance().getRenderTypeBuffers().getBufferSource();
+                        IVertexBuilder builder = buffer.getBuffer(RenderType.getEntitySolid(location));
                         NativeImage nativeImage = dynamicTexture.getTextureData();
-                        dynamicTexture.bindTexture();
 
                         RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
                         RenderSystem.texParameter(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
@@ -153,32 +147,23 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
                         // Set up translations
                         stack.translate(8 * 0.0625, frameYOffset * 0.0625, 8 * 0.0625);
                         Direction facing = state.get(PhotoFrameBlock.DIRECTION);
-                        stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalIndex() * -90F /*!/- 90F/*!*/ + 180F));
+                        stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalIndex() * -90F + 180F));
                         stack.translate(-frameWidth / 2 * 0.0625, 0, 0);
                         stack.translate(0, 0, frameZOffset * 0.0625);
 
-                        Tessellator tessellator = Tessellator.getInstance();
-                        BufferBuilder buffer = tessellator.getBuffer();
-
                         // Render the image
                         stack.translate(0, 0, -0.01 * 0.0625);
-
-                        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
                         Matrix4f matrix4f = stack.getLast().getMatrix();
-                        buffer.pos(matrix4f, (float) startX, (float) startY, 0).tex(1, 1).endVertex();
-                        buffer.pos(matrix4f, (float) startX, (float) (startY + imageHeight), 0).tex(1, 0).endVertex();
-                        buffer.pos(matrix4f, (float) (startX + imageWidth), (float) (startY + imageHeight), 0).tex(0, 0).endVertex();
-                        buffer.pos(matrix4f, (float) (startX + imageWidth), (float) startY, 0).tex(0, 1).endVertex();
-                        tessellator.draw();
+                        builder.pos(matrix4f, (float) startX, (float) startY, 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(1, 1).overlay(OverlayTexture.NO_OVERLAY).lightmap(i0).normal(0, 1, 0).endVertex();
+                        builder.pos(matrix4f, (float) startX, (float) (startY + imageHeight), 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(1, 0).overlay(OverlayTexture.NO_OVERLAY).lightmap(i0).normal(0, 1, 0).endVertex();
+                        builder.pos(matrix4f, (float) (startX + imageWidth), (float) (startY + imageHeight), 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(0, 0).overlay(OverlayTexture.NO_OVERLAY).lightmap(i0).normal(0, 1, 0).endVertex();
+                        builder.pos(matrix4f, (float) (startX + imageWidth), (float) startY, 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(0, 1).overlay(OverlayTexture.NO_OVERLAY).lightmap(i0).normal(0, 1, 0).endVertex();
                     } else {
                         String photo = te.getPhoto();
                         if (photo != null)
                             te.loadUrl(photo);
                     }
                 }
-                RenderSystem.disableBlend();
-                RenderSystem.enableLighting();
-                RenderSystem.popAttributes();
             }
         }
         stack.pop();

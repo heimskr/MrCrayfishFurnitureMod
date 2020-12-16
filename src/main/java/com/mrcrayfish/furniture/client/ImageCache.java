@@ -3,6 +3,7 @@ package com.mrcrayfish.furniture.client;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.DynamicTexture;
 import net.minecraft.client.renderer.texture.NativeImage;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
@@ -30,7 +31,17 @@ public final class ImageCache {
     private final File cache;
     private Map<String, Texture> cacheMap = new HashMap<>();
 
-    private Map<String, DynamicTexture> dynamicMap = new HashMap<>();
+    private Map<String, DynamicPair> dynamicMap = new HashMap<>();
+
+    public class DynamicPair {
+        public DynamicTexture texture;
+        public ResourceLocation location;
+
+        public DynamicPair(DynamicTexture texture, String hash) {
+            this.texture = texture;
+            this.location = Minecraft.getInstance().getTextureManager().getDynamicTextureLocation("cfm_photo_frame_" + hash, texture);
+        }
+    }
 
     private ImageCache() {
         cache = new File(Minecraft.getInstance().gameDir, "photo-frame-cache");
@@ -61,13 +72,13 @@ public final class ImageCache {
     //*/
 
     @Nullable
-    public DynamicTexture getDynamic(String url) {
+    public DynamicPair getDynamic(String url) {
         if (url == null)
             return null;
         synchronized (this) {
-            DynamicTexture texture = dynamicMap.get(url);
-            if (texture != null)
-                return texture;
+            DynamicPair pair = dynamicMap.get(url);
+            if (pair != null)
+                return pair;
         }
         return null;
     }
@@ -119,7 +130,7 @@ public final class ImageCache {
                     FileUtils.writeByteArrayToFile(image, data);
                     NativeImage nativeImage = NativeImage.read(new FileInputStream(image));
                     DynamicTexture dynamicTexture = new DynamicTexture(nativeImage);
-                    dynamicMap.put(url, dynamicTexture);
+                    dynamicMap.put(url, new DynamicPair(dynamicTexture, id));
                     Minecraft.getInstance().deferTask(dynamicTexture::updateDynamicTexture);
                 }
                 return true;
@@ -133,7 +144,7 @@ public final class ImageCache {
     private void tick() {
         synchronized (this) {
             cacheMap.values().forEach(Texture::update);
-            dynamicMap.values().forEach(DynamicTexture::updateDynamicTexture);
+            dynamicMap.values().forEach((pair) -> pair.texture.updateDynamicTexture());
         }
     }
 
