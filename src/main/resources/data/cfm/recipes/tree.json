@@ -13,7 +13,7 @@
             "item": "minecraft:flower_pot"
         },
         "L": {
-            "item": "minecraft:leaves",
+            "item": "minecraft:spruce_leaves",
             "data": 0
         }
     }

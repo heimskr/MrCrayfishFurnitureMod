@@ -7,6 +7,7 @@ import com.mrcrayfish.furniture.client.gui.screen.inventory.CrateScreen;
 import com.mrcrayfish.furniture.client.gui.screen.inventory.FreezerScreen;
 import com.mrcrayfish.furniture.client.gui.screen.inventory.MailBoxScreen;
 import com.mrcrayfish.furniture.client.gui.screen.inventory.PostBoxScreen;
+import com.mrcrayfish.furniture.client.gui.screen.PhotoFrameScreen;
 import com.mrcrayfish.furniture.client.renderer.SeatRenderer;
 import com.mrcrayfish.furniture.client.renderer.tileentity.*;
 import com.mrcrayfish.furniture.core.ModBlocks;
@@ -15,6 +16,7 @@ import com.mrcrayfish.furniture.core.ModEntities;
 import com.mrcrayfish.furniture.core.ModTileEntities;
 import com.mrcrayfish.furniture.tileentity.DoorMatTileEntity;
 import com.mrcrayfish.furniture.tileentity.GrillTileEntity;
+import com.mrcrayfish.furniture.tileentity.PhotoFrameTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -58,6 +60,7 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.registerFactory(ModContainers.POST_BOX, PostBoxScreen::new);
         ScreenManager.registerFactory(ModContainers.MAIL_BOX, MailBoxScreen::new);
         ScreenManager.registerFactory(ModContainers.FREEZER, FreezerScreen::new);
+        //ScreenManager.registerFactory(ModContainers.PHOTO_FRAME, PhotoFrameScreen::new);
 
         Predicate<RenderType> leavesPredicate = renderType -> this.useFancyGraphics() ? renderType == RenderType.getCutoutMipped() : renderType == RenderType.getSolid();
         RenderTypeLookup.setRenderLayer(ModBlocks.HEDGE_OAK, leavesPredicate);
@@ -281,14 +284,16 @@ public class ClientProxy extends CommonProxy {
             ModBlocks.FRIDGE_LIGHT,
             ModBlocks.FREEZER_LIGHT,
             ModBlocks.FRIDGE_DARK,
-            ModBlocks.FREEZER_DARK
+            ModBlocks.FREEZER_DARK,
+            ModBlocks.PHOTO_FRAME
         );
 
         Minecraft.getInstance().getItemColors().register((stack, i) -> i == 1 ? 0xCCCCCC : 0,
             ModBlocks.FRIDGE_LIGHT,
             ModBlocks.FREEZER_LIGHT,
             ModBlocks.FRIDGE_DARK,
-            ModBlocks.FREEZER_DARK
+            ModBlocks.FREEZER_DARK,
+            ModBlocks.PHOTO_FRAME
         );
 
         Minecraft.getInstance().getBlockColors().register((state, reader, pos, i) -> FoliageColors.getSpruce(),
@@ -347,5 +352,12 @@ public class ClientProxy extends CommonProxy {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof DoorMatTileEntity)
             Minecraft.getInstance().displayGuiScreen(new DoorMatScreen((DoorMatTileEntity) tileEntity));
+    }
+
+    @Override
+    public void showPhotoFrameScreen(World world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof PhotoFrameTileEntity)
+            Minecraft.getInstance().displayGuiScreen(new PhotoFrameScreen((PhotoFrameTileEntity) tileEntity));
     }
 }

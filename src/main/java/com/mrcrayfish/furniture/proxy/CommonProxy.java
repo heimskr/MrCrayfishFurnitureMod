@@ -43,4 +43,6 @@ public class CommonProxy
     public void setGrillFlipping(BlockPos pos, int position) {}
 
     public void showDoorMatScreen(World world, BlockPos pos) {}
+
+    public void showPhotoFrameScreen(World world, BlockPos pos) {}
 }

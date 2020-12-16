@@ -4,9 +4,9 @@
         "model": "cfm:photo_frame"
     },
     "variants": {
-        "facing=north": { "model": "cfm:photo_frame", "y": 0   },
-        "facing=east":  { "model": "cfm:photo_frame", "y": 90  },
-        "facing=south": { "model": "cfm:photo_frame", "y": 180 },
-        "facing=west":  { "model": "cfm:photo_frame", "y": 270 }
+        "facing=north": { "model": "cfm:block/photo_frame", "y": 180 },
+        "facing=east":  { "model": "cfm:block/photo_frame", "y": 270 },
+        "facing=south": { "model": "cfm:block/photo_frame", "y": 0   },
+        "facing=west":  { "model": "cfm:block/photo_frame", "y": 90  }
     }
 }

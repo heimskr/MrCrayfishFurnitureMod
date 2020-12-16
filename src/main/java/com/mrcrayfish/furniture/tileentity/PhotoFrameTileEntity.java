@@ -41,6 +41,13 @@ public class PhotoFrameTileEntity extends TileEntity implements IValueContainer 
     @Override
     public CompoundNBT write(CompoundNBT compound) {
         super.write(compound);
+
+
+        if (getWorld() == null)
+            System.out.println("Writing PhotoFrameTileEntity (null)");
+        else
+            System.out.println("Writing PhotoFrameTileEntity (" + (getWorld().isRemote? "remote" : "local") + ")");
+
         if (this.url != null)
             compound.putString("Photo", this.url);
         compound.putBoolean("Stretch", this.stretch);
@@ -52,6 +59,12 @@ public class PhotoFrameTileEntity extends TileEntity implements IValueContainer 
     @Override
     public void read(BlockState state, CompoundNBT compound) {
         super.read(state, compound);
+
+        if (getWorld() == null)
+            System.out.println("Reading PhotoFrameTileEntity (null)");
+        else
+            System.out.println("Reading PhotoFrameTileEntity (" + (getWorld().isRemote? "remote" : "local") + ")");
+
         if (compound.contains("Photo", Constants.NBT.TAG_STRING))
             this.url = compound.getString("Photo");
         if (compound.contains("Stretch", Constants.NBT.TAG_BYTE))
@@ -86,6 +99,16 @@ public class PhotoFrameTileEntity extends TileEntity implements IValueContainer 
             }).start();
         } else
             this.loaded = true;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+        if (!getWorld().isRemote)
+            this.loadUrl(url);
+    }
+
+    public String getUrl() {
+        return this.url;
     }
 
     @OnlyIn(Dist.CLIENT)
@@ -126,6 +149,10 @@ public class PhotoFrameTileEntity extends TileEntity implements IValueContainer 
 
     public boolean isStretched() {
         return stretch;
+    }
+
+    public void setStretched(boolean stretch) {
+        this.stretch = stretch;
     }
 
     @Override

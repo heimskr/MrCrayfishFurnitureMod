@@ -1,7 +1,6 @@
 {
     "result": {
-        "item": "cfm:photo_frame",
-        "data": 9
+        "item": "cfm:photo_frame"
     },
     "pattern": [
         "CGC",
@@ -14,13 +13,13 @@
             "item": "minecraft:glass_pane"
         },
         "C": {
-            "item": "minecraft:cyan_concrete"
+            "item": "minecraft:black_concrete"
         },
         "F": {
             "item": "minecraft:item_frame"
         },
         "W": {
-            "item": "minecraft:planks",
+            "item": "minecraft:oak_planks",
             "data": 0
         }
     }

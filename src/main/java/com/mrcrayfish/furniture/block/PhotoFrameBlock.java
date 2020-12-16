@@ -142,8 +142,10 @@ public class PhotoFrameBlock extends FurnitureTileBlock {
                     }
                 }
             }
-            if (tileEntity instanceof IValueContainer && tileEntity instanceof PhotoFrameTileEntity) {
+
+            if (tileEntity instanceof PhotoFrameTileEntity) {
                 if (!((PhotoFrameTileEntity) tileEntity).isDisabled()) {
+                    FurnitureMod.PROXY.showPhotoFrameScreen(world, pos);
 //                    playerIn.openGui(FurnitureMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
                 }
             }

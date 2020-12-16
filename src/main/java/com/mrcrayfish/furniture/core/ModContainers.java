@@ -1,10 +1,7 @@
 package com.mrcrayfish.furniture.core;
 
 import com.mrcrayfish.furniture.Reference;
-import com.mrcrayfish.furniture.inventory.container.CrateContainer;
-import com.mrcrayfish.furniture.inventory.container.FreezerContainer;
-import com.mrcrayfish.furniture.inventory.container.MailBoxContainer;
-import com.mrcrayfish.furniture.inventory.container.PostBoxContainer;
+import com.mrcrayfish.furniture.inventory.container.*;
 import com.mrcrayfish.furniture.tileentity.CrateTileEntity;
 import com.mrcrayfish.furniture.tileentity.FreezerTileEntity;
 import com.mrcrayfish.furniture.tileentity.MailBoxTileEntity;
@@ -45,8 +42,7 @@ public class ModContainers
         return new FreezerContainer(windowId, playerInventory, freezerTileEntity);
     });
 
-    private static <T extends Container> ContainerType<T> register(String key, ContainerType.IFactory<T> factory)
-    {
+    private static <T extends Container> ContainerType<T> register(String key, ContainerType.IFactory<T> factory) {
         ContainerType<T> type = new ContainerType<>(factory);
         type.setRegistryName(key);
         CONTAINER_TYPES.add(type);
@@ -55,8 +51,7 @@ public class ModContainers
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public static void registerTypes(final RegistryEvent.Register<ContainerType<?>> event)
-    {
+    public static void registerTypes(final RegistryEvent.Register<ContainerType<?>> event) {
         CONTAINER_TYPES.forEach(type -> event.getRegistry().register(type));
         CONTAINER_TYPES.clear();
     }

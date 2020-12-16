@@ -476,6 +476,7 @@ public class Names
         public static final String POST_BOX = Reference.MOD_ID + ":post_box";
         public static final String MAIL_BOX = Reference.MOD_ID + ":mail_box";
         public static final String FREEZER = Reference.MOD_ID + ":freezer";
+        public static final String PHOTO_FRAME = Reference.MOD_ID + ":photo_frame";
     }
 
     public static class TileEntity {

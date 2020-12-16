@@ -9,15 +9,13 @@ import net.minecraftforge.fml.network.simple.SimpleChannel;
 /**
  * Author: MrCrayfish
  */
-public class PacketHandler
-{
+public class PacketHandler {
     public static final String PROTOCOL_VERSION = "1";
 
     public static SimpleChannel instance;
     private static int nextId = 0;
 
-    public static void init()
-    {
+    public static void init() {
         instance = NetworkRegistry.ChannelBuilder
                 .named(new ResourceLocation(Reference.MOD_ID, "network"))
                 .networkProtocolVersion(() -> PROTOCOL_VERSION)
@@ -32,10 +30,10 @@ public class PacketHandler
         register(MessageOpenMailBox.class, new MessageOpenMailBox());
         register(MessageFlipGrill.class, new MessageFlipGrill());
         register(MessageSetDoorMatMessage.class, new MessageSetDoorMatMessage());
+        register(MessageUpdatePhotoFrame.class, new MessageUpdatePhotoFrame());
     }
 
-    private static <T> void register(Class<T> clazz, IMessage<T> message)
-    {
+    private static <T> void register(Class<T> clazz, IMessage<T> message) {
         instance.registerMessage(nextId++, clazz, message::encode, message::decode, message::handle);
     }
 }
