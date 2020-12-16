@@ -41,15 +41,18 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
 
     @Override
     public void render(PhotoFrameTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer renderTypeBuffer, int i0, int i1) {
+//        if (te.getWorld() != null) {
+//            System.out.println("Rendering is " + (te.getWorld().isRemote? "remote" : "local") + ".");
+//        } else System.out.println("Rendering is done in the void.");
         if (te.getPhoto() == null) {
-//            System.out.println("Big yikes");
+//            System.out.println("Photo URL is null!");
             return;
         }
 
         BlockPos pos = te.getPos();
         BlockState state = te.getWorld().getBlockState(pos);
         if (!state.getProperties().contains(PhotoFrameBlock.DIRECTION)) {
-//            System.out.println("Not rendering block without direction??..");
+            System.out.println("Not rendering block without direction??..");
             return;
         }
 

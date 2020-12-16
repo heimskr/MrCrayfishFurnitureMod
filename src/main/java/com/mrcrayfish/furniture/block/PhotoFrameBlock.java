@@ -145,6 +145,8 @@ public class PhotoFrameBlock extends FurnitureTileBlock {
 
             if (tileEntity instanceof PhotoFrameTileEntity) {
                 if (!((PhotoFrameTileEntity) tileEntity).isDisabled()) {
+                    System.out.println("Before GUI: url=" + ((PhotoFrameTileEntity) tileEntity).getUrl());
+                    System.out.println("Before GUI: stretch=" + ((PhotoFrameTileEntity) tileEntity).isStretched());
                     FurnitureMod.PROXY.showPhotoFrameScreen(world, pos);
 //                    playerIn.openGui(FurnitureMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
                 }

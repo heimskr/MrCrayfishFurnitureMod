@@ -30,6 +30,12 @@ public class PhotoFrameScreen extends Screen {
 
     public PhotoFrameScreen(PhotoFrameTileEntity photoFrameTileEntity) {
         super(new TranslationTextComponent("gui.cfm.photo_frame_url")); // Not really a title, but...
+        if (photoFrameTileEntity.getWorld() == null)
+            System.out.println("Constructing screen with null world.");
+        else
+            System.out.println("Constructing screen from " + (photoFrameTileEntity.getWorld().isRemote? "remote" : "local") + " world.");
+        System.out.println("PFTE.url=" + photoFrameTileEntity.getUrl());
+        System.out.println("PFTE.stretch=" + photoFrameTileEntity.isStretched());
         this.photoFrameTileEntity = photoFrameTileEntity;
         this.stretch = photoFrameTileEntity.isStretched();
     }

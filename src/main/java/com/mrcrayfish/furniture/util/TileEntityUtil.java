@@ -14,8 +14,7 @@ import java.util.stream.Stream;
 /**
  * Author: MrCrayfish
  */
-public class TileEntityUtil
-{
+public class TileEntityUtil {
     /**
      * Sends an update packet to clients tracking a tile entity.
      *
@@ -24,7 +23,10 @@ public class TileEntityUtil
     public static void sendUpdatePacket(TileEntity tileEntity) {
         SUpdateTileEntityPacket packet = tileEntity.getUpdatePacket();
         if (packet != null) {
+            System.out.println("Sending an update packet.");
             sendUpdatePacket(tileEntity.getWorld(), tileEntity.getPos(), packet);
+        } else {
+            System.out.println("Not sending an update packet.");
         }
     }
 
@@ -40,9 +42,12 @@ public class TileEntityUtil
 
     private static void sendUpdatePacket(World world, BlockPos pos, SUpdateTileEntityPacket packet) {
         if (world instanceof ServerWorld) {
+            System.out.println("Sending packet (this is a server world).");
             ServerWorld server = (ServerWorld) world;
             Stream<ServerPlayerEntity> players = server.getChunkProvider().chunkManager.getTrackingPlayers(new ChunkPos(pos), false);
             players.forEach(player -> player.connection.sendPacket(packet));
+        } else {
+            System.out.println("Not sending packet: this is a client world.");
         }
     }
 

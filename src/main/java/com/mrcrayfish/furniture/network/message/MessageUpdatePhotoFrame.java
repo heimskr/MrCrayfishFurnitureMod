@@ -2,6 +2,8 @@ package com.mrcrayfish.furniture.network.message;
 
 import com.mrcrayfish.furniture.tileentity.DoorMatTileEntity;
 import com.mrcrayfish.furniture.tileentity.PhotoFrameTileEntity;
+import com.mrcrayfish.furniture.util.TileEntityUtil;
+import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
@@ -30,9 +32,10 @@ public class MessageUpdatePhotoFrame implements IMessage<MessageUpdatePhotoFrame
 
     @Override
     public void encode(MessageUpdatePhotoFrame message, PacketBuffer buffer) {
+        System.out.println("Encoding MessageUpdatePhotoFrame.");
         buffer.writeBlockPos(message.pos);
         buffer.writeString(message.url, 128);
-        buffer.writeBoolean(stretch);
+        buffer.writeBoolean(message.stretch);
     }
 
     @Override
@@ -46,20 +49,24 @@ public class MessageUpdatePhotoFrame implements IMessage<MessageUpdatePhotoFrame
             ServerPlayerEntity player = supplier.get().getSender();
             if (player != null) {
                 World world = player.getServerWorld();
-                if(world.isAreaLoaded(message.pos, 0)) {
+                if (world.isAreaLoaded(message.pos, 0)) {
                     TileEntity tileEntity = world.getTileEntity(message.pos);
                     if (tileEntity instanceof PhotoFrameTileEntity) {
-                        System.out.println("Updating PhotoFrameTileEntity from MessageUpdatePhotoFrame.");
+                        System.out.println("Updating PhotoFrameTileEntity from MessageUpdatePhotoFrame (" + (world.isRemote? "remote" : "local") + ").");
                         PhotoFrameTileEntity photoFrameEntity = (PhotoFrameTileEntity) tileEntity;
                         photoFrameEntity.setStretched(message.stretch);
                         System.out.println("stretch=" + (message.stretch? "true" : "false"));
                         System.out.println("url=" + message.url);
                         try {
                             photoFrameEntity.setUrl(message.url);
+                            if (!world.isRemote)
+                                photoFrameEntity.loadUrl(message.url);
                         } catch (NullPointerException npe) {
                             System.out.println("Can't set url: NullPointerException");
                         }
                         photoFrameEntity.markDirty();
+                        TileEntityUtil.markBlockForUpdate(world, message.pos);
+                        System.out.println("Marked dirty.");
                     } else {
                         System.out.println("Couldn't update PhotoFrameTileEntity from MessageUpdatePhotoFrame.");
                     }

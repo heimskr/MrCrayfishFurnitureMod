@@ -59,6 +59,8 @@ public class ImageDownloadThread extends Thread {
             URLConnection connection = new URL(url).openConnection();
             connection.addRequestProperty("User-Agent", "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.0)");
 
+            System.out.println("content type: " + connection.getContentType() + " (" + connection.getContentLength() + " length)");
+
             boolean failed = true;
             for (String format : SUPPORTED_FORMATS) {
                 if (format.equals(connection.getContentType())) {

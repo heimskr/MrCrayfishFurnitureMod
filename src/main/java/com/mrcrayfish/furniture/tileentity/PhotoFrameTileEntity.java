@@ -1,25 +1,25 @@
 package com.mrcrayfish.furniture.tileentity;
 
-import com.google.common.collect.Lists;
 import com.mrcrayfish.furniture.client.ImageCache;
 import com.mrcrayfish.furniture.client.ImageDownloadThread;
 import com.mrcrayfish.furniture.core.ModTileEntities;
+import com.mrcrayfish.furniture.util.TileEntityUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.nbt.CompoundNBT;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.SUpdateTileEntityPacket;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.common.util.Constants;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Author: MrCrayfish
  */
-public class PhotoFrameTileEntity extends TileEntity implements IValueContainer {
+public class PhotoFrameTileEntity extends TileEntity {
     private int color = 0;
     private String url;
     private boolean stretch;
@@ -79,32 +79,42 @@ public class PhotoFrameTileEntity extends TileEntity implements IValueContainer 
 
     @Nullable
     public String getPhoto() {
-        return url;
+        return this.url;
     }
 
     @OnlyIn(Dist.CLIENT)
     public void loadUrl(String url) {
-        if (loading)
+        System.out.println("Hello from loadUrl(" + url + ").");
+        if (loading) {
+            System.out.println("Already loading.");
             return;
+        }
 
         this.loaded = false;
         this.result = null;
         if (!ImageCache.INSTANCE.loadCached(url)) {
             this.loading = true;
+            System.out.println("Starting to load...");
             new ImageDownloadThread(url, (result, message) -> {
+                System.out.println("Finished loading: " + message);
                 this.loading = false;
                 this.result = result;
-                if (result == ImageDownloadThread.ImageDownloadResult.SUCCESS)
+                if (result == ImageDownloadThread.ImageDownloadResult.SUCCESS) {
+                    System.out.println("Loaded.");
                     this.loaded = true;
+                } else {
+                    System.out.println("Not loaded.");
+                }
             }).start();
-        } else
+        } else {
+            System.out.println("Already cached?");
             this.loaded = true;
+        }
     }
 
-    public void setUrl(String url) {
-        this.url = url;
-        if (!getWorld().isRemote)
-            this.loadUrl(url);
+    public void setUrl(String url_) {
+        this.url = url_;
+        TileEntityUtil.sendUpdatePacket(this);
     }
 
     public String getUrl() {
@@ -127,37 +137,13 @@ public class PhotoFrameTileEntity extends TileEntity implements IValueContainer 
         return result;
     }
 
-    @Override
-    public List<IValueContainer.Entry> getEntries() {
-        List<IValueContainer.Entry> entries = Lists.newArrayList();
-        entries.add(new IValueContainer.Entry("photo", "Photo URL", Entry.Type.TEXT_FIELD, this.url));
-        entries.add(new IValueContainer.Entry("stretch", "Stretch to Border", Entry.Type.TOGGLE, this.stretch));
-        return entries;
-    }
-
-    @Override
-    public void updateEntries(Map<String, String> entries) {
-        this.url = entries.get("photo");
-        this.stretch = Boolean.valueOf(entries.get("stretch"));
-        this.markDirty();
-    }
-
-    @Override
-    public boolean requiresTool() {
-        return false;
-    }
-
     public boolean isStretched() {
         return stretch;
     }
 
-    public void setStretched(boolean stretch) {
-        this.stretch = stretch;
-    }
-
-    @Override
-    public BlockPos getContainerPos() {
-        return this.pos;
+    public void setStretched(boolean stretch_) {
+        this.stretch = stretch_;
+        TileEntityUtil.sendUpdatePacket(this);
     }
 
     public boolean isDisabled() {
@@ -170,5 +156,21 @@ public class PhotoFrameTileEntity extends TileEntity implements IValueContainer 
 
     public int getColor() {
         return color;
+    }
+
+    @Nullable
+    @Override
+    public SUpdateTileEntityPacket getUpdatePacket() {
+        return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
+    }
+
+    @Override
+    public CompoundNBT getUpdateTag() {
+        return this.write(new CompoundNBT());
+    }
+
+    @Override
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket packet) {
+        this.read(this.getBlockState(), packet.getNbtCompound());
     }
 }
