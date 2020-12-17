@@ -64,6 +64,10 @@
         "cfm:brown_sofa",
         "cfm:green_sofa",
         "cfm:red_sofa",
-        "cfm:black_sofa"
+        "cfm:black_sofa",
+        "cfm:tree",
+        "cfm:photo_frame",
+        "cfm:wreath",
+        "cfm:fairy_light"
     ]
 }

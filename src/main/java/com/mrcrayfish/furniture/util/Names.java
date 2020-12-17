@@ -457,6 +457,7 @@ public class Names
         public static final String PHOTO_FRAME = Reference.MOD_ID + ":photo_frame"; //TODO flatten
         public static final String TV_STAND = Reference.MOD_ID + ":tv_stand";
         public static final String WREATH = Reference.MOD_ID + ":wreath";
+        public static final String FAIRY_LIGHT = Reference.MOD_ID + ":fairy_light";
 
         public static final String TREE_TOP = Reference.MOD_ID + ":tree_top"; // ???
         public static final String TREE_BOTTOM = Reference.MOD_ID + ":tree_bottom"; // ???

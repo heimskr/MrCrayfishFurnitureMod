@@ -428,12 +428,8 @@ public class ModBlocks {
 
     public static final Block TREE = register(Names.Block.TREE, new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
     public static final Block PHOTO_FRAME = register(Names.Block.PHOTO_FRAME, new PhotoFrameBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
-
     public static final Block WREATH = register(Names.Block.WREATH, new WreathBlock(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.5F).sound(SoundType.PLANT)));
-
-
-    // public static final Block TREE_BOTTOM = register(Names.Block.TREE + "_bottom", new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD), false));
-    // public static final Block TREE_TOP    = register(Names.Block.TREE + "_top",    new TreeBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD), true), block -> new BlockSupplierItem(new Item.Properties().group(FurnitureMod.GROUP), block, () -> ModBlocks.TREE_BOTTOM));
+    public static final Block FAIRY_LIGHT = register(Names.Block.FAIRY_LIGHT, new FairyLightBlock(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.5F).setLightLevel((state) -> 7).sound(SoundType.GLASS)));
 
     private static Block register(String name, Block block) {
         return register(name, block, new Item.Properties().group(FurnitureMod.GROUP));

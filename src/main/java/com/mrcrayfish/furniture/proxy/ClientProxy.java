@@ -111,6 +111,9 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(ModBlocks.TREE, leavesPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.WREATH, leavesPredicate);
 
+        Predicate<RenderType> translucentPredicate = renderType -> renderType == RenderType.getTranslucent();
+        RenderTypeLookup.setRenderLayer(ModBlocks.FAIRY_LIGHT, translucentPredicate);
+
         this.registerColors();
 
         if (!ModList.get().isLoaded("filters")) {
