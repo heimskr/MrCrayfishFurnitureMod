@@ -5,6 +5,7 @@ import com.mrcrayfish.furniture.inventory.container.*;
 import com.mrcrayfish.furniture.tileentity.CrateTileEntity;
 import com.mrcrayfish.furniture.tileentity.FreezerTileEntity;
 import com.mrcrayfish.furniture.tileentity.MailBoxTileEntity;
+import com.mrcrayfish.furniture.tileentity.PresentTileEntity;
 import com.mrcrayfish.furniture.util.Names;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
@@ -40,6 +41,11 @@ public class ModContainers
     public static final ContainerType<FreezerContainer> FREEZER = register(Names.Container.FREEZER, (IContainerFactory<FreezerContainer>) (windowId, playerInventory, data) -> {
         FreezerTileEntity freezerTileEntity = (FreezerTileEntity) playerInventory.player.world.getTileEntity(data.readBlockPos());
         return new FreezerContainer(windowId, playerInventory, freezerTileEntity);
+    });
+
+    public static final ContainerType<PresentContainer> PRESENT = register(Names.Container.PRESENT,(IContainerFactory<PresentContainer>) (windowId, playerInventory, data) -> {
+       PresentTileEntity presentTileEntity = (PresentTileEntity) playerInventory.player.world.getTileEntity(data.readBlockPos());
+       return new PresentContainer(windowId, playerInventory, presentTileEntity);
     });
 
     private static <T extends Container> ContainerType<T> register(String key, ContainerType.IFactory<T> factory) {

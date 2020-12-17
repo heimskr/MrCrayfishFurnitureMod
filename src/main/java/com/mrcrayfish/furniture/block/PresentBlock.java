@@ -1,0 +1,139 @@
+package com.mrcrayfish.furniture.block;
+
+import com.mrcrayfish.furniture.tileentity.PresentTileEntity;
+import com.mrcrayfish.furniture.util.Bounds;
+import com.mrcrayfish.furniture.util.PlayerUtil;
+import net.minecraft.block.*;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryHelper;
+import net.minecraft.item.DyeColor;
+import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.SoundCategory;
+import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
+import net.minecraft.world.IBlockReader;
+import net.minecraft.world.World;
+import net.minecraftforge.registries.IRegistryDelegate;
+
+import javax.annotation.Nullable;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Random;
+
+public class PresentBlock extends FurnitureBlock implements ITileEntityProvider {
+//    public static final PropertyEnum<EnumDyeColor> COLOUR = PropertyEnum.create("colour", EnumDyeColor.class);
+
+    private static final Bounds BOUNDS = new Bounds(0.25, 0.0, 0.25, 0.75, 0.35, 0.75);
+
+    public static HashMap<DyeColor, IRegistryDelegate<Block>> colorRegistry = new HashMap<>();
+
+    public PresentBlock(DyeColor color, AbstractBlock.Properties properties) {
+        super(properties);
+//        this.setHardness(0.5F);
+//        this.setSoundType(SoundType.CLOTH);
+
+        colorRegistry.put(color, this.delegate);
+
+//        this.hasTileEntity = true;
+//        this.setDefaultState(this.getStateContainer().getBaseState().withProperty(COLOUR, EnumDyeColor.WHITE));
+//        this.setCreativeTab(MrCrayfishFurnitureMod.tabFurniture);
+    }
+
+//    @Override
+//    public boolean isOpaqueCube(BlockState state) {
+//        return false;
+//    }
+
+//    @Override
+//    public boolean isFullCube(BlockState state) {
+//        return false;
+//    }
+
+    @Override
+    public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        PresentTileEntity present = (PresentTileEntity) world.getTileEntity(pos);
+        if (present != null) {
+            world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 0.75F, 1.0F, false);
+            if (world.isRemote)
+                PlayerUtil.sendMessage(player, new TranslationTextComponent("cfm.message.present_christmas", TextFormatting.RED + present.ownerName));
+//            Triggers.trigger(Triggers.UNWRAP_PRESENT, player);
+        }
+    }
+
+
+    @Override
+    public void onReplaced(BlockState state, World world, BlockPos pos, BlockState newState, boolean isMoving) {
+        if (state.getBlock() != newState.getBlock()) {
+            TileEntity tileEntity = world.getTileEntity(pos);
+            if (tileEntity instanceof IInventory) {
+                InventoryHelper.dropInventoryItems(world, pos, (IInventory) tileEntity);
+                world.updateComparatorOutputLevel(pos, this);
+            }
+        }
+        super.onReplaced(state, world, pos, newState, isMoving);
+    }
+
+
+
+//    @Override
+//    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
+//        return BOUNDING_BOX;
+//    }
+
+//    @Override
+//    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
+//        addCollisionBoxToList(pos, entityBox, collidingBoxes, BOUNDING_BOX);
+//    }
+
+//    @Override
+//    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
+//        return null;
+//    }
+
+//    @Override
+//    public int damageDropped(IBlockState state) {
+//        return state.getValue(COLOUR).getMetadata();
+//    }
+
+//    @Override
+//    public int getMetaFromState(IBlockState state) {
+//        return state.getValue(COLOUR).getMetadata();
+//    }
+
+//    @Override
+//    public IBlockState getStateFromMeta(int meta) {
+//        return this.getDefaultState().withProperty(COLOUR, EnumDyeColor.byMetadata(meta));
+//    }
+
+//    @Override
+//    protected BlockStateContainer createBlockState() {
+//        return new BlockStateContainer(this, COLOUR);
+//    }
+
+//    @Override
+//    public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items) {
+//        for (int i = 0; i < EnumDyeColor.values().length; ++i) {
+//            items.add(new ItemStack(this, 1, i));
+//        }
+//    }
+
+//    @Override
+//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
+//        return BlockFaceShape.UNDEFINED;
+//    }
+
+
+    @Override
+    public boolean hasTileEntity(BlockState state) {
+        return true;
+    }
+
+    @Nullable
+    @Override
+    public TileEntity createNewTileEntity(IBlockReader worldIn) {
+        return new PresentTileEntity();
+    }
+}

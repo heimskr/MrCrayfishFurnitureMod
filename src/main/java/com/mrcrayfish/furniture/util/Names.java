@@ -434,7 +434,7 @@ public class Names
         public static final String COOKIE_JAR = Reference.MOD_ID + ":cookie_jar";
         public static final String BAR_STOOL = Reference.MOD_ID + ":bar_stool";
         public static final String CHOPPING_BOARD = Reference.MOD_ID + ":chopping_board";
-        public static final String PRESENT = Reference.MOD_ID + ":present"; //TODO flatten?
+        public static final String PRESENT = Reference.MOD_ID + ":present";
         public static final String TREE = Reference.MOD_ID + ":tree";
         public static final String MODERN_WINDOW = Reference.MOD_ID + ":modern_window";
         public static final String MODERN_SLIDING_DOOR = Reference.MOD_ID + ":modern_sliding_door";
@@ -459,8 +459,23 @@ public class Names
         public static final String WREATH = Reference.MOD_ID + ":wreath";
         public static final String FAIRY_LIGHT = Reference.MOD_ID + ":fairy_light";
 
-        public static final String TREE_TOP = Reference.MOD_ID + ":tree_top"; // ???
-        public static final String TREE_BOTTOM = Reference.MOD_ID + ":tree_bottom"; // ???
+
+        public static final String PRESENT_WHITE = Reference.MOD_ID + ":white_present";
+        public static final String PRESENT_ORANGE = Reference.MOD_ID + ":orange_present";
+        public static final String PRESENT_MAGENTA = Reference.MOD_ID + ":magenta_present";
+        public static final String PRESENT_LIGHT_BLUE = Reference.MOD_ID + ":light_blue_present";
+        public static final String PRESENT_YELLOW = Reference.MOD_ID + ":yellow_present";
+        public static final String PRESENT_LIME = Reference.MOD_ID + ":lime_present";
+        public static final String PRESENT_PINK = Reference.MOD_ID + ":pink_present";
+        public static final String PRESENT_GRAY = Reference.MOD_ID + ":gray_present";
+        public static final String PRESENT_LIGHT_GRAY = Reference.MOD_ID + ":light_gray_present";
+        public static final String PRESENT_CYAN = Reference.MOD_ID + ":cyan_present";
+        public static final String PRESENT_PURPLE = Reference.MOD_ID + ":purple_present";
+        public static final String PRESENT_BLUE = Reference.MOD_ID + ":blue_present";
+        public static final String PRESENT_BROWN = Reference.MOD_ID + ":brown_present";
+        public static final String PRESENT_GREEN = Reference.MOD_ID + ":green_present";
+        public static final String PRESENT_RED = Reference.MOD_ID + ":red_present";
+        public static final String PRESENT_BLACK = Reference.MOD_ID + ":black_present";
     }
 
     public static class Item
@@ -479,6 +494,7 @@ public class Names
         public static final String MAIL_BOX = Reference.MOD_ID + ":mail_box";
         public static final String FREEZER = Reference.MOD_ID + ":freezer";
         public static final String PHOTO_FRAME = Reference.MOD_ID + ":photo_frame";
+        public static final String PRESENT = Reference.MOD_ID + ":present";
     }
 
     public static class TileEntity {
@@ -497,6 +513,7 @@ public class Names
         public static final String FREEZER = Reference.MOD_ID + ":freezer";
         public static final String TREE = Reference.MOD_ID + ":tree";
         public static final String PHOTO_FRAME = Reference.MOD_ID + ":photo_frame";
+        public static final String PRESENT = Reference.MOD_ID + ":present";
     }
 
     public static class Sound {

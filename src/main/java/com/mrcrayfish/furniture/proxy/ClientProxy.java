@@ -107,12 +107,29 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(ModBlocks.TREE, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.PHOTO_FRAME, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.WREATH, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_WHITE, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_ORANGE, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_MAGENTA, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_LIGHT_BLUE, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_YELLOW, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_LIME, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_PINK, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_GRAY, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_LIGHT_GRAY, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_CYAN, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_PURPLE, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_BLUE, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_BROWN, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_GREEN, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_RED, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_BLACK, cutoutPredicate);
 
         RenderTypeLookup.setRenderLayer(ModBlocks.TREE, leavesPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.WREATH, leavesPredicate);
 
         Predicate<RenderType> translucentPredicate = renderType -> renderType == RenderType.getTranslucent();
         RenderTypeLookup.setRenderLayer(ModBlocks.FAIRY_LIGHT, translucentPredicate);
+
 
         this.registerColors();
 

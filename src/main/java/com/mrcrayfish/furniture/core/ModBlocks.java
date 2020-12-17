@@ -5,6 +5,7 @@ import com.mrcrayfish.furniture.Reference;
 import com.mrcrayfish.furniture.block.*;
 import com.mrcrayfish.furniture.item.BlockSupplierItem;
 import com.mrcrayfish.furniture.item.DoorMatItem;
+import com.mrcrayfish.furniture.item.PresentItem;
 import com.mrcrayfish.furniture.util.Names;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
@@ -13,6 +14,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.material.MaterialColor;
 import net.minecraft.block.material.PushReaction;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.DyeColor;
 import net.minecraft.item.Item;
 import net.minecraftforge.event.RegistryEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -430,6 +432,23 @@ public class ModBlocks {
     public static final Block PHOTO_FRAME = register(Names.Block.PHOTO_FRAME, new PhotoFrameBlock(Block.Properties.create(WOOD).hardnessAndResistance(0.5F).sound(SoundType.WOOD)));
     public static final Block WREATH = register(Names.Block.WREATH, new WreathBlock(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.5F).sound(SoundType.PLANT)));
     public static final Block FAIRY_LIGHT = register(Names.Block.FAIRY_LIGHT, new FairyLightBlock(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.5F).setLightLevel((state) -> 7).sound(SoundType.GLASS)));
+
+    public static final Block PRESENT_WHITE = register(Names.Block.PRESENT_WHITE, new PresentBlock(DyeColor.WHITE, Block.Properties.from(Blocks.WHITE_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_ORANGE = register(Names.Block.PRESENT_ORANGE, new PresentBlock(DyeColor.ORANGE, Block.Properties.from(Blocks.ORANGE_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_MAGENTA = register(Names.Block.PRESENT_MAGENTA, new PresentBlock(DyeColor.MAGENTA, Block.Properties.from(Blocks.MAGENTA_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_LIGHT_BLUE = register(Names.Block.PRESENT_LIGHT_BLUE, new PresentBlock(DyeColor.LIGHT_BLUE, Block.Properties.from(Blocks.LIGHT_BLUE_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_YELLOW = register(Names.Block.PRESENT_YELLOW, new PresentBlock(DyeColor.YELLOW, Block.Properties.from(Blocks.YELLOW_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_LIME = register(Names.Block.PRESENT_LIME, new PresentBlock(DyeColor.LIME, Block.Properties.from(Blocks.LIME_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_PINK = register(Names.Block.PRESENT_PINK, new PresentBlock(DyeColor.PINK, Block.Properties.from(Blocks.PINK_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_GRAY = register(Names.Block.PRESENT_GRAY, new PresentBlock(DyeColor.GRAY, Block.Properties.from(Blocks.GRAY_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_LIGHT_GRAY = register(Names.Block.PRESENT_LIGHT_GRAY, new PresentBlock(DyeColor.LIGHT_GRAY, Block.Properties.from(Blocks.LIGHT_GRAY_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_CYAN = register(Names.Block.PRESENT_CYAN, new PresentBlock(DyeColor.CYAN, Block.Properties.from(Blocks.CYAN_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_PURPLE = register(Names.Block.PRESENT_PURPLE, new PresentBlock(DyeColor.PURPLE, Block.Properties.from(Blocks.PURPLE_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_BLUE = register(Names.Block.PRESENT_BLUE, new PresentBlock(DyeColor.BLUE, Block.Properties.from(Blocks.BLUE_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_BROWN = register(Names.Block.PRESENT_BROWN, new PresentBlock(DyeColor.BROWN, Block.Properties.from(Blocks.BROWN_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_GREEN = register(Names.Block.PRESENT_GREEN, new PresentBlock(DyeColor.GREEN, Block.Properties.from(Blocks.GREEN_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_RED = register(Names.Block.PRESENT_RED, new PresentBlock(DyeColor.RED, Block.Properties.from(Blocks.RED_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
+    public static final Block PRESENT_BLACK = register(Names.Block.PRESENT_BLACK, new PresentBlock(DyeColor.BLACK, Block.Properties.from(Blocks.BLACK_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
 
     private static Block register(String name, Block block) {
         return register(name, block, new Item.Properties().group(FurnitureMod.GROUP));

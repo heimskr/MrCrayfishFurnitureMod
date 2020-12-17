@@ -26,13 +26,11 @@ public class FurnitureMod {
         FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onClientSetup);
     }
 
-    private void onCommonSetup(FMLCommonSetupEvent event)
-    {
+    private void onCommonSetup(FMLCommonSetupEvent event) {
         PROXY.onSetupCommon();
     }
 
-    private void onClientSetup(FMLClientSetupEvent event)
-    {
+    private void onClientSetup(FMLClientSetupEvent event) {
         PROXY.onSetupClient();
     }
 }

@@ -435,5 +435,12 @@
     "subtitle.cfm.diving_board.bounce": "Diving Board Bounce",
     "subtitle.cfm.open_fridge": "Open Fridge",
     "subtitle.cfm.close_fridge": "Close Fridge",
-    "message.cfm.mail_queue_full": "This player's mail queue is full. Try again later..."
+    "message.cfm.mail_queue_full": "This player's mail queue is full. Try again later...",
+    "message.cfm.present_empty": "You cannot wrap an empty present.",
+    "message.cfm.present_place": "You somehow have no items in the present. You cannot use this present.",
+    "message.cfm.present_sign": "You need to sign it before you can place it.",
+    "message.cfm.present_wrap": "You cannot unwrap the present once signed.",
+    "message.cfm.present_christmas": "§aMerry Christmas!§r from %s",
+    "message.cfm.present_unsigned_info": "Unsigned",
+    "message.cfm.mail_signed_info": "from %s"
 }
