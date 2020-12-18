@@ -28,7 +28,6 @@ public class ToggleComponent extends ValueComponent {
         // The button is already rendered by Screen's implementation of render. All we need to do is reposition the button.
         button.x = x;
         button.y = y + 10;
-//        button.render(stack, mouseX, mouseY, 0);
     }
 
     @Override
