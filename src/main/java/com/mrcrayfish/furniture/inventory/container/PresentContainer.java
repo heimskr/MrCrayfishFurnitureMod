@@ -1,179 +1,77 @@
 package com.mrcrayfish.furniture.inventory.container;
 
 import com.mrcrayfish.furniture.core.ModContainers;
-import com.mrcrayfish.furniture.inventory.container.slot.FreezerFuelSlot;
-import com.mrcrayfish.furniture.inventory.container.slot.FreezerResultSlot;
-import com.mrcrayfish.furniture.item.crafting.RecipeType;
-import com.mrcrayfish.furniture.tileentity.FreezerTileEntity;
+import com.mrcrayfish.furniture.inventory.container.slot.DisabledSlot;
+import com.mrcrayfish.furniture.item.IItemInventory;
 import com.mrcrayfish.furniture.tileentity.PresentTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.IIntArray;
-import net.minecraft.world.World;
-import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.api.distmarker.OnlyIn;
 
 /**
  * Author: MrCrayfish
  */
 
 public class PresentContainer extends Container {
-    private PresentTileEntity presentTileEntity;
-    private IIntArray trackedData;
-    private World world;
+    protected ItemInventory itemInventory;
 
-    public PresentContainer(int windowId, PlayerInventory playerInventory, PresentTileEntity presentTileEntity) {
+    public PresentContainer(int windowId, PlayerInventory playerInventory, ItemInventory itemInventory) {
         super(ModContainers.PRESENT, windowId);
+        this.itemInventory = itemInventory;
 
-        assertInventorySize(presentTileEntity, 3);
-        assertIntArraySize(presentTileEntity.getFreezerData(), 4);
+        for (int i = 0; i < 3; i++)
+            for (int j = 0; j < 9; ++j)
+                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, j * 18 + 8, i * 18 + 84));
 
-        freezerTileEntity.openInventory(playerInventory.player);
-
-        this.freezerTileEntity = freezerTileEntity;
-        this.trackedData = freezerTileEntity.getFreezerData();
-        this.world = playerInventory.player.world;
-
-        this.addSlot(new Slot(freezerTileEntity, 0, 56, 17));
-        this.addSlot(new FreezerFuelSlot(this, freezerTileEntity, 1, 56, 53));
-        this.addSlot(new FreezerResultSlot(playerInventory.player, freezerTileEntity, 2, 116, 35));
-
-        for(int i = 0; i < 3; i++)
-        {
-            for(int j = 0; j < 9; j++)
-            {
-                this.addSlot(new Slot(playerInventory, j + i * 9 + 9, 8 + j * 18, 84 + i * 18));
-            }
-        }
-
-        for(int i = 0; i < 9; i++)
-        {
-            this.addSlot(new Slot(playerInventory, i, 8 + i * 18, 142));
-        }
-
-        this.trackIntArray(this.trackedData);
-    }
-
-    @Override
-    public boolean canInteractWith(PlayerEntity playerIn)
-    {
-        return this.freezerTileEntity.isUsableByPlayer(playerIn);
-    }
-
-    @Override
-    public ItemStack transferStackInSlot(PlayerEntity player, int index)
-    {
-        ItemStack copyStack = ItemStack.EMPTY;
-        Slot slot = this.inventorySlots.get(index);
-        if(slot != null && slot.getHasStack())
-        {
-            ItemStack slotStack = slot.getStack();
-            copyStack = slotStack.copy();
-            if(index == 2)
-            {
-                if(!this.mergeItemStack(slotStack, 3, 39, true))
-                {
-                    return ItemStack.EMPTY;
-                }
-                slot.onSlotChange(slotStack, copyStack);
-            }
-            else if(index != 1 && index != 0)
-            {
-                if(this.isIngredient(slotStack))
-                {
-                    if(!this.mergeItemStack(slotStack, 0, 1, false))
-                    {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                else if(this.isFuel(slotStack))
-                {
-                    if(!this.mergeItemStack(slotStack, 1, 2, false))
-                    {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                else if(index < 30)
-                {
-                    if(!this.mergeItemStack(slotStack, 30, 39, false))
-                    {
-                        return ItemStack.EMPTY;
-                    }
-                }
-                else if(index < 39 && !this.mergeItemStack(slotStack, 3, 30, false))
-                {
-                    return ItemStack.EMPTY;
-                }
-            }
-            else if(!this.mergeItemStack(slotStack, 3, 39, false))
-            {
-                return ItemStack.EMPTY;
-            }
-
-            if(slotStack.isEmpty())
-            {
-                slot.putStack(ItemStack.EMPTY);
-            }
+        int currentItemIndex = playerInventory.currentItem;
+        for (int i = 0; i < 9; i++) {
+            if (i == currentItemIndex)
+                this.addSlot(new DisabledSlot(playerInventory, i, i * 18 + 8, 142));
             else
-            {
-                slot.onSlotChanged();
-            }
-
-            if(slotStack.getCount() == copyStack.getCount())
-            {
-                return ItemStack.EMPTY;
-            }
-
-            slot.onTake(player, slotStack);
+                this.addSlot(new Slot(playerInventory, i, i * 18 + 8, 142));
         }
 
-        return copyStack;
-    }
-
-    public boolean isFuel(ItemStack stack)
-    {
-        return this.freezerTileEntity.getFreezeTime(stack) > 0;
-    }
-
-    private boolean isIngredient(ItemStack stack)
-    {
-        return this.world.getRecipeManager().getRecipe(RecipeType.FREEZER_SOLIDIFY, new Inventory(stack), this.world).isPresent();
+        this.addSlot(new PortableSlot(itemInventory, 0, 8 + 63, 16));
+        this.addSlot(new PortableSlot(itemInventory, 1, 8 + 81, 16));
+        this.addSlot(new PortableSlot(itemInventory, 2, 8 + 63, 34));
+        this.addSlot(new PortableSlot(itemInventory, 3, 8 + 81, 34));
     }
 
     @Override
-    public void onContainerClosed(PlayerEntity player)
-    {
-        super.onContainerClosed(player);
-        this.freezerTileEntity.closeInventory(player);
+    public boolean canInteractWith(PlayerEntity player) {
+        return this.itemInventory.isUsableByPlayer(player);
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public int getSolidifyProgressionScaled()
-    {
-        int freezeTime = this.trackedData.get(2);
-        int freezeTimeTotal = this.trackedData.get(3);
-        return freezeTimeTotal != 0 && freezeTime != 0 ? freezeTime * 24 / freezeTimeTotal : 0;
-    }
+    @Override
+    public ItemStack transferStackInSlot(PlayerEntity player, int slotNum) {
+        ItemStack itemCopy = ItemStack.EMPTY;
+        Slot slot = this.inventorySlots.get(slotNum);
 
-    @OnlyIn(Dist.CLIENT)
-    public int getFuelLeftScaled()
-    {
-        int fuelTimeTotal = this.trackedData.get(1);
-        if(fuelTimeTotal == 0)
-        {
-            fuelTimeTotal = 200;
+        if (slot != null && slot.getHasStack()) {
+            ItemStack item = slot.getStack();
+            itemCopy = item.copy();
+
+            if (item.getItem() instanceof IItemInventory)
+                return ItemStack.EMPTY;
+
+            if (slotNum < 4) {
+                if (!this.mergeItemStack(item, 4, this.inventorySlots.size(), true))
+                    return ItemStack.EMPTY;
+            } else if (!this.mergeItemStack(item, 0, 4, false))
+                return ItemStack.EMPTY;
+
+            if (item.getCount() == 0)
+                slot.putStack(ItemStack.EMPTY);
+            else
+                slot.onSlotChanged();
         }
-        return this.trackedData.get(0) * 13 / fuelTimeTotal;
+
+        return itemCopy;
     }
 
-    @OnlyIn(Dist.CLIENT)
-    public boolean isFueling()
-    {
-        return this.trackedData.get(0) > 0;
+    public ItemInventory getItemInventory() {
+        return itemInventory;
     }
 }
-//*/

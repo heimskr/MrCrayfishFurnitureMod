@@ -32,34 +32,28 @@ import java.util.UUID;
 /**
  * Author: MrCrayfish
  */
-public class CrateTileEntity extends BasicLootTileEntity
-{
+public class CrateTileEntity extends BasicLootTileEntity {
     private UUID ownerUuid;
     private boolean locked;
     private int playerCount;
 
-    public CrateTileEntity()
-    {
+    public CrateTileEntity() {
         super(ModTileEntities.CRATE);
     }
 
     @Override
-    public int getSizeInventory()
-    {
+    public int getSizeInventory() {
         return 27;
     }
 
     @Override
-    protected ITextComponent getDefaultName()
-    {
+    protected ITextComponent getDefaultName() {
         return new TranslationTextComponent("container.cfm.crate");
     }
 
     @Override
-    protected Container createMenu(int windowId, PlayerInventory playerInventory)
-    {
-        if(this.locked && !this.ownerUuid.equals(playerInventory.player.getUniqueID()))
-        {
+    protected Container createMenu(int windowId, PlayerInventory playerInventory) {
+        if (this.locked && !this.ownerUuid.equals(playerInventory.player.getUniqueID())) {
             playerInventory.player.sendStatusMessage(new TranslationTextComponent("container.isLocked", this.getDisplayName()), true);
             playerInventory.player.playSound(SoundEvents.BLOCK_CHEST_LOCKED, SoundCategory.BLOCKS, 1.0F, 1.0F);
             return null;
@@ -67,42 +61,33 @@ public class CrateTileEntity extends BasicLootTileEntity
         return new CrateContainer(windowId, playerInventory, this, this.locked);
     }
 
-    public UUID getOwner()
-    {
+    public UUID getOwner() {
         return ownerUuid;
     }
 
-    public void setOwner(UUID uuid)
-    {
+    public void setOwner(UUID uuid) {
         this.ownerUuid = uuid;
     }
 
-    public boolean isLocked()
-    {
+    public boolean isLocked() {
         return this.locked;
     }
 
-    public void setLocked(boolean locked)
-    {
+    public void setLocked(boolean locked) {
         this.locked = locked;
         TileEntityUtil.sendUpdatePacket(this);
     }
 
     @Override
-    public void openInventory(PlayerEntity playerEntity)
-    {
-        if(!playerEntity.isSpectator())
-        {
-            if(this.playerCount < 0)
-            {
+    public void openInventory(PlayerEntity playerEntity) {
+        if (!playerEntity.isSpectator()) {
+            if (this.playerCount < 0)
                 this.playerCount = 0;
-            }
             this.playerCount++;
 
             BlockState blockState = this.getBlockState();
             boolean open = blockState.get(CrateBlock.OPEN);
-            if(!open)
-            {
+            if (!open) {
                 this.playLidSound(blockState, ModSounds.BLOCK_CABINET_OPEN);
                 this.setLidState(blockState, true);
             }
@@ -112,45 +97,33 @@ public class CrateTileEntity extends BasicLootTileEntity
     }
 
     @Override
-    public void closeInventory(PlayerEntity playerEntity)
-    {
+    public void closeInventory(PlayerEntity playerEntity) {
         if(!playerEntity.isSpectator())
-        {
             this.playerCount--;
-        }
-
     }
 
-    private void scheduleTick()
-    {
+    private void scheduleTick() {
         this.world.getPendingBlockTicks().scheduleTick(this.getPos(), this.getBlockState().getBlock(), 5);
     }
 
-    public void onScheduledTick()
-    {
+    public void onScheduledTick() {
         int x = this.pos.getX();
         int y = this.pos.getY();
         int z = this.pos.getZ();
         World world = this.getWorld();
-        if(world != null)
-        {
+        if (world != null) {
             this.updatePlayerCount(world, this, x, y, z);
-            if(this.playerCount > 0)
-            {
+            if(this.playerCount > 0) {
                 this.scheduleTick();
-            }
-            else
-            {
+            } else {
                 BlockState blockState = this.getBlockState();
-                if(!(blockState.getBlock() instanceof CrateBlock))
-                {
+                if (!(blockState.getBlock() instanceof CrateBlock)) {
                     this.remove();
                     return;
                 }
 
                 boolean open = blockState.get(CrateBlock.OPEN);
-                if(open)
-                {
+                if (open) {
                     this.playLidSound(blockState, ModSounds.BLOCK_CABINET_CLOSE);
                     this.setLidState(blockState, false);
                 }
@@ -158,75 +131,56 @@ public class CrateTileEntity extends BasicLootTileEntity
         }
     }
 
-    private void updatePlayerCount(World world, IInventory inventory, int x, int y, int z)
-    {
+    private void updatePlayerCount(World world, IInventory inventory, int x, int y, int z) {
         this.playerCount = 0;
-        for(PlayerEntity playerEntity : world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB((double) ((float) x - 5.0F), (double) ((float) y - 5.0F), (double) ((float) z - 5.0F), (double) ((float) (x + 1) + 5.0F), (double) ((float) (y + 1) + 5.0F), (double) ((float) (z + 1) + 5.0F))))
-        {
-            if(playerEntity.openContainer instanceof CrateContainer)
-            {
+        for (PlayerEntity playerEntity : world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB((double) ((float) x - 5.0F), (double) ((float) y - 5.0F), (double) ((float) z - 5.0F), (double) ((float) (x + 1) + 5.0F), (double) ((float) (y + 1) + 5.0F), (double) ((float) (z + 1) + 5.0F)))) {
+            if (playerEntity.openContainer instanceof CrateContainer) {
                 IInventory crateInventory = ((CrateContainer) playerEntity.openContainer).getCrateTileEntity();
-                if(inventory == crateInventory)
-                {
+                if (inventory == crateInventory)
                     this.playerCount++;
-                }
             }
         }
     }
 
-    public void removeUnauthorisedPlayers()
-    {
-        if(this.locked)
-        {
+    public void removeUnauthorisedPlayers() {
+        if(this.locked) {
             int x = this.pos.getX();
             int y = this.pos.getY();
             int z = this.pos.getZ();
-            for(PlayerEntity playerEntity : world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB((double) ((float) x - 5.0F), (double) ((float) y - 5.0F), (double) ((float) z - 5.0F), (double) ((float) (x + 1) + 5.0F), (double) ((float) (y + 1) + 5.0F), (double) ((float) (z + 1) + 5.0F))))
-            {
-                if(playerEntity.openContainer instanceof CrateContainer)
-                {
+            for (PlayerEntity playerEntity : world.getEntitiesWithinAABB(PlayerEntity.class, new AxisAlignedBB((double) ((float) x - 5.0F), (double) ((float) y - 5.0F), (double) ((float) z - 5.0F), (double) ((float) (x + 1) + 5.0F), (double) ((float) (y + 1) + 5.0F), (double) ((float) (z + 1) + 5.0F)))) {
+                if (playerEntity.openContainer instanceof CrateContainer) {
                     IInventory crateInventory = ((CrateContainer) playerEntity.openContainer).getCrateTileEntity();
-                    if(this == crateInventory && !playerEntity.getUniqueID().equals(ownerUuid))
-                    {
+                    if (this == crateInventory && !playerEntity.getUniqueID().equals(ownerUuid))
                         playerEntity.closeScreen();
-                    }
                 }
             }
         }
     }
 
-    private void playLidSound(BlockState blockState, SoundEvent soundEvent)
-    {
+    private void playLidSound(BlockState blockState, SoundEvent soundEvent) {
         Vector3i directionVec = blockState.get(CabinetBlock.DIRECTION).getDirectionVec();
         double x = this.pos.getX() + 0.5D + directionVec.getX() / 2.0D;
         double y = this.pos.getY() + 0.5D + directionVec.getY() / 2.0D;
         double z = this.pos.getZ() + 0.5D + directionVec.getZ() / 2.0D;
         World world = this.getWorld();
-        if(world != null)
-        {
+        if (world != null)
             world.playSound(null, x, y, z, soundEvent, SoundCategory.BLOCKS, 0.75F, world.rand.nextFloat() * 0.1F + 0.7F);
-        }
     }
 
-    private void setLidState(BlockState blockState, boolean open)
-    {
+    private void setLidState(BlockState blockState, boolean open) {
         World world = this.getWorld();
-        if(world != null)
-        {
+        if (world != null)
             world.setBlockState(this.getPos(), blockState.with(CrateBlock.OPEN, open), 3);
-        }
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT compound)
-    {
+    public void read(BlockState blockState, CompoundNBT compound) {
         super.read(blockState, compound);
         this.readData(compound);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT compound)
-    {
+    public CompoundNBT write(CompoundNBT compound) {
         this.writeData(compound);
         return super.write(compound);
     }
@@ -239,49 +193,37 @@ public class CrateTileEntity extends BasicLootTileEntity
 
     @Nullable
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket()
-    {
+    public SUpdateTileEntityPacket getUpdatePacket() {
         return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
-    {
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         CompoundNBT compound = pkt.getNbtCompound();
         this.readData(compound);
     }
 
-    private void readData(CompoundNBT compound)
-    {
-        if(compound.hasUniqueId("OwnerUUID"))
-        {
+    private void readData(CompoundNBT compound) {
+        if (compound.hasUniqueId("OwnerUUID"))
             this.ownerUuid = compound.getUniqueId("OwnerUUID");
-        }
-        if(compound.contains("Locked", Constants.NBT.TAG_BYTE))
-        {
+        if (compound.contains("Locked", Constants.NBT.TAG_BYTE))
             this.locked = compound.getBoolean("Locked");
-        }
     }
 
-    private CompoundNBT writeData(CompoundNBT compound)
-    {
-        if(this.ownerUuid != null)
-        {
+    private CompoundNBT writeData(CompoundNBT compound) {
+        if (this.ownerUuid != null)
             compound.putUniqueId("OwnerUUID", this.ownerUuid);
-        }
         compound.putBoolean("Locked", this.locked);
         return compound;
     }
 
     @Override
-    public boolean canInsertItem(int i, ItemStack itemStack, @Nullable Direction direction)
-    {
+    public boolean canInsertItem(int i, ItemStack itemStack, @Nullable Direction direction) {
         return !locked;
     }
 
     @Override
-    public boolean canExtractItem(int i, ItemStack itemStack, Direction direction)
-    {
+    public boolean canExtractItem(int i, ItemStack itemStack, Direction direction) {
         return !locked;
     }
 }

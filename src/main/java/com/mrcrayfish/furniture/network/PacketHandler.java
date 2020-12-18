@@ -31,6 +31,7 @@ public class PacketHandler {
         register(MessageFlipGrill.class, new MessageFlipGrill());
         register(MessageSetDoorMatMessage.class, new MessageSetDoorMatMessage());
         register(MessageUpdatePhotoFrame.class, new MessageUpdatePhotoFrame());
+        register(MessageSignItem.class, new MessageSignItem());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message) {

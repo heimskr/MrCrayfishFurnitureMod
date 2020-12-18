@@ -43,10 +43,8 @@ public class ModContainers
         return new FreezerContainer(windowId, playerInventory, freezerTileEntity);
     });
 
-    public static final ContainerType<PresentContainer> PRESENT = register(Names.Container.PRESENT,(IContainerFactory<PresentContainer>) (windowId, playerInventory, data) -> {
-       PresentTileEntity presentTileEntity = (PresentTileEntity) playerInventory.player.world.getTileEntity(data.readBlockPos());
-       return new PresentContainer(windowId, playerInventory, presentTileEntity);
-    });
+    public static final ContainerType<PresentContainer> PRESENT = register(Names.Container.PRESENT, (IContainerFactory<PresentContainer>) (windowId, playerInventory, data) ->
+       new PresentContainer(windowId, playerInventory, new PresentInventory(playerInventory.player.getHeldItemMainhand())));
 
     private static <T extends Container> ContainerType<T> register(String key, ContainerType.IFactory<T> factory) {
         ContainerType<T> type = new ContainerType<>(factory);

@@ -64,27 +64,22 @@ public class CrateScreen extends ContainerScreen<CrateContainer>
     }
 
     @Override
-    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks)
-    {
+    public void render(MatrixStack matrixStack, int mouseX, int mouseY, float partialTicks) {
         this.renderBackground(matrixStack);
         super.render(matrixStack, mouseX, mouseY, partialTicks);
         this.renderHoveredTooltip(matrixStack, mouseX, mouseY);
-        if(this.button.isMouseOver(mouseX, mouseY))
-        {
+        if (this.button.isMouseOver(mouseX, mouseY))
             this.renderTooltip(matrixStack, ITextComponent.getTextComponentOrEmpty(locked ? I18n.format("gui.button.cfm.locked") : I18n.format("gui.button.cfm.unlocked")), mouseX, mouseY);
-        }
     }
 
     @Override
-    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY)
-    {
+    protected void drawGuiContainerForegroundLayer(MatrixStack matrixStack, int mouseX, int mouseY) {
         this.font.drawString(matrixStack, this.title.getString(), 8.0F, 6.0F, 0x404040);
         this.font.drawString(matrixStack, this.playerInventory.getDisplayName().getString(), 8.0F, (float) (this.ySize - 96 + 2), 0x404040);
     }
 
     @Override
-    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY)
-    {
+    protected void drawGuiContainerBackgroundLayer(MatrixStack matrixStack, float partialTicks, int mouseX, int mouseY) {
         RenderSystem.color4f(1.0F, 1.0F, 1.0F, 1.0F);
         this.minecraft.getTextureManager().bindTexture(GUI_TEXTURE);
         int startX = (this.width - this.xSize) / 2;

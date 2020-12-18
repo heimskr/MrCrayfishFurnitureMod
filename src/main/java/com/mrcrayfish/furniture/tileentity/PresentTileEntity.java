@@ -11,7 +11,7 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.text.ITextComponent;
 
 public class PresentTileEntity extends LockableLootTileEntity {
-    protected NonNullList<ItemStack> inventory;
+    public NonNullList<ItemStack> inventory;
     public String ownerName = "Unknown";
 
     public PresentTileEntity() {

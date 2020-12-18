@@ -3,10 +3,7 @@ package com.mrcrayfish.furniture.proxy;
 import com.mrcrayfish.furniture.client.MailBoxEntry;
 import com.mrcrayfish.furniture.client.event.CreativeScreenEvents;
 import com.mrcrayfish.furniture.client.gui.screen.DoorMatScreen;
-import com.mrcrayfish.furniture.client.gui.screen.inventory.CrateScreen;
-import com.mrcrayfish.furniture.client.gui.screen.inventory.FreezerScreen;
-import com.mrcrayfish.furniture.client.gui.screen.inventory.MailBoxScreen;
-import com.mrcrayfish.furniture.client.gui.screen.inventory.PostBoxScreen;
+import com.mrcrayfish.furniture.client.gui.screen.inventory.*;
 import com.mrcrayfish.furniture.client.gui.screen.PhotoFrameScreen;
 import com.mrcrayfish.furniture.client.renderer.SeatRenderer;
 import com.mrcrayfish.furniture.client.renderer.tileentity.*;
@@ -14,6 +11,7 @@ import com.mrcrayfish.furniture.core.ModBlocks;
 import com.mrcrayfish.furniture.core.ModContainers;
 import com.mrcrayfish.furniture.core.ModEntities;
 import com.mrcrayfish.furniture.core.ModTileEntities;
+import com.mrcrayfish.furniture.inventory.container.PresentContainer;
 import com.mrcrayfish.furniture.tileentity.DoorMatTileEntity;
 import com.mrcrayfish.furniture.tileentity.GrillTileEntity;
 import com.mrcrayfish.furniture.tileentity.PhotoFrameTileEntity;
@@ -23,6 +21,7 @@ import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.BlockItem;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -61,6 +60,7 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.registerFactory(ModContainers.MAIL_BOX, MailBoxScreen::new);
         ScreenManager.registerFactory(ModContainers.FREEZER, FreezerScreen::new);
         //ScreenManager.registerFactory(ModContainers.PHOTO_FRAME, PhotoFrameScreen::new);
+        ScreenManager.registerFactory(ModContainers.PRESENT, PresentScreen::new);
 
         Predicate<RenderType> leavesPredicate = renderType -> this.useFancyGraphics() ? renderType == RenderType.getCutoutMipped() : renderType == RenderType.getSolid();
         RenderTypeLookup.setRenderLayer(ModBlocks.HEDGE_OAK, leavesPredicate);
@@ -383,5 +383,11 @@ public class ClientProxy extends CommonProxy {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof PhotoFrameTileEntity)
             Minecraft.getInstance().displayGuiScreen(new PhotoFrameScreen((PhotoFrameTileEntity) tileEntity));
+    }
+
+    @Override
+    public void showPresentScreen(World world, ItemStack itemStack) {
+//        Minecraft.getInstance().displayGuiScreen(new PresentScreen())
+//                ScreenManager.openScreen();
     }
 }

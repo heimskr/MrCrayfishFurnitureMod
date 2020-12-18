@@ -21,26 +21,16 @@ public class CrateContainer extends Container
         this.crateTileEntity = crateTileEntity;
         crateTileEntity.openInventory(playerInventory.player);
 
-        for(int y = 0; y < 3; y++)
-        {
-            for(int x = 0; x < 9; x++)
-            {
+        for (int y = 0; y < 3; y++)
+            for (int x = 0; x < 9; x++)
                 this.addSlot(new PortableSlot(crateTileEntity, x + y * 9, 8 + x * 18, 18 + y * 18));
-            }
-        }
 
-        for(int y = 0; y < 3; y++)
-        {
-            for(int x = 0; x < 9; x++)
-            {
+        for (int y = 0; y < 3; y++)
+            for (int x = 0; x < 9; x++)
                 this.addSlot(new Slot(playerInventory, x + y * 9 + 9, 8 + x * 18, 84 + y * 18));
-            }
-        }
 
-        for(int x = 0; x < 9; x++)
-        {
+        for (int x = 0; x < 9; x++)
             this.addSlot(new Slot(playerInventory, x, 8 + x * 18, 142));
-        }
     }
 
     @Override
