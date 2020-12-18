@@ -36,6 +36,7 @@ public class EditValueContainerScreen extends Screen {
     private List<ValueComponent> values = new ArrayList<>();
     private IValueContainer valueContainer;
     private int containerHeight;
+    private List<Button> buttons = new ArrayList<>();
 
     public EditValueContainerScreen(IValueContainer valueContainer) {
         super(new TranslationTextComponent("gui.cfm.door_mat_message"));
@@ -47,10 +48,11 @@ public class EditValueContainerScreen extends Screen {
                     case TEXT_FIELD:
                         TextFieldComponent field = new TextFieldComponent(this.font, entry);
                         values.add(field);
-//                        this.children.add(field.textFieldLootTable);
                         break;
                     case TOGGLE:
-                        values.add(new ToggleComponent(entry));
+                        ToggleComponent toggle = new ToggleComponent(entry);
+                        values.add(toggle);
+                        buttons.add(toggle.getButton());
                         break;
                 }
             }
@@ -62,10 +64,11 @@ public class EditValueContainerScreen extends Screen {
     public void init() {
         int startX = (this.width - WIDTH) / 2;
         int startY = (this.height - this.containerHeight) / 2;
-//        this.buttonList.add(new GuiButton(0, startX + WIDTH + 5, startY + 5, 20, 20, "X"));
         this.addButton(new Button(startX + WIDTH + 5, startY + 5, 20, 20, new TranslationTextComponent("gui.button.cfm.close"), button -> {
             this.minecraft.player.closeScreen();
         }));
+        for (Button button: buttons)
+            this.addButton(button);
     }
 
     @Override
@@ -101,6 +104,14 @@ public class EditValueContainerScreen extends Screen {
     }
 
     @Override
+    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+        boolean out = super.keyPressed(keyCode, scanCode, modifiers);
+        for (ValueComponent value: values)
+            value.keyPressed(keyCode, scanCode, modifiers);
+        return out;
+    }
+
+    @Override
     public boolean charTyped(char codePoint, int modifiers) {
         boolean out = super.charTyped(codePoint, modifiers);
         for (ValueComponent value: values)
@@ -110,18 +121,17 @@ public class EditValueContainerScreen extends Screen {
 
     @Override
     public void onClose() {
-        System.out.println("EditValueContainerScreen closed. values.size()=" + values.size() + ", pos=" + valueContainer.getContainerPos().getCoordinatesAsString());
         PacketHandler.instance.sendToServer(new MessageUpdateValueContainer(values, valueContainer));
     }
 
-    public static void drawScaledCustomSizeModalRect(int startX, int startY, float float0, float float1, int int0, int int1, int int2, int int3, float float2, float float3) {
+    public static void drawScaledCustomSizeModalRect(int startX, int startY, float float0, float float1, int int0, int int1, int width, int height, float float2, float float3) {
         float lvt_10_1_ = 1.0F / float2;
         float lvt_11_1_ = 1.0F / float3;
         BufferBuilder builder = Tessellator.getInstance().getBuffer();
         builder.begin(7, DefaultVertexFormats.POSITION_TEX);
-        builder.pos(startX, startY + int3, 0.0D).tex(float0 * lvt_10_1_, (float1 + (float) int1) * lvt_11_1_).endVertex();
-        builder.pos(startX + int2, startY + int3, 0.0D).tex((float0 + (float) int0) * lvt_10_1_, (float1 + (float) int1) * lvt_11_1_).endVertex();
-        builder.pos(startX + int2, startY, 0.0D).tex((float0 + (float) int0) * lvt_10_1_, float1 * lvt_11_1_).endVertex();
+        builder.pos(startX, startY + height, 0.0D).tex(float0 * lvt_10_1_, (float1 + (float) int1) * lvt_11_1_).endVertex();
+        builder.pos(startX + width, startY + height, 0.0D).tex((float0 + (float) int0) * lvt_10_1_, (float1 + (float) int1) * lvt_11_1_).endVertex();
+        builder.pos(startX + width, startY, 0.0D).tex((float0 + (float) int0) * lvt_10_1_, float1 * lvt_11_1_).endVertex();
         builder.pos(startX, startY, 0.0D).tex(float0 * lvt_10_1_, float1 * lvt_11_1_).endVertex();
         builder.finishDrawing();
         RenderSystem.enableAlphaTest();

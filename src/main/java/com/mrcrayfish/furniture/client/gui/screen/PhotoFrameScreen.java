@@ -44,7 +44,6 @@ public class PhotoFrameScreen extends Screen {
             this.urlField.setText(this.photoFrameTileEntity.getUrl());
         this.children.add(this.urlField);
 
-
         this.btnStretch = this.addButton(new Button(guiLeft + 7, guiTop + 42 + 10, 162, 20, ITextComponent.getTextComponentOrEmpty(I18n.format("gui.button.cfm." + (this.stretch? "on" : "off"))), button -> {
             this.stretch = !this.stretch;
             btnStretch.setMessage(ITextComponent.getTextComponentOrEmpty(I18n.format("gui.button.cfm." + (this.stretch? "on" : "off"))));

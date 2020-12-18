@@ -16,7 +16,7 @@ public class ToggleComponent extends ValueComponent {
 
     public ToggleComponent(IValueContainer.Entry entry) {
         super(entry.getId(), entry.getName());
-        this.button = new Button(0, 0, 0, EditValueContainerScreen.WIDTH - EditValueContainerScreen.PADDING * 2, new TranslationTextComponent("gui.button.cfm.off"), button -> {
+        this.button = new Button(0, 0, EditValueContainerScreen.WIDTH - EditValueContainerScreen.PADDING * 2, 20, new TranslationTextComponent("gui.button.cfm.off"), button -> {
             this.setState(!state);
         });
         this.setState(Boolean.valueOf(entry.getValue()));
@@ -24,11 +24,11 @@ public class ToggleComponent extends ValueComponent {
 
     @Override
     public void render(MatrixStack stack, int x, int y, int mouseX, int mouseY) {
-//        System.out.println("Rendering button: (" + x + ", " + y + ") :: (" + mouseX + ", " + mouseY + ")");
+        super.render(stack, x, y, mouseX, mouseY);
+        // The button is already rendered by Screen's implementation of render. All we need to do is reposition the button.
         button.x = x;
         button.y = y + 10;
-        button.renderButton(stack, mouseX, mouseY, 0);
-        super.render(stack, x, y, mouseX, mouseY);
+//        button.render(stack, mouseX, mouseY, 0);
     }
 
     @Override
@@ -55,5 +55,9 @@ public class ToggleComponent extends ValueComponent {
             button.setMessage(new TranslationTextComponent("gui.button.cfm.on"));
         else
             button.setMessage(new TranslationTextComponent("gui.button.cfm.off"));
+    }
+
+    public Button getButton() {
+        return button;
     }
 }
