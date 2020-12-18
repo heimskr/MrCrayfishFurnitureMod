@@ -1,5 +1,6 @@
 package com.mrcrayfish.furniture.block;
 
+import com.mrcrayfish.furniture.util.Bounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.inventory.IInventory;
@@ -7,7 +8,11 @@ import net.minecraft.inventory.InventoryHelper;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Direction;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
+import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 public abstract class FurnitureBlock extends Block {
@@ -49,5 +54,10 @@ public abstract class FurnitureBlock extends Block {
         super.eventReceived(state, world, pos, id, type);
         TileEntity tileEntity = world.getTileEntity(pos);
         return tileEntity != null && tileEntity.receiveClientEvent(id, type);
+    }
+
+    public VoxelShape rotatedShape(Bounds bounds, Direction direction) {
+        AxisAlignedBB rotated = bounds.getRotation(direction.getOpposite());
+        return Block.makeCuboidShape(rotated.minX * 16F, rotated.minY * 16F, rotated.minZ * 16F, rotated.maxX * 16F, rotated.maxY * 16F, rotated.maxZ * 16F);
     }
 }

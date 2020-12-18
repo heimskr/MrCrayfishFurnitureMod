@@ -84,6 +84,7 @@
         "cfm:brown_present",
         "cfm:green_present",
         "cfm:red_present",
-        "cfm:black_present"
+        "cfm:black_present",
+        "cfm:mantelpiece"
     ]
 }

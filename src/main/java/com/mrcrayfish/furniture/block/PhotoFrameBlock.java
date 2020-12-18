@@ -58,8 +58,7 @@ public class PhotoFrameBlock extends FurnitureTileBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        AxisAlignedBB rotated = BOUNDS.getRotation(state.get(DIRECTION).getOpposite());
-        return Block.makeCuboidShape(rotated.minX * 16F, rotated.minY * 16F, rotated.minZ * 16F, rotated.maxX * 16F, rotated.maxY * 16F, rotated.maxZ * 16F);
+        return rotatedShape(BOUNDS, state.get(DIRECTION));
     }
 
     @Override

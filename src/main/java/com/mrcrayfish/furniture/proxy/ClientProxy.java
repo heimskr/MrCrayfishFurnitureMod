@@ -123,6 +123,7 @@ public class ClientProxy extends CommonProxy {
         RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_GREEN, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_RED, cutoutPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.PRESENT_BLACK, cutoutPredicate);
+        RenderTypeLookup.setRenderLayer(ModBlocks.MANTELPIECE, cutoutPredicate);
 
         RenderTypeLookup.setRenderLayer(ModBlocks.TREE, leavesPredicate);
         RenderTypeLookup.setRenderLayer(ModBlocks.WREATH, leavesPredicate);

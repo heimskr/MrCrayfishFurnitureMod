@@ -458,7 +458,7 @@ public class Names
         public static final String TV_STAND = Reference.MOD_ID + ":tv_stand";
         public static final String WREATH = Reference.MOD_ID + ":wreath";
         public static final String FAIRY_LIGHT = Reference.MOD_ID + ":fairy_light";
-
+        public static final String MANTELPIECE = Reference.MOD_ID + ":mantelpiece";
 
         public static final String PRESENT_WHITE = Reference.MOD_ID + ":white_present";
         public static final String PRESENT_ORANGE = Reference.MOD_ID + ":orange_present";

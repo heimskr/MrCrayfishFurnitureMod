@@ -1,0 +1,8 @@
+{
+    "variants": {
+        "facing=north": {"model": "cfm:block/mantelpiece", "y": 180},
+        "facing=south": {"model": "cfm:block/mantelpiece", "y": 0  },
+        "facing=east":  {"model": "cfm:block/mantelpiece", "y": 270},
+        "facing=west":  {"model": "cfm:block/mantelpiece", "y": 90 }
+    }
+}
