@@ -36,7 +36,7 @@ public class TextFieldComponent extends ValueComponent {
 
     @Override
     public void keyPressed(int keyCode, int scanCode, int modifiers) {
-|        textFieldLootTable.keyPressed(keyCode, scanCode, modifiers);
+        textFieldLootTable.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
