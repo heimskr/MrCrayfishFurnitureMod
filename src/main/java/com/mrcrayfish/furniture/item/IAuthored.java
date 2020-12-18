@@ -7,5 +7,5 @@ import net.minecraft.item.ItemStack;
  * Author: MrCrayfish
  */
 public interface IAuthored {
-    Item getSignedItem(ItemStack stack);
+    Item getSignedItem();
 }

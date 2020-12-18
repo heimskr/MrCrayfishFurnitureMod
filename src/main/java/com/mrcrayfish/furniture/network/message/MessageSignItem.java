@@ -35,7 +35,7 @@ public class MessageSignItem implements IMessage<MessageSignItem> {
             PlayerEntity player = supplier.get().getSender();
             ItemStack stack = player.inventory.getCurrentItem();
             if (stack.getItem() instanceof IAuthored) {
-                ItemStack signedItem = new ItemStack(((IAuthored) stack.getItem()).getSignedItem(stack), 1);
+                ItemStack signedItem = new ItemStack(((IAuthored) stack.getItem()).getSignedItem(), 1);
                 if (stack.getTag() != null)
                     signedItem.setTag(stack.getTag().copy());
                 signedItem.setTagInfo("Author", StringNBT.valueOf(player.getName().getString()));
@@ -44,8 +44,6 @@ public class MessageSignItem implements IMessage<MessageSignItem> {
                 signedItem.setTagInfo("Present", compound);
                 player.inventory.setInventorySlotContents(player.inventory.currentItem, signedItem);
                 player.closeScreen();
-            } else {
-                System.out.println("Item isn't an instance of IAuthored.");
             }
         });
         supplier.get().setPacketHandled(true);
@@ -54,11 +52,8 @@ public class MessageSignItem implements IMessage<MessageSignItem> {
     @Override
     public void encode(MessageSignItem message, PacketBuffer buffer) {
         CompoundNBT compound = new CompoundNBT();
-        if (message.itemList != null) {
+        if (message.itemList != null)
             compound.put("Items", message.itemList);
-        } else {
-            System.out.println("MessageSignItem.itemList is null!");
-        }
         buffer.writeCompoundTag(compound);
     }
 
@@ -66,11 +61,8 @@ public class MessageSignItem implements IMessage<MessageSignItem> {
     public MessageSignItem decode(PacketBuffer buffer) {
         CompoundNBT compound = buffer.readCompoundTag();
         ListNBT list = new ListNBT();
-        if (compound != null && compound.contains("Items")) {
+        if (compound != null && compound.contains("Items"))
             list = compound.getList("Items", Constants.NBT.TAG_COMPOUND);
-        } else {
-            System.out.println("Compound is null or doesn't contain Items.");
-        }
         return new MessageSignItem(list);
     }
 }

@@ -1,6 +1,6 @@
 {
     "parent": "cfm:block/present",
     "textures": {
-        "0": "blocks/green_concrete"
+        "0": "minecraft:block/green_concrete"
     }
 }

@@ -24,33 +24,17 @@ import java.util.List;
 import java.util.Random;
 
 public class PresentBlock extends FurnitureBlock implements ITileEntityProvider {
-//    public static final PropertyEnum<EnumDyeColor> COLOUR = PropertyEnum.create("colour", EnumDyeColor.class);
-
-    private static final Bounds BOUNDS = new Bounds(0.25, 0.0, 0.25, 0.75, 0.35, 0.75);
-
+    private static final Bounds BOUNDS = new Bounds(0.25, 0.001, 0.25, 0.75, 0.35, 0.75);
     public static HashMap<DyeColor, IRegistryDelegate<Block>> colorRegistry = new HashMap<>();
+
+    public DyeColor color;
 
     public PresentBlock(DyeColor color, AbstractBlock.Properties properties) {
         super(properties);
-//        this.setHardness(0.5F);
-//        this.setSoundType(SoundType.CLOTH);
+        this.color = color;
 
         colorRegistry.put(color, this.delegate);
-
-//        this.hasTileEntity = true;
-//        this.setDefaultState(this.getStateContainer().getBaseState().withProperty(COLOUR, EnumDyeColor.WHITE));
-//        this.setCreativeTab(MrCrayfishFurnitureMod.tabFurniture);
     }
-
-//    @Override
-//    public boolean isOpaqueCube(BlockState state) {
-//        return false;
-//    }
-
-//    @Override
-//    public boolean isFullCube(BlockState state) {
-//        return false;
-//    }
 
     @Override
     public void onBlockHarvested(World world, BlockPos pos, BlockState state, PlayerEntity player) {

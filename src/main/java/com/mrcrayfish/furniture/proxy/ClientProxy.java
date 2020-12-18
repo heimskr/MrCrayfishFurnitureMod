@@ -384,10 +384,4 @@ public class ClientProxy extends CommonProxy {
         if (tileEntity instanceof PhotoFrameTileEntity)
             Minecraft.getInstance().displayGuiScreen(new PhotoFrameScreen((PhotoFrameTileEntity) tileEntity));
     }
-
-    @Override
-    public void showPresentScreen(World world, ItemStack itemStack) {
-//        Minecraft.getInstance().displayGuiScreen(new PresentScreen())
-//                ScreenManager.openScreen();
-    }
 }

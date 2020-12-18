@@ -63,7 +63,6 @@ public class PresentItem extends BlockItem implements INamedContainerProvider, I
 
     @Override
     public ActionResultType onItemUse(ItemUseContext context) {
-//    public EnumActionResult onItemUse(EntityPlayer player, World worldIn, BlockPos pos, EnumHand hand, EnumFacing facing, float hitX, float hitY, float hitZ) {
         Hand hand = context.getHand();
         PlayerEntity player = context.getPlayer();
         World world = context.getWorld();
@@ -78,9 +77,7 @@ public class PresentItem extends BlockItem implements INamedContainerProvider, I
 
                 if (nbttagstring != null) {
                     ListNBT itemList = (ListNBT) NBTHelper.getCompoundTag(stack, "Present").get("Items");
-                    if (itemList == null) {
-                        System.out.println("itemList is null!");
-                    } else {
+                    if (itemList != null) {
                         if (itemList.size() > 0) {
 //                        BlockState state = ModBlocks.PRESENT.getDefaultState().withProperty(BlockPresent.COLOUR, EnumDyeColor.byMetadata(stack.getItemDamage()));
 
@@ -123,19 +120,16 @@ public class PresentItem extends BlockItem implements INamedContainerProvider, I
 
     @Override
     public ActionResult<ItemStack> onItemRightClick(World world, PlayerEntity player, Hand hand) {
-        System.out.println("PresentItem.onItemRightClick");
         ItemStack stack = player.getHeldItem(hand);
         if (!world.isRemote && hand == Hand.MAIN_HAND) {
             CompoundNBT tagCompound = stack.getTag();
             if (tagCompound != null) {
                 String author = tagCompound.getString("Author");
                 if (author.isEmpty())
-                    FurnitureMod.PROXY.showPresentScreen(world, stack);
+                    NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) stack.getItem());
                 else
                     PlayerUtil.sendTranslatedMessage(player, "message.cfm.present_wrap");
             } else {
-                System.out.println("Going to open present screen now.");
-//                FurnitureMod.PROXY.showPresentScreen(world, stack);
                 NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) stack.getItem());
             }
             return new ActionResult<>(ActionResultType.SUCCESS, stack);
@@ -158,20 +152,8 @@ public class PresentItem extends BlockItem implements INamedContainerProvider, I
     }
 
     @Override
-    public Item getSignedItem(ItemStack stack) {
-        CompoundNBT compound = stack.getTag();
-        if (compound != null) {
-           IntNBT colorTag = (IntNBT) compound.get("Color");
-            if (colorTag != null) {
-                int colorID = colorTag.getInt();
-                DyeColor color = DyeColor.byId(colorID);
-                IRegistryDelegate<Block> blockDelegate = PresentBlock.colorRegistry.get(color);
-                if (blockDelegate != null) {
-                    return Item.getItemFromBlock(blockDelegate.get());
-                }
-            }
-        }
-        return Item.getItemFromBlock(ModBlocks.PRESENT_BLACK);
+    public Item getSignedItem() {
+        return this;
     }
 
 //    @Override
