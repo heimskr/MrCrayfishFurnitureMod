@@ -1,0 +1,19 @@
+{
+    "result": {
+        "item": "cfm:orange_present"
+    },
+    "pattern": [
+        "WWW",
+        "WCW",
+        "WWW"
+    ],
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "C": {
+            "item": "minecraft:chest"
+        },
+        "W": {
+            "item": "minecraft:orange_wool"
+        }
+    }
+}

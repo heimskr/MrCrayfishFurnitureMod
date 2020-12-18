@@ -1,0 +1,19 @@
+{
+    "result": {
+        "item": "cfm:light_blue_present"
+    },
+    "pattern": [
+        "WWW",
+        "WCW",
+        "WWW"
+    ],
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "C": {
+            "item": "minecraft:chest"
+        },
+        "W": {
+            "item": "minecraft:light_blue_wool"
+        }
+    }
+}

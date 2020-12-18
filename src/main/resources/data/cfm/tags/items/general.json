@@ -68,6 +68,22 @@
         "cfm:tree",
         "cfm:photo_frame",
         "cfm:wreath",
-        "cfm:fairy_light"
+        "cfm:fairy_light",
+        "cfm:white_present",
+        "cfm:orange_present",
+        "cfm:magenta_present",
+        "cfm:light_blue_present",
+        "cfm:yellow_present",
+        "cfm:lime_present",
+        "cfm:pink_present",
+        "cfm:gray_present",
+        "cfm:light_gray_present",
+        "cfm:cyan_present",
+        "cfm:purple_present",
+        "cfm:blue_present",
+        "cfm:brown_present",
+        "cfm:green_present",
+        "cfm:red_present",
+        "cfm:black_present"
     ]
 }
