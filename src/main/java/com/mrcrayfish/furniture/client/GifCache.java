@@ -92,7 +92,6 @@ public final class GifCache {
 
     @SubscribeEvent
     public void onRenderTick(TickEvent.ClientTickEvent event) {
-        FurnitureMod.LOGGER.warn("tick!");
         if (event.phase == TickEvent.Phase.START)
             this.tick();
     }

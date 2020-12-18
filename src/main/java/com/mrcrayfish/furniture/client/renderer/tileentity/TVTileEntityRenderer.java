@@ -44,19 +44,13 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
 
     @Override
     public void render(TVTileEntity te, float partialTicks, MatrixStack stack, IRenderTypeBuffer bufferIn, int combinedLight, int combinedOverlay) {
-        if (!te.isPowered()) {
-            System.out.println("Not powered.");
+        if (!te.isPowered())
             return;
-        }
 
         BlockPos pos = te.getPos();
         BlockState state = te.getWorld().getBlockState(pos);
-        if (!state.getProperties().contains(AbstractTVBlock.DIRECTION)) {
-            System.out.println("No direction.");
+        if (!state.getProperties().contains(AbstractTVBlock.DIRECTION))
             return;
-        }
-
-//        System.out.println("Hello.");
 
         stack.push();
         {
@@ -98,7 +92,7 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
                     GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
                     GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
-                    //Setups translations
+                    // Set up translations
                     stack.translate(8 * 0.0625, te.getScreenYOffset() * 0.0625, 8 * 0.0625);
                     Direction facing = state.get(AbstractTVBlock.DIRECTION);
                     stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalIndex() * -90F));
@@ -116,7 +110,7 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
                     width *= 0.0625;
                     height *= 0.0625;
 
-                    //Render the GIF
+                    // Render the GIF
                     stack.translate(0, 0, -0.01 * 0.0625);
                     Tessellator tessellator = Tessellator.getInstance();
                     BufferBuilder buffer = tessellator.getBuffer();
@@ -127,13 +121,8 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
                     buffer.pos(startX + width, startY, 0).tex((float) (u + scaledWidth * pixelScale), (float) v).endVertex();
                     tessellator.draw();
                 } else if (te.isLoaded()) {
-//                    System.out.println("TE is loaded.");
                     AnimatedTexture texture = GifCache.INSTANCE.get(te.getCurrentChannel());
                     if (texture != null) {
-//                        System.out.println("texture isn't null.");
-//                        texture.bind();
-
-//                        IVertexBuilder builder = bufferIn.getBuffer(RenderType.getCutout());
                         IVertexBuilder builder = null;
                         try {
                             builder = bufferIn.getBuffer(RenderType.getEntitySolid(texture.makeLocation()));
@@ -146,7 +135,7 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
                             GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
                             if (!te.isStretched()) {
-                                //Calculates the positioning and scale so the GIF keeps its ratio and renders within the screen
+                                // Calculates the positioning and scale so the GIF keeps its ratio and renders within the screen
                                 double scaleWidth = (double) te.getWidth() / (double) texture.getWidth();
                                 double scaleHeight = (double) te.getHeight() / (double) texture.getHeight();
                                 double scale = Math.min(scaleWidth, scaleHeight);
@@ -185,14 +174,6 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
                             builder.pos(matrix4f, (float) startX, (float) (startY + height), 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(1, 0).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
                             builder.pos(matrix4f, (float) (startX + width), (float) (startY + height), 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(0, 0).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
                             builder.pos(matrix4f, (float) (startX + width), (float) startY, 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(0, 1).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
-
-
-//                            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//                            buffer.pos(startX, startY, 0).tex(0, 0).endVertex();
-//                            buffer.pos(startX, startY + height, 0).tex(0, 1).endVertex();
-//                            buffer.pos(startX + width, startY + height, 0).tex(1, 1).endVertex();
-//                            buffer.pos(startX + width, startY, 0).tex(1, 0).endVertex();
-//                            tessellator.draw();
                         } else System.out.println("Oh no, builder is null :(");
                     } else {
                         String currentChannel = te.getCurrentChannel();
@@ -201,8 +182,6 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
                             te.loadUrl(currentChannel);
                     }
                 }
-//                GlStateManager.disableBlend();
-//                GlStateManager.enableLighting();
             }
         }
         stack.pop();

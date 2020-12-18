@@ -32,6 +32,7 @@ public class AnimatedTexture extends Texture {
     private List<NativeImage> natives;
     private int frameCounter;
     private List<ResourceLocation> locations;
+    private boolean ready = false;
 
     public AnimatedTexture(File file, String hash) {
         super(file, hash);
@@ -56,18 +57,18 @@ public class AnimatedTexture extends Texture {
                     int width = image.getWidth(), height = image.getHeight();
                     NativeImage n = new NativeImage(width, height, true);
                     WritableRaster raster = image.getRaster();
-                    for (int j = 0; j < width; j++) {
+                    for (int j = 0; j < width; j++)
                         for (int k = 0; k < height; k++) {
                             int[] c = raster.getPixel(j, k, new int[4]);
                             n.setPixelRGBA(j, k, c[0] | (c[1] << 8) | (c[2] << 16) | (c[3] << 24));
                         }
-                    }
-                    FurnitureMod.LOGGER.warn("]]");
                     int[] imageData = new int[this.width * this.height];
                     image.getRGB(0, 0, this.width, this.height, imageData, 0, this.width);
                     framesTextureData.add(createBuffer(imageData));
                     natives.add(n);
                 }
+
+                ready = true;
             } catch(IOException e) {
                 e.printStackTrace();
             }
@@ -76,27 +77,13 @@ public class AnimatedTexture extends Texture {
 
     @Override
     public void update() {
-        FurnitureMod.LOGGER.warn("Ticking gif.");
-        if (framesTextureData.size() > 0) {
+        if (ready && framesTextureData.size() > 0) {
             if (++frameCounter >= framesTextureData.size())
                 frameCounter = 0;
-            ByteBuffer buffer = framesTextureData.get(frameCounter);
-//            GlStateManager.bindTexture(getTextureId());
-            RenderSystem.bindTexture(getTextureId());
-            GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
-        }
-        if (counter++ >= 600) {
-            delete = true;
-            GlStateManager.deleteTexture(getTextureId());
         }
     }
 
     public ResourceLocation makeLocation() throws IOException {
-//        byte[] bytes = pngFrames.get(frameCounter);
-//        ByteBuffer buffer = ByteBuffer.wrap(bytes);
-//        NativeImage nativeImage = NativeImage.read(this.framesTextureData.get(frameCounter));
-//        NativeImage.
-//        for (int i = 0; i < 25; ++i) FurnitureMod.LOGGER.warn("natives.size() = " + natives.size());
         if (locations.get(frameCounter) == null) {
             DynamicTexture dynamicTexture = new DynamicTexture(natives.get(frameCounter));
             Minecraft.getInstance().deferTask(dynamicTexture::updateDynamicTexture);

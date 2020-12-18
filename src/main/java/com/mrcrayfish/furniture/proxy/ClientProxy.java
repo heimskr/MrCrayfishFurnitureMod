@@ -1,5 +1,7 @@
 package com.mrcrayfish.furniture.proxy;
 
+import com.mrcrayfish.furniture.client.GifCache;
+import com.mrcrayfish.furniture.client.ImageCache;
 import com.mrcrayfish.furniture.client.MailBoxEntry;
 import com.mrcrayfish.furniture.client.event.CreativeScreenEvents;
 import com.mrcrayfish.furniture.client.gui.screen.DoorMatScreen;
@@ -140,6 +142,8 @@ public class ClientProxy extends CommonProxy {
 
         if (!ModList.get().isLoaded("filters")) {
             MinecraftForge.EVENT_BUS.register(new CreativeScreenEvents());
+            MinecraftForge.EVENT_BUS.register(ImageCache.INSTANCE);
+            MinecraftForge.EVENT_BUS.register(GifCache.INSTANCE);
         } else {
             //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "general"), new ItemStack(ModBlocks.CHAIR_OAK));
             //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "storage"), new ItemStack(ModBlocks.CABINET_OAK));
