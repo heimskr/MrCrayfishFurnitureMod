@@ -1,5 +1,6 @@
 package com.mrcrayfish.furniture.client;
 
+import com.mojang.blaze3d.systems.RenderSystem;
 import net.minecraft.client.Minecraft;
 import com.mojang.blaze3d.platform.GlStateManager;
 import org.lwjgl.BufferUtils;
@@ -50,7 +51,8 @@ public class Texture {
 
                 Minecraft.getInstance().deferTask(() -> { // ??? Previously addScheduledTask
                     System.out.println("Deferred task: binding texture.");
-                    GlStateManager.bindTexture(getTextureId());
+//                    GlStateManager.bindTexture(getTextureId());
+                    RenderSystem.bindTexture(getTextureId());
                     GL11.glTexImage2D(GL11.GL_TEXTURE_2D, 0, GL11.GL_RGBA, width, height, 0, GL11.GL_RGBA, GL11.GL_UNSIGNED_BYTE, buffer);
                 });
             } catch(IOException e) {
@@ -62,7 +64,8 @@ public class Texture {
     public void update() {
         if (counter++ >= 600) {
             delete = true;
-            GlStateManager.deleteTexture(getTextureId());
+            RenderSystem.deleteTexture(getTextureId());
+//            GlStateManager.deleteTexture(getTextureId());
         }
     }
 
@@ -83,7 +86,8 @@ public class Texture {
 
     public void bind() {
         counter = 0;
-        GlStateManager.bindTexture(getTextureId());
+//        GlStateManager.bindTexture(getTextureId());
+        RenderSystem.bindTexture(getTextureId());
     }
 
     public int getTextureId() {

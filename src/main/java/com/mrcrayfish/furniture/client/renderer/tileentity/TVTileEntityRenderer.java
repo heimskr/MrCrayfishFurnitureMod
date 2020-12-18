@@ -27,6 +27,7 @@ import net.minecraft.util.math.vector.Matrix4f;
 import net.minecraft.util.math.vector.Vector3f;
 import org.lwjgl.opengl.GL11;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Random;
 
@@ -81,8 +82,6 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
                 renderer.drawString(stack, message, 0, 0, 16777215);
             } else {
 
-//                float x = te.getPos().getX(), y = te.getPos().getY(), z = te.getPos().getZ();
-//                stack.translate(x, y, z);
 //                GlStateManager.enableBlend();
 //                GlStateManager.color(1.0F, 1.0F, 1.0F, 1.0F);
 //                OpenGlHelper.glBlendFunc(GL11.GL_SRC_ALPHA, GL11.GL_ONE_MINUS_SRC_ALPHA, GL11.GL_ONE, GL11.GL_ZERO);
@@ -132,63 +131,69 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
                     AnimatedTexture texture = GifCache.INSTANCE.get(te.getCurrentChannel());
                     if (texture != null) {
                         System.out.println("texture isn't null.");
-                        texture.bind();
+//                        texture.bind();
 
-                        IVertexBuilder builder = bufferIn.getBuffer(RenderType.getCutout());
-
-                        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
-                        GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
-
-                        if (!te.isStretched()) {
-                            //Calculates the positioning and scale so the GIF keeps its ratio and renders within the screen
-                            double scaleWidth = (double) te.getWidth() / (double) texture.getWidth();
-                            double scaleHeight = (double) te.getHeight() / (double) texture.getHeight();
-                            double scale = Math.min(scaleWidth, scaleHeight);
-                            width = texture.getWidth() * scale;
-                            height = texture.getHeight() * scale;
-                            startX = (te.getWidth() - width) / 2.0;
-                            startY = (te.getHeight() - height) / 2.0;
+//                        IVertexBuilder builder = bufferIn.getBuffer(RenderType.getCutout());
+                        IVertexBuilder builder = null;
+                        try {
+                            builder = bufferIn.getBuffer(RenderType.getEntitySolid(texture.makeLocation()));
+                        } catch (Exception error) {
+                            error.printStackTrace();
                         }
 
-                        startX *= 0.0625;
-                        startY *= 0.0625;
-                        width *= 0.0625;
-                        height *= 0.0625;
+                        if (builder != null) {
+                            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MIN_FILTER, GL11.GL_NEAREST);
+                            GL11.glTexParameteri(GL11.GL_TEXTURE_2D, GL11.GL_TEXTURE_MAG_FILTER, GL11.GL_NEAREST);
 
-                        // Set up translations
-                        stack.translate(8 * 0.0625, te.getScreenYOffset() * 0.0625, 8 * 0.0625);
-                        Direction facing = state.get(AbstractTVBlock.DIRECTION);
-                        stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalIndex() * -90F));
-                        stack.translate(-te.getWidth() / 2 * 0.0625, 0, 0);
-                        stack.translate(0, 0, te.getScreenZOffset() * 0.0625);
+                            if (!te.isStretched()) {
+                                //Calculates the positioning and scale so the GIF keeps its ratio and renders within the screen
+                                double scaleWidth = (double) te.getWidth() / (double) texture.getWidth();
+                                double scaleHeight = (double) te.getHeight() / (double) texture.getHeight();
+                                double scale = Math.min(scaleWidth, scaleHeight);
+                                width = texture.getWidth() * scale;
+                                height = texture.getHeight() * scale;
+                                startX = (te.getWidth() - width) / 2.0;
+                                startY = (te.getHeight() - height) / 2.0;
+                            }
 
-                        // Render a black quad
-//                        Tessellator tessellator = Tessellator.getInstance();
-//                        BufferBuilder buffer = tessellator.getBuffer();
-//                        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
-//                        buffer.pos(0, 0, 0).color(0, 0, 0, 255).endVertex();
-//                        buffer.pos(0, te.getHeight() * 0.0625, 0).color(0, 0, 0, 255).endVertex();
-//                        buffer.pos(te.getWidth() * 0.0625, te.getHeight() * 0.0625, 0).color(0, 0, 0, 255).endVertex();
-//                        buffer.pos(te.getWidth() * 0.0625, 0, 0).color(0, 0, 0, 255).endVertex();
-//                        tessellator.draw();
+                            startX *= 0.0625;
+                            startY *= 0.0625;
+                            width *= 0.0625;
+                            height *= 0.0625;
 
-                        // Render the GIF
-                        stack.translate(0, 0, -0.01 * 0.0625);
-                        Matrix4f matrix4f = stack.getLast().getMatrix();
-                        builder.pos(matrix4f, (float) startX, (float) startY, 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(1, 1).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
-                        builder.pos(matrix4f, (float) startX, (float) (startY + height), 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(1, 0).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
-                        builder.pos(matrix4f, (float) (startX + width), (float) (startY + height), 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(0, 0).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
-                        builder.pos(matrix4f, (float) (startX + width), (float) startY, 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(0, 1).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
+                            // Set up translations
+                            stack.translate(8 * 0.0625, te.getScreenYOffset() * 0.0625, 8 * 0.0625);
+                            Direction facing = state.get(AbstractTVBlock.DIRECTION);
+                            stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalIndex() * -90F));
+                            stack.translate(-te.getWidth() / 2 * 0.0625, 0, 0);
+                            stack.translate(0, 0, te.getScreenZOffset() * 0.0625);
+
+                            // Render a black quad
+//                            Tessellator tessellator = Tessellator.getInstance();
+//                            BufferBuilder buffer = tessellator.getBuffer();
+//                            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_COLOR);
+//                            buffer.pos(0, 0, 0).color(0, 0, 0, 255).endVertex();
+//                            buffer.pos(0, te.getHeight() * 0.0625, 0).color(0, 0, 0, 255).endVertex();
+//                            buffer.pos(te.getWidth() * 0.0625, te.getHeight() * 0.0625, 0).color(0, 0, 0, 255).endVertex();
+//                            buffer.pos(te.getWidth() * 0.0625, 0, 0).color(0, 0, 0, 255).endVertex();
+//                            tessellator.draw();
+
+                            // Render the GIF
+                            stack.translate(0, 0, -0.01 * 0.0625);
+                            Matrix4f matrix4f = stack.getLast().getMatrix();
+                            builder.pos(matrix4f, (float) startX, (float) startY, 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(1, 1).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
+                            builder.pos(matrix4f, (float) startX, (float) (startY + height), 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(1, 0).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
+                            builder.pos(matrix4f, (float) (startX + width), (float) (startY + height), 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(0, 0).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
+                            builder.pos(matrix4f, (float) (startX + width), (float) startY, 0).color(1.0f, 1.0f, 1.0f, 1.0f).tex(0, 1).overlay(OverlayTexture.NO_OVERLAY).lightmap(combinedLight).normal(0, 1, 0).endVertex();
 
 
-
-
-//                        buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
-//                        buffer.pos(startX, startY, 0).tex(0, 0).endVertex();
-//                        buffer.pos(startX, startY + height, 0).tex(0, 1).endVertex();
-//                        buffer.pos(startX + width, startY + height, 0).tex(1, 1).endVertex();
-//                        buffer.pos(startX + width, startY, 0).tex(1, 0).endVertex();
-//                        tessellator.draw();
+//                            buffer.begin(GL11.GL_QUADS, DefaultVertexFormats.POSITION_TEX);
+//                            buffer.pos(startX, startY, 0).tex(0, 0).endVertex();
+//                            buffer.pos(startX, startY + height, 0).tex(0, 1).endVertex();
+//                            buffer.pos(startX + width, startY + height, 0).tex(1, 1).endVertex();
+//                            buffer.pos(startX + width, startY, 0).tex(1, 0).endVertex();
+//                            tessellator.draw();
+                        } else System.out.println("Oh no, builder is null :(");
                     } else {
                         String currentChannel = te.getCurrentChannel();
                         System.out.println("Going to load " + currentChannel);
