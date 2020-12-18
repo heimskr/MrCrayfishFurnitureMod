@@ -73,7 +73,6 @@ public class PresentItem extends BlockItem implements INamedContainerProvider, I
             if (stack.hasTag()) {
                 CompoundNBT compound = stack.getTag();
                 StringNBT nbttagstring = (StringNBT) compound.get("Author");
-                IntNBT colorID = (IntNBT) compound.get("Color");
 
                 if (nbttagstring != null) {
                     ListNBT itemList = (ListNBT) NBTHelper.getCompoundTag(stack, "Present").get("Items");
@@ -81,13 +80,8 @@ public class PresentItem extends BlockItem implements INamedContainerProvider, I
                         if (itemList.size() > 0) {
 //                        BlockState state = ModBlocks.PRESENT.getDefaultState().withProperty(BlockPresent.COLOUR, EnumDyeColor.byMetadata(stack.getItemDamage()));
 
-                            DyeColor color = DyeColor.BLACK;
-                            if (colorID != null)
-                                color = DyeColor.byId(colorID.getInt());
-
-                            System.out.println("color=" + color.getString() + " (" + color.getId() + ")");
-
-                            BlockState state = PresentBlock.colorRegistry.get(color).get().getDefaultState();
+//                            BlockState state = PresentBlock.colorRegistry.get(color).get().getDefaultState();
+                            BlockState state = ((BlockItem) stack.getItem()).getBlock().getDefaultState();
                             world.setBlockState(pos.up(), state, 2);
                             world.playSound(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, state.getBlock().getSoundType(state).getPlaceSound(), SoundCategory.BLOCKS, (state.getBlock().getSoundType(state).getVolume() + 1.0F) / 2.0F, state.getBlock().getSoundType(state).getPitch() * 0.8F, false);
 
@@ -101,19 +95,13 @@ public class PresentItem extends BlockItem implements INamedContainerProvider, I
 
                             stack.shrink(1);
                             return ActionResultType.SUCCESS;
-                        } else if (world.isRemote) {
-                            System.out.println("Placed present.");
+                        } else if (world.isRemote)
                             PlayerUtil.sendTranslatedMessage(player, "message.cfm.present_place");
-                        }
                     }
-                } else if (world.isRemote) {
-                    System.out.println("Null string tag.");
+                } else if (world.isRemote)
                     PlayerUtil.sendTranslatedMessage(player, "message.cfm.present_sign");
-                }
-            } else if (world.isRemote) {
-                System.out.println("No tag.");
+            } else if (world.isRemote)
                 PlayerUtil.sendTranslatedMessage(player, "message.cfm.present_sign");
-            }
         }
         return ActionResultType.PASS;
     }
@@ -129,9 +117,8 @@ public class PresentItem extends BlockItem implements INamedContainerProvider, I
                     NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) stack.getItem());
                 else
                     PlayerUtil.sendTranslatedMessage(player, "message.cfm.present_wrap");
-            } else {
+            } else
                 NetworkHooks.openGui((ServerPlayerEntity) player, (INamedContainerProvider) stack.getItem());
-            }
             return new ActionResult<>(ActionResultType.SUCCESS, stack);
         }
         return new ActionResult<>(ActionResultType.SUCCESS, stack);
@@ -155,22 +142,4 @@ public class PresentItem extends BlockItem implements INamedContainerProvider, I
     public Item getSignedItem() {
         return this;
     }
-
-//    @Override
-//    public int getMetadata(int damage) {
-//        return damage;
-//    }
-
-//    @Override
-//    public String getUnlocalizedName(ItemStack stack) {
-//        return super.getUnlocalizedName(stack) + "_" + EnumDyeColor.values()[stack.getItemDamage()].getName();
-//    }
-
-//    @Override
-//    public NonNullList<ResourceLocation> getModels() {
-//        NonNullList<ResourceLocation> modelLocations = NonNullList.create();
-//        for (EnumDyeColor color : EnumDyeColor.values())
-//            modelLocations.add(new ResourceLocation(Reference.MOD_ID, getUnlocalizedName().substring(5) + "_" + color.getName()));
-//        return modelLocations;
-//    }
 }

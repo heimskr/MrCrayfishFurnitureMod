@@ -68,54 +68,6 @@ public class PresentBlock extends FurnitureBlock implements ITileEntityProvider 
         return SHAPE;
     }
 
-//    @Override
-//    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
-//        return BOUNDING_BOX;
-//    }
-
-//    @Override
-//    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
-//        addCollisionBoxToList(pos, entityBox, collidingBoxes, BOUNDING_BOX);
-//    }
-
-//    @Override
-//    public Item getItemDropped(IBlockState state, Random rand, int fortune) {
-//        return null;
-//    }
-
-//    @Override
-//    public int damageDropped(IBlockState state) {
-//        return state.getValue(COLOUR).getMetadata();
-//    }
-
-//    @Override
-//    public int getMetaFromState(IBlockState state) {
-//        return state.getValue(COLOUR).getMetadata();
-//    }
-
-//    @Override
-//    public IBlockState getStateFromMeta(int meta) {
-//        return this.getDefaultState().withProperty(COLOUR, EnumDyeColor.byMetadata(meta));
-//    }
-
-//    @Override
-//    protected BlockStateContainer createBlockState() {
-//        return new BlockStateContainer(this, COLOUR);
-//    }
-
-//    @Override
-//    public void getSubBlocks(CreativeTabs item, NonNullList<ItemStack> items) {
-//        for (int i = 0; i < EnumDyeColor.values().length; ++i) {
-//            items.add(new ItemStack(this, 1, i));
-//        }
-//    }
-
-//    @Override
-//    public BlockFaceShape getBlockFaceShape(IBlockAccess worldIn, IBlockState state, BlockPos pos, EnumFacing face) {
-//        return BlockFaceShape.UNDEFINED;
-//    }
-
-
     @Override
     public boolean hasTileEntity(BlockState state) {
         return true;

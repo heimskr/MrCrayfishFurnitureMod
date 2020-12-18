@@ -53,7 +53,6 @@ public class PresentScreen extends ContainerScreen<PresentContainer> {
     @Override
     protected void init() {
         super.init();
-//        Keyboard.enableRepeatEvents(false);
         int posX = width / 2 + 40;
         int posY = height / 2 - 50;
         btnWrap = this.addButton(new Button(posX, posY - 10, 40, 20, ITextComponent.getTextComponentOrEmpty(I18n.format("cfm.button.wrap")), button -> {
