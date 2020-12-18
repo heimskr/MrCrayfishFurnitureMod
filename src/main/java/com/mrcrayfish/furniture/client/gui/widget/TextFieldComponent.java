@@ -11,7 +11,7 @@ import net.minecraft.util.text.ITextComponent;
  * Author: MrCrayfish
  */
 public class TextFieldComponent extends ValueComponent {
-    private TextFieldWidget textFieldLootTable;
+    public TextFieldWidget textFieldLootTable;
 
     public TextFieldComponent(FontRenderer font, IValueContainer.Entry entry) {
         super(entry.getId(), entry.getName());
@@ -36,7 +36,13 @@ public class TextFieldComponent extends ValueComponent {
 
     @Override
     public void keyPressed(int keyCode, int scanCode, int modifiers) {
+        System.out.println("keyPressed(" + keyCode + ", " + scanCode + ", " + modifiers + ")");
         textFieldLootTable.keyPressed(keyCode, scanCode, modifiers);
+    }
+
+    @Override
+    public void charTyped(char codePoint, int modifiers) {
+        textFieldLootTable.charTyped(codePoint, modifiers);
     }
 
     @Override

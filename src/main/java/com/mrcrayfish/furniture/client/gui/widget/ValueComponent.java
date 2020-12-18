@@ -26,6 +26,8 @@ public abstract class ValueComponent {
 
     public abstract void keyPressed(int keyCode, int scanCode, int modifiers);
 
+    public void charTyped(char codePoint, int modifiers) {}
+
     public String getId() {
         return id;
     }

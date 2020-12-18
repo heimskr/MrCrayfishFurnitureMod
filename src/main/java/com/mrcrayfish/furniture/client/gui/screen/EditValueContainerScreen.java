@@ -43,7 +43,9 @@ public class EditValueContainerScreen extends Screen {
             if (entry.getType() != null) {
                 switch (entry.getType()) {
                     case TEXT_FIELD:
-                        values.add(new TextFieldComponent(this.font, entry));
+                        TextFieldComponent field = new TextFieldComponent(this.font, entry);
+                        values.add(field);
+//                        this.children.add(field.textFieldLootTable);
                         break;
                     case TOGGLE:
                         values.add(new ToggleComponent(entry));
@@ -96,11 +98,19 @@ public class EditValueContainerScreen extends Screen {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
+//    @Override
+//    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+//        boolean out = super.keyPressed(keyCode, scanCode, modifiers);
+//        for (ValueComponent value: values)
+//            value.keyPressed(keyCode, scanCode, modifiers);
+//        return out;
+//    }
+//
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        boolean out = super.keyPressed(keyCode, scanCode, modifiers);
+    public boolean charTyped(char codePoint, int modifiers) {
+        boolean out = super.charTyped(codePoint, modifiers);
         for (ValueComponent value: values)
-            value.keyPressed(keyCode, scanCode, modifiers);
+            value.charTyped(codePoint, modifiers);
         return out;
     }
 

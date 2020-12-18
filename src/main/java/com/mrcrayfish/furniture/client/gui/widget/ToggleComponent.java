@@ -24,11 +24,11 @@ public class ToggleComponent extends ValueComponent {
 
     @Override
     public void render(MatrixStack stack, int x, int y, int mouseX, int mouseY) {
-        super.render(stack, x, y, mouseX, mouseY);
-        System.out.println("Rendering button: (" + x + ", " + y + ") :: (" + mouseX + ", " + mouseY + ")");
+//        System.out.println("Rendering button: (" + x + ", " + y + ") :: (" + mouseX + ", " + mouseY + ")");
         button.x = x;
         button.y = y + 10;
-        button.render(stack, mouseX, mouseY, 0);
+        button.renderButton(stack, mouseX, mouseY, 0);
+        super.render(stack, x, y, mouseX, mouseY);
     }
 
     @Override
