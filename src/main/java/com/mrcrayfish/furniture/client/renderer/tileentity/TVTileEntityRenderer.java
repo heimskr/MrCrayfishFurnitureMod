@@ -56,7 +56,7 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
             return;
         }
 
-        System.out.println("Hello.");
+//        System.out.println("Hello.");
 
         stack.push();
         {
@@ -127,10 +127,10 @@ public class TVTileEntityRenderer extends TileEntityRenderer<TVTileEntity> {
                     buffer.pos(startX + width, startY, 0).tex((float) (u + scaledWidth * pixelScale), (float) v).endVertex();
                     tessellator.draw();
                 } else if (te.isLoaded()) {
-                    System.out.println("TE is loaded.");
+//                    System.out.println("TE is loaded.");
                     AnimatedTexture texture = GifCache.INSTANCE.get(te.getCurrentChannel());
                     if (texture != null) {
-                        System.out.println("texture isn't null.");
+//                        System.out.println("texture isn't null.");
 //                        texture.bind();
 
 //                        IVertexBuilder builder = bufferIn.getBuffer(RenderType.getCutout());

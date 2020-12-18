@@ -30,9 +30,11 @@ public class Texture {
     protected int width, height;
     protected int counter;
     protected boolean delete;
+    protected String hash;
 
-    public Texture(File file) {
+    public Texture(File file, String hash) {
         this.load(file);
+        this.hash = hash;
     }
 
     public void load(File file) {

@@ -1,5 +1,6 @@
 package com.mrcrayfish.furniture.client;
 
+import com.mrcrayfish.furniture.FurnitureMod;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -55,7 +56,7 @@ public final class GifCache {
     public void add(String url, File file) {
         synchronized (this) {
             if (!cacheMap.containsKey(url)) {
-                AnimatedTexture texture = new AnimatedTexture(file);
+                AnimatedTexture texture = new AnimatedTexture(file, DigestUtils.sha1Hex(url.getBytes()));
                 cacheMap.put(url, texture);
             }
         }
@@ -65,10 +66,11 @@ public final class GifCache {
         synchronized(this) {
             try {
                 if (!cacheMap.containsKey(url)) {
-                    String id = DigestUtils.sha1Hex(url.getBytes()) + ".gif";
+                    String hash = DigestUtils.sha1Hex(url.getBytes());
+                    String id = hash + ".gif";
                     File gif = new File(getCache(), id);
                     FileUtils.writeByteArrayToFile(gif, data);
-                    AnimatedTexture texture = new AnimatedTexture(gif);
+                    AnimatedTexture texture = new AnimatedTexture(gif, hash);
                     cacheMap.put(url, texture);
                 }
                 return true;
@@ -90,6 +92,7 @@ public final class GifCache {
 
     @SubscribeEvent
     public void onRenderTick(TickEvent.ClientTickEvent event) {
+        FurnitureMod.LOGGER.warn("tick!");
         if (event.phase == TickEvent.Phase.START)
             this.tick();
     }

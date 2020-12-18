@@ -19,7 +19,10 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Author: MrCrayfish
@@ -28,9 +31,10 @@ public class AnimatedTexture extends Texture {
     private List<ByteBuffer> framesTextureData;
     private List<NativeImage> natives;
     private int frameCounter;
+    private List<ResourceLocation> locations;
 
-    public AnimatedTexture(File file) {
-        super(file);
+    public AnimatedTexture(File file, String hash) {
+        super(file, hash);
     }
 
     @Override
@@ -38,7 +42,6 @@ public class AnimatedTexture extends Texture {
         framesTextureData = Lists.newArrayList();
         natives = Lists.newArrayList();
         THREAD_SERVICE.submit(() -> {
-//            for (int i = 0; i < 100; ++i) FurnitureMod.LOGGER.warn("Loading AnimatedTexture.");
             try {
                 FileInputStream inputStream = new FileInputStream(file);
                 GifDecoder.GifImage decoder = GifDecoder.read(inputStream);
@@ -46,34 +49,24 @@ public class AnimatedTexture extends Texture {
                 this.height = decoder.getHeight();
 
                 int frameCount = decoder.getFrameCount();
-//                for (int i = 0; i < 100; ++i) FurnitureMod.LOGGER.warn("frameCount = " + frameCount);
+                locations = new ArrayList<>(frameCount);
                 for (int i = 0; i < frameCount; i++) {
-                    FurnitureMod.LOGGER.warn("Hello. i = " + i);
+                    locations.add(null);
                     BufferedImage image = parseFrame(decoder.getFrame(i));
                     int width = image.getWidth(), height = image.getHeight();
                     NativeImage n = new NativeImage(width, height, true);
                     WritableRaster raster = image.getRaster();
-                    FurnitureMod.LOGGER.warn("[[");
                     for (int j = 0; j < width; j++) {
-//                        FurnitureMod.LOGGER.warn("j = " + j + " / " + (width - 1));
                         for (int k = 0; k < height; k++) {
-//                            FurnitureMod.LOGGER.warn("k = " + k + " / " + (height - 1));
                             int[] c = raster.getPixel(j, k, new int[4]);
-//                            n.setPixelRGBA(j, k, (((((c[3] >> 8) + c[2]) >> 8) + c[1]) >> 8) + c[0]);
-//                            n.setPixelRGBA(j, k, (((((c[3] >> 8) | c[2]) >> 8) | c[1]) >> 8) + c[0]);
                             n.setPixelRGBA(j, k, c[0] | (c[1] << 8) | (c[2] << 16) | (c[3] << 24));
                         }
                     }
                     FurnitureMod.LOGGER.warn("]]");
                     int[] imageData = new int[this.width * this.height];
                     image.getRGB(0, 0, this.width, this.height, imageData, 0, this.width);
-//                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-//                    ImageIO.write(image, "PNG", stream);
-//                    pngFrames.add(stream.toByteArray());
-//                    ImageIO
                     framesTextureData.add(createBuffer(imageData));
                     natives.add(n);
-//                    FurnitureMod.LOGGER.warn("Added native " + (natives.size() - 1));
                 }
             } catch(IOException e) {
                 e.printStackTrace();
@@ -104,9 +97,12 @@ public class AnimatedTexture extends Texture {
 //        NativeImage nativeImage = NativeImage.read(this.framesTextureData.get(frameCounter));
 //        NativeImage.
 //        for (int i = 0; i < 25; ++i) FurnitureMod.LOGGER.warn("natives.size() = " + natives.size());
-        DynamicTexture dynamicTexture = new DynamicTexture(natives.get(frameCounter));
-        Minecraft.getInstance().deferTask(dynamicTexture::updateDynamicTexture);
-        return Minecraft.getInstance().getTextureManager().getDynamicTextureLocation("cfm_tv_" + frameCounter, dynamicTexture);
+        if (locations.get(frameCounter) == null) {
+            DynamicTexture dynamicTexture = new DynamicTexture(natives.get(frameCounter));
+            Minecraft.getInstance().deferTask(dynamicTexture::updateDynamicTexture);
+            locations.set(frameCounter, Minecraft.getInstance().getTextureManager().getDynamicTextureLocation("cfm_tv_" + hash + "_" + frameCounter, dynamicTexture));
+        }
+        return locations.get(frameCounter);
     }
 
     /**
