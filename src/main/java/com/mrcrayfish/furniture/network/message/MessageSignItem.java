@@ -19,19 +19,16 @@ public class MessageSignItem implements IMessage<MessageSignItem> {
     ListNBT itemList;
 
     public MessageSignItem(ListNBT itemList) {
-        System.out.println("Constructing MessageSignItem with length " + itemList.size() + ".");
         this.itemList = itemList;
     }
 
     public MessageSignItem() {
-        System.out.println("Constructing empty MessageSignItem.");
         this.itemList = null;
     }
 
     @Override
     public void handle(MessageSignItem message, Supplier<NetworkEvent.Context> supplier) {
         supplier.get().enqueueWork(() -> {
-            System.out.println("Handling MessageSignItem.");
             PlayerEntity player = supplier.get().getSender();
             ItemStack stack = player.inventory.getCurrentItem();
             if (stack.getItem() instanceof IAuthored) {
