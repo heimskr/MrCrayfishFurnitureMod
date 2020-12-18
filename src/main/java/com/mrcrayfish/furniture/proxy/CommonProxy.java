@@ -40,4 +40,6 @@ public class CommonProxy {
     public void showDoorMatScreen(World world, BlockPos pos) {}
 
     public void showPhotoFrameScreen(World world, BlockPos pos) {}
+
+    public void showEditValueScreen(World world, BlockPos pos) {}
 }

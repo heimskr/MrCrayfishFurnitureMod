@@ -433,6 +433,7 @@
     "gui.button.cfm.cancel": "Cancel",
     "gui.button.cfm.on": "On",
     "gui.button.cfm.off": "Off",
+    "gui.button.cfm.close": "X",
     "gui.button.cfm.enable_filters": "Enable All Filters",
     "gui.button.cfm.disable_filters": "Disable All Filters",
     "gui.button.cfm.wrap": "Wrap",

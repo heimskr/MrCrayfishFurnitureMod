@@ -3,6 +3,7 @@ package com.mrcrayfish.furniture.proxy;
 import com.mrcrayfish.furniture.client.MailBoxEntry;
 import com.mrcrayfish.furniture.client.event.CreativeScreenEvents;
 import com.mrcrayfish.furniture.client.gui.screen.DoorMatScreen;
+import com.mrcrayfish.furniture.client.gui.screen.EditValueContainerScreen;
 import com.mrcrayfish.furniture.client.gui.screen.inventory.*;
 import com.mrcrayfish.furniture.client.gui.screen.PhotoFrameScreen;
 import com.mrcrayfish.furniture.client.renderer.SeatRenderer;
@@ -14,6 +15,7 @@ import com.mrcrayfish.furniture.core.ModTileEntities;
 import com.mrcrayfish.furniture.inventory.container.PresentContainer;
 import com.mrcrayfish.furniture.tileentity.DoorMatTileEntity;
 import com.mrcrayfish.furniture.tileentity.GrillTileEntity;
+import com.mrcrayfish.furniture.tileentity.IValueContainer;
 import com.mrcrayfish.furniture.tileentity.PhotoFrameTileEntity;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
@@ -385,5 +387,12 @@ public class ClientProxy extends CommonProxy {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof PhotoFrameTileEntity)
             Minecraft.getInstance().displayGuiScreen(new PhotoFrameScreen((PhotoFrameTileEntity) tileEntity));
+    }
+
+    @Override
+    public void showEditValueScreen(World world, BlockPos pos) {
+        TileEntity tileEntity = world.getTileEntity(pos);
+        if (tileEntity instanceof IValueContainer)
+            Minecraft.getInstance().displayGuiScreen(new EditValueContainerScreen((IValueContainer) tileEntity));
     }
 }

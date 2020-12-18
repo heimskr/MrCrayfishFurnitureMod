@@ -30,12 +30,6 @@ public class PhotoFrameScreen extends Screen {
 
     public PhotoFrameScreen(PhotoFrameTileEntity photoFrameTileEntity) {
         super(new TranslationTextComponent("gui.cfm.photo_frame_url")); // Not really a title, but...
-        if (photoFrameTileEntity.getWorld() == null)
-            System.out.println("Constructing screen with null world.");
-        else
-            System.out.println("Constructing screen from " + (photoFrameTileEntity.getWorld().isRemote? "remote" : "local") + " world.");
-        System.out.println("PFTE.url=" + photoFrameTileEntity.getUrl());
-        System.out.println("PFTE.stretch=" + photoFrameTileEntity.isStretched());
         this.photoFrameTileEntity = photoFrameTileEntity;
         this.stretch = photoFrameTileEntity.isStretched();
     }
@@ -48,25 +42,18 @@ public class PhotoFrameScreen extends Screen {
         this.urlField = new TextFieldWidget(this.font, guiLeft + 8, guiTop + 18, 160, 18, ITextComponent.getTextComponentOrEmpty(""));
         if (this.photoFrameTileEntity.getUrl() != null)
             this.urlField.setText(this.photoFrameTileEntity.getUrl());
-//        if(this.mailBoxTileEntity.getMailBoxName() != null) {
-//            this.nameField.setText(this.mailBoxTileEntity.getMailBoxName());
-//        }
         this.children.add(this.urlField);
 
 
         this.btnStretch = this.addButton(new Button(guiLeft + 7, guiTop + 42 + 10, 162, 20, ITextComponent.getTextComponentOrEmpty(I18n.format("gui.button.cfm." + (this.stretch? "on" : "off"))), button -> {
             this.stretch = !this.stretch;
             btnStretch.setMessage(ITextComponent.getTextComponentOrEmpty(I18n.format("gui.button.cfm." + (this.stretch? "on" : "off"))));
-//            button.setMessage(ITextComponent.getTextComponentOrEmpty(I18n.format(Math.random() < 0.5? "gui.button.cfm.on" : "gui.button.cfm.off")));
-//            this.photoFrameTileEntity.
         }));
-
 
         this.addButton(new Button(guiLeft + 7, guiTop + 42 + 10 + 22, 79, 20, ITextComponent.getTextComponentOrEmpty(I18n.format("gui.button.cfm.save")), button -> {
             PacketHandler.instance.sendToServer(new MessageUpdatePhotoFrame(this.photoFrameTileEntity.getPos(), this.urlField.getText(), this.stretch));
             this.minecraft.player.closeScreen();
         }));
-//        this.btnSave.active = true;
 
         this.addButton(new Button(guiLeft + 91, guiTop + 42 + 10 + 22, 79, 20, ITextComponent.getTextComponentOrEmpty(I18n.format("gui.button.cfm.cancel")), button -> {
             this.minecraft.player.closeScreen();
@@ -77,7 +64,6 @@ public class PhotoFrameScreen extends Screen {
     public void tick() {
         super.tick();
         this.urlField.tick();
-//        this.btnSave.active = this.isValidName();
     }
 
     @Override

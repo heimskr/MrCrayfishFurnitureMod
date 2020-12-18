@@ -1,5 +1,6 @@
 package com.mrcrayfish.furniture.block;
 
+import com.mrcrayfish.furniture.FurnitureMod;
 import com.mrcrayfish.furniture.tileentity.IValueContainer;
 import com.mrcrayfish.furniture.tileentity.TVTileEntity;
 import net.minecraft.block.Block;
@@ -39,12 +40,21 @@ public abstract class AbstractTVBlock extends FurnitureTileBlock {
 
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
+        System.out.println("AbstractTVBlock.onBlockActivate.");
         if (world.isRemote) {
             TileEntity tileEntity = world.getTileEntity(pos);
+            System.out.println("World is remote. ");
+            if (tileEntity == null) {
+                System.out.println("Tile entity is null.");
+            } else {
+                System.out.println((tileEntity instanceof IValueContainer) + " " + (tileEntity instanceof TVTileEntity) + " " + tileEntity.getClass().getCanonicalName());
+            }
             if (tileEntity instanceof IValueContainer && tileEntity instanceof TVTileEntity) {
-                if (!((TVTileEntity) tileEntity).isDisabled())
-                    ;
-//                    player.openGui(MrCrayfishFurnitureMod.instance, 1, world, pos.getX(), pos.getY(), pos.getZ());
+                System.out.println("Tile entity is an instance of IValueContainer and TVTileEntity.");
+                if (!((TVTileEntity) tileEntity).isDisabled()) {
+                    System.out.println("TV isn't disabled.");
+                    FurnitureMod.PROXY.showEditValueScreen(world, pos);
+                }
             }
         }
         return ActionResultType.SUCCESS;

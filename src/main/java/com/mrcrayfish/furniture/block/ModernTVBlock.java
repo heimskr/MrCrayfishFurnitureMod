@@ -70,7 +70,7 @@ public class ModernTVBlock extends AbstractTVBlock {
         if (context.getFace().getHorizontalIndex() != -1)
             state = state.with(MOUNTED, true);
         if (context.getPlacementHorizontalFacing().getHorizontalIndex() != -1)
-            state = state.with(DIRECTION, context.getPlacementHorizontalFacing().getOpposite());
+            state = state.with(DIRECTION, context.getPlacementHorizontalFacing());
         return state;
     }
 
@@ -85,11 +85,5 @@ public class ModernTVBlock extends AbstractTVBlock {
         if (state.get(MOUNTED))
             return 4.65;
         return super.getScreenZOffset(state);
-    }
-
-    @Nullable
-    @Override
-    public TileEntity createNewTileEntity(IBlockReader worldIn) {
-        return null;
     }
 }
