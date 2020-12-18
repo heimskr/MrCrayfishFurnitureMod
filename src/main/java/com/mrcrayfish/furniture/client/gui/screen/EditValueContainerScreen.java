@@ -6,6 +6,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mrcrayfish.furniture.client.gui.widget.TextFieldComponent;
 import com.mrcrayfish.furniture.client.gui.widget.ToggleComponent;
 import com.mrcrayfish.furniture.client.gui.widget.ValueComponent;
+import com.mrcrayfish.furniture.network.PacketHandler;
+import com.mrcrayfish.furniture.network.message.MessageUpdateValueContainer;
 import com.mrcrayfish.furniture.tileentity.IValueContainer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
@@ -98,14 +100,6 @@ public class EditValueContainerScreen extends Screen {
         return super.mouseClicked(mouseX, mouseY, button);
     }
 
-//    @Override
-//    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-//        boolean out = super.keyPressed(keyCode, scanCode, modifiers);
-//        for (ValueComponent value: values)
-//            value.keyPressed(keyCode, scanCode, modifiers);
-//        return out;
-//    }
-//
     @Override
     public boolean charTyped(char codePoint, int modifiers) {
         boolean out = super.charTyped(codePoint, modifiers);
@@ -116,8 +110,8 @@ public class EditValueContainerScreen extends Screen {
 
     @Override
     public void onClose() {
-        System.out.println("EditValueContainerScreen closed.");
-//        PacketHandler.INSTANCE.sendToServer(new MessageUpdateValueContainer(values, valueContainer));
+        System.out.println("EditValueContainerScreen closed. values.size()=" + values.size() + ", pos=" + valueContainer.getContainerPos().getCoordinatesAsString());
+        PacketHandler.instance.sendToServer(new MessageUpdateValueContainer(values, valueContainer));
     }
 
     public static void drawScaledCustomSizeModalRect(int startX, int startY, float float0, float float1, int int0, int int1, int int2, int int3, float float2, float float3) {

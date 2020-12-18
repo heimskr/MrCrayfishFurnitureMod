@@ -32,6 +32,7 @@ public class PacketHandler {
         register(MessageSetDoorMatMessage.class, new MessageSetDoorMatMessage());
         register(MessageUpdatePhotoFrame.class, new MessageUpdatePhotoFrame());
         register(MessageSignItem.class, new MessageSignItem());
+        register(MessageUpdateValueContainer.class, new MessageUpdateValueContainer());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message) {
