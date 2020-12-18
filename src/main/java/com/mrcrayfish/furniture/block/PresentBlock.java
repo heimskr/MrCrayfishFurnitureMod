@@ -11,7 +11,10 @@ import net.minecraft.item.DyeColor;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.SoundCategory;
 import net.minecraft.util.SoundEvents;
+import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.util.text.TextFormatting;
 import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
@@ -24,7 +27,7 @@ import java.util.List;
 import java.util.Random;
 
 public class PresentBlock extends FurnitureBlock implements ITileEntityProvider {
-    private static final Bounds BOUNDS = new Bounds(0.25, 0.001, 0.25, 0.75, 0.35, 0.75);
+    private static final VoxelShape SHAPE = Block.makeCuboidShape(4, 0, 4, 12, 5.6, 12);
     public static HashMap<DyeColor, IRegistryDelegate<Block>> colorRegistry = new HashMap<>();
 
     public DyeColor color;
@@ -60,7 +63,10 @@ public class PresentBlock extends FurnitureBlock implements ITileEntityProvider 
         super.onReplaced(state, world, pos, newState, isMoving);
     }
 
-
+    @Override
+    public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
+        return SHAPE;
+    }
 
 //    @Override
 //    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos) {
