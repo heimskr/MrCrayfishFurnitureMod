@@ -59,7 +59,9 @@ public class AnimatedTexture extends Texture {
                         for (int k = 0; k < height; k++) {
 //                            FurnitureMod.LOGGER.warn("k = " + k + " / " + (height - 1));
                             int[] c = raster.getPixel(j, k, new int[4]);
-                            n.setPixelRGBA(j, k, (((((c[3] >> 8) + c[2]) >> 8) + c[1]) >> 8) + c[0]);
+//                            n.setPixelRGBA(j, k, (((((c[3] >> 8) + c[2]) >> 8) + c[1]) >> 8) + c[0]);
+//                            n.setPixelRGBA(j, k, (((((c[3] >> 8) | c[2]) >> 8) | c[1]) >> 8) + c[0]);
+                            n.setPixelRGBA(j, k, c[0] | (c[1] << 8) | (c[2] << 16) | (c[3] << 24));
                         }
                     }
                     FurnitureMod.LOGGER.warn("]]");
