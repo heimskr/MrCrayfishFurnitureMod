@@ -515,6 +515,7 @@ public class Names
         public static final String TREE = Reference.MOD_ID + ":tree";
         public static final String PHOTO_FRAME = Reference.MOD_ID + ":photo_frame";
         public static final String PRESENT = Reference.MOD_ID + ":present";
+        public static final String TV = Reference.MOD_ID + ":tv";
     }
 
     public static class Sound {

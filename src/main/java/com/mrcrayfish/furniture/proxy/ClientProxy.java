@@ -52,6 +52,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.KITCHEN_SINK, KitchenSinkTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.TREE, TreeTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.PHOTO_FRAME, PhotoFrameTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.TV, TVTileEntityRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.SEAT, SeatRenderer::new);
 

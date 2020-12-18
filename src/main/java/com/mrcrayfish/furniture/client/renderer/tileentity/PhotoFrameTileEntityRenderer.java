@@ -56,7 +56,6 @@ public class PhotoFrameTileEntityRenderer extends TileEntityRenderer<PhotoFrameT
             double frameHeight = 14;
             double frameYOffset = 1;
             double frameZOffset = 7.49;
-            final double x = te.getPos().getX(), y = te.getPos().getY(), z = te.getPos().getZ();
 
             ImageDownloadThread.ImageDownloadResult result = te.getResult();
             if (result != null && result != ImageDownloadThread.ImageDownloadResult.SUCCESS) {

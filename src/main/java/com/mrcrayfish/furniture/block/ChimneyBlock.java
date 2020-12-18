@@ -12,7 +12,6 @@ import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorld;
-import net.minecraft.world.World;
 import net.minecraft.world.server.ServerWorld;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -55,11 +54,6 @@ public class ChimneyBlock extends Block {
             worldIn.spawnParticle(ParticleTypes.LARGE_SMOKE, pos.getX() + posX, pos.getY() + 0.9, pos.getZ() + posZ, 1, 0.0D, 0.0D, 0.0D, 1);
         }
     }
-
-//    @Override
-//    public boolean ticksRandomly(BlockState state) {
-//        return state.get(TYPE) == ChimneyType.TOP;
-//    }
 
     @Override
     protected void fillStateContainer(StateContainer.Builder<Block, BlockState> builder) {

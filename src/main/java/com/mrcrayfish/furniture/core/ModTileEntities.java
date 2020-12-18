@@ -35,6 +35,7 @@ public class ModTileEntities {
     public static final TileEntityType<TreeTileEntity> TREE = buildType(Names.TileEntity.TREE, TileEntityType.Builder.create(TreeTileEntity::new, ModBlocks.TREE));
     public static final TileEntityType<PhotoFrameTileEntity> PHOTO_FRAME = buildType(Names.TileEntity.PHOTO_FRAME, TileEntityType.Builder.create(PhotoFrameTileEntity::new, ModBlocks.PHOTO_FRAME));
     public static final TileEntityType<PresentTileEntity> PRESENT = buildType(Names.TileEntity.PRESENT, TileEntityType.Builder.create(PresentTileEntity::new, ModBlocks.PRESENT_WHITE, ModBlocks.PRESENT_ORANGE, ModBlocks.PRESENT_MAGENTA, ModBlocks.PRESENT_LIGHT_BLUE, ModBlocks.PRESENT_YELLOW, ModBlocks.PRESENT_LIME, ModBlocks.PRESENT_PINK, ModBlocks.PRESENT_GRAY, ModBlocks.PRESENT_LIGHT_GRAY, ModBlocks.PRESENT_CYAN, ModBlocks.PRESENT_PURPLE, ModBlocks.PRESENT_BLUE, ModBlocks.PRESENT_BROWN, ModBlocks.PRESENT_GREEN, ModBlocks.PRESENT_RED, ModBlocks.PRESENT_BLACK));
+    public static final TileEntityType<TVTileEntity> TV = buildType(Names.TileEntity.TV, TileEntityType.Builder.create(TVTileEntity::new, ModBlocks.MODERN_TV));
 
     private static <T extends TileEntity> TileEntityType<T> buildType(String id, TileEntityType.Builder<T> builder) {
         TileEntityType<T> type = builder.build(null); //TODO may not allow null
