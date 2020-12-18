@@ -1,14 +1,11 @@
 package com.mrcrayfish.furniture.client.gui.screen.inventory;
 
-import com.google.common.collect.Lists;
 import com.mojang.blaze3d.matrix.MatrixStack;
 import com.mojang.blaze3d.systems.RenderSystem;
-import com.mrcrayfish.furniture.inventory.container.CrateContainer;
 import com.mrcrayfish.furniture.inventory.container.ItemInventory;
 import com.mrcrayfish.furniture.inventory.container.PresentContainer;
 import com.mrcrayfish.furniture.network.PacketHandler;
 import com.mrcrayfish.furniture.network.message.MessageSignItem;
-import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.inventory.ContainerScreen;
 import net.minecraft.client.gui.widget.button.Button;
 import net.minecraft.client.resources.I18n;
@@ -19,13 +16,10 @@ import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
-import net.minecraft.util.text.TextComponent;
-import net.minecraftforge.common.util.Constants;
-import org.lwjgl.opengl.GL11;
 
 public class PresentScreen extends ContainerScreen<PresentContainer> {
     private static final ResourceLocation GUI_TEXTURE = new ResourceLocation("cfm:textures/gui/present.png");
-    private Button btnWrap;
+    private Button buttonWrap;
     private PlayerEntity player;
     private ItemStack heldItem;
 
@@ -55,20 +49,18 @@ public class PresentScreen extends ContainerScreen<PresentContainer> {
         super.init();
         int posX = width / 2 + 40;
         int posY = height / 2 - 50;
-        btnWrap = this.addButton(new Button(posX, posY - 10, 40, 20, ITextComponent.getTextComponentOrEmpty(I18n.format("cfm.button.wrap")), button -> {
+        buttonWrap = this.addButton(new Button(posX, posY - 10, 40, 20, ITextComponent.getTextComponentOrEmpty(I18n.format("gui.button.cfm.wrap")), button -> {
             ListNBT itemList = new ListNBT();
-            System.out.println("Enumerating inventory.");
             ItemInventory itemInventory = this.container.getItemInventory();
             for (int i = 0; i < itemInventory.getSizeInventory(); ++i) {
                 ItemStack stack = itemInventory.getStackInSlot(i);
-                System.out.println("Item: " + stack.getTranslationKey() + " x " + stack.getCount());
                 CompoundNBT compound = new CompoundNBT();
                 stack.write(compound);
                 itemList.add(compound);
             }
             PacketHandler.instance.sendToServer(new MessageSignItem(itemList));
         }));
-        btnWrap.visible = true;
+        buttonWrap.visible = true;
     }
 
     @Override

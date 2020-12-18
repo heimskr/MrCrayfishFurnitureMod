@@ -45,7 +45,7 @@ public class PresentBlock extends FurnitureBlock implements ITileEntityProvider 
         if (present != null) {
             world.playSound(pos.getX(), pos.getY(), pos.getZ(), SoundEvents.ENTITY_PLAYER_LEVELUP, SoundCategory.BLOCKS, 0.75F, 1.0F, false);
             if (world.isRemote)
-                PlayerUtil.sendMessage(player, new TranslationTextComponent("cfm.message.present_christmas", TextFormatting.RED + present.ownerName));
+                PlayerUtil.sendMessage(player, new TranslationTextComponent("message.cfm.present_christmas", TextFormatting.RED + present.ownerName));
 //            Triggers.trigger(Triggers.UNWRAP_PRESENT, player);
         }
     }
