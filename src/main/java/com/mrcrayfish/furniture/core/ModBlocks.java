@@ -434,6 +434,7 @@ public class ModBlocks {
     public static final Block WREATH = register(Names.Block.WREATH, new WreathBlock(Block.Properties.create(Material.LEAVES).hardnessAndResistance(0.5F).sound(SoundType.PLANT)));
     public static final Block FAIRY_LIGHT = register(Names.Block.FAIRY_LIGHT, new FairyLightBlock(Block.Properties.create(Material.GLASS).hardnessAndResistance(0.5F).setLightLevel((state) -> 7).sound(SoundType.GLASS)));
     public static final Block MANTELPIECE = register(Names.Block.MANTELPIECE, new MantelpieceBlock(Block.Properties.from(Blocks.BRICKS).hardnessAndResistance(1.0F)));
+    public static final Block CHIMNEY = register(Names.Block.CHIMNEY, new ChimneyBlock(Block.Properties.from(Blocks.BRICKS).tickRandomly().hardnessAndResistance(1.0F)));
 
     public static final Block PRESENT_WHITE = register(Names.Block.PRESENT_WHITE, new PresentBlock(DyeColor.WHITE, Block.Properties.from(Blocks.WHITE_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
     public static final Block PRESENT_ORANGE = register(Names.Block.PRESENT_ORANGE, new PresentBlock(DyeColor.ORANGE, Block.Properties.from(Blocks.ORANGE_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));

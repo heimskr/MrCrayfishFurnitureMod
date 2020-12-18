@@ -69,6 +69,8 @@
         "cfm:photo_frame",
         "cfm:wreath",
         "cfm:fairy_light",
+        "cfm:mantelpiece",
+        "cfm:chimney",
         "cfm:white_present",
         "cfm:orange_present",
         "cfm:magenta_present",
@@ -84,7 +86,6 @@
         "cfm:brown_present",
         "cfm:green_present",
         "cfm:red_present",
-        "cfm:black_present",
-        "cfm:mantelpiece"
+        "cfm:black_present"
     ]
 }

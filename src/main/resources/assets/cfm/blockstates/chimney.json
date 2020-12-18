@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "type=top":    {"model": "cfm:block/chimney_top"   },
+		"type=bottom": {"model": "cfm:block/chimney_bottom"}
+    }
+}
