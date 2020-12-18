@@ -1,8 +1,8 @@
 {
     "__comment": "Model generated using MrCrayfish's Model Creator (http://mrcrayfish.com/modelcreator/)",
     "textures": {
-        "1": "blocks/gold_block",
-        "2": "cfm:blocks/presentstring",
+        "1": "minecraft:block/gold_block",
+        "2": "cfm:block/presentstring",
         "particle": "#0"
     },
 	"display": {
