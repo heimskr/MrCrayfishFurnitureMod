@@ -2,7 +2,6 @@ package com.mrcrayfish.furniture.block;
 
 import com.mrcrayfish.furniture.core.ModItems;
 import com.mrcrayfish.furniture.item.crafting.ChoppingBoardRecipe;
-import com.mrcrayfish.furniture.item.crafting.ToasterCookingRecipe;
 import com.mrcrayfish.furniture.tileentity.ChoppingBoardTileEntity;
 import com.mrcrayfish.furniture.util.Bounds;
 import com.mrcrayfish.furniture.util.TileEntityUtil;
@@ -31,13 +30,6 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class ChoppingBoardBlock extends FurnitureTileBlock {
-//    private static final AxisAlignedBB BOUNDING_BOX_ONE = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.0, 0.0, 3 * 0.0625, 1.0, 1.5 * 0.0625, 13 * 0.0625);
-//    private static final AxisAlignedBB BOUNDING_BOX_TWO = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.0, 0.0, 3 * 0.0625, 1.0, 1.5 * 0.0625, 13 * 0.0625);
-
-//    private static final AxisAlignedBB COLLISION_BOX_ONE = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.0, 0.0, 3 * 0.0625, 1.0, 0.0625, 13 * 0.0625);
-//    private static final AxisAlignedBB COLLISION_BOX_TWO = CollisionHelper.getBlockBounds(EnumFacing.EAST, 0.0, 0.0, 3 * 0.0625, 1.0, 0.0625, 13 * 0.0625);
-//    private static final Bounds BOUNDS = new Bounds(0.0, 0.0, 3 * 0.0625, 1.0, 1.5 * 0.0625, 13 * 0.0625);
-//    private static final Bounds COLLISION_BOUNDS = new Bounds(0.0, 0.0, 3 * 0.0625, 1.0, 0.0625, 13 * 0.0625);
     private static final Bounds BOUNDS = new Bounds(3 * 0.0625, 0.0, 0.0, 13 * 0.0625, 1.5 * 0.0625, 1.0);
     private static final Bounds COLLISION_BOUNDS = new Bounds(3 * 0.0625, 0.0, 0.0, 13 * 0.0625, 0.0625, 1.0);
 
@@ -81,7 +73,6 @@ public class ChoppingBoardBlock extends FurnitureTileBlock {
             ChoppingBoardTileEntity board = (ChoppingBoardTileEntity) tileEntity;
             if (!heldItem.isEmpty()) {
                 Optional<ChoppingBoardRecipe> optional = board.findMatchingRecipe(heldItem);
-//                if (Recipes.getChoppingBoardRecipeFromInput(heldItem) != null) {
                 if (optional.isPresent()) {
                     if (board.getFood() == null) {
                         board.setFood(new ItemStack(heldItem.getItem(), 1));
@@ -116,27 +107,6 @@ public class ChoppingBoardBlock extends FurnitureTileBlock {
         }
         return ActionResultType.SUCCESS;
     }
-
-//    @Override
-//    public AxisAlignedBB getBoundingBox(IBlockState state, IBlockAccess source, BlockPos pos)
-//    {
-//        if(getMetaFromState(state) % 2 == 1)
-//        {
-//            return BOUNDING_BOX_ONE;
-//        }
-//        return BOUNDING_BOX_TWO;
-//    }
-
-//    @Override
-//    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_)
-//    {
-//        if(getMetaFromState(state) % 2 == 1)
-//        {
-//            addCollisionBoxToList(pos, entityBox, collidingBoxes, COLLISION_BOX_ONE);
-//            return;
-//        }
-//        addCollisionBoxToList(pos, entityBox, collidingBoxes, COLLISION_BOX_TWO);
-//    }
 
     @Override
     public int getComparatorInputOverride(BlockState state, World world, BlockPos pos) {
