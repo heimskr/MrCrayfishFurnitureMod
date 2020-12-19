@@ -78,7 +78,7 @@ public class ToastRenderer extends TileEntityRenderer<ToasterTileEntity> {
 
 
                 double yOffset = toaster.isToasting() ? -0.25 : -0.15;
-                yOffset += 0.3F;
+                yOffset += 0.4F;
                 // E entityIn, double xIn, double yIn, double zIn, float rotationYawIn, float partialTicks, MatrixStack matrixStackIn, IRenderTypeBuffer bufferIn, int packedLightIn
                 if (slots[i] == null) {
 //                    for (int z = 0; z < 100; ++z) FurnitureMod.LOGGER.warn("Null slot " + i + "! " + z);;

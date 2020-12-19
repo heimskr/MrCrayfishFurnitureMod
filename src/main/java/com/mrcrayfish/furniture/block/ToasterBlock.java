@@ -27,19 +27,6 @@ import javax.annotation.Nullable;
 import java.util.Optional;
 
 public class ToasterBlock extends FurnitureTileBlock {
-//    private static final AxisAlignedBB BOUNDING_BOX_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 5 * 0.0625, 0.0, 3 * 0.0625, 11 * 0.0625, 0.45, 13 * 0.0625);
-//    private static final AxisAlignedBB BOUNDING_BOX_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 5 * 0.0625, 0.0, 3 * 0.0625, 11 * 0.0625, 0.45, 13 * 0.0625);
-//    private static final AxisAlignedBB BOUNDING_BOX_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 5 * 0.0625, 0.0, 3 * 0.0625, 11 * 0.0625, 0.45, 13 * 0.0625);
-//    private static final AxisAlignedBB BOUNDING_BOX_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 5 * 0.0625, 0.0, 3 * 0.0625, 11 * 0.0625, 0.45, 13 * 0.0625);
-//    private static final AxisAlignedBB[] BOUNDING_BOX = {BOUNDING_BOX_SOUTH, BOUNDING_BOX_WEST, BOUNDING_BOX_NORTH, BOUNDING_BOX_EAST};
-
-//    private static final AxisAlignedBB COLLISION_BOX_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 5 * 0.0625, 0.0, 3 * 0.0625, 11 * 0.0625, 0.4, 13 * 0.0625);
-//    private static final AxisAlignedBB COLLISION_BOX_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 5 * 0.0625, 0.0, 3 * 0.0625, 11 * 0.0625, 0.4, 13 * 0.0625);
-//    private static final AxisAlignedBB COLLISION_BOX_EAST = CollisionHelper.getBlockBounds(EnumFacing.EAST, 5 * 0.0625, 0.0, 3 * 0.0625, 11 * 0.0625, 0.4, 13 * 0.0625);
-//    private static final AxisAlignedBB COLLISION_BOX_SOUTH = CollisionHelper.getBlockBounds(EnumFacing.SOUTH, 5 * 0.0625, 0.0, 3 * 0.0625, 11 * 0.0625, 0.4, 13 * 0.0625);
-//    private static final AxisAlignedBB COLLISION_BOX_WEST = CollisionHelper.getBlockBounds(EnumFacing.WEST, 5 * 0.0625, 0.0, 3 * 0.0625, 11 * 0.0625, 0.4, 13 * 0.0625);
-//    private static final AxisAlignedBB[] COLLISION_BOX = {COLLISION_BOX_SOUTH, COLLISION_BOX_WEST, COLLISION_BOX_NORTH, COLLISION_BOX_EAST};
-
     public static final Bounds BOUNDS = new Bounds(5 * 0.0625, 0, 3 * 0.0625, 11 * 0.0625, 0.45, 13 * 0.0625);
     public static final Bounds COLLISION_BOUNDS = new Bounds(5 * 0.0625, 0, 3 * 0.0625, 11 * 0.0625, 0.4, 13 * 0.0625);
 
@@ -82,7 +69,7 @@ public class ToasterBlock extends FurnitureTileBlock {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof ToasterTileEntity) {
             ToasterTileEntity toasterTileEntity = (ToasterTileEntity) tileEntity;
-            if (!heldItem.isEmpty() && !toasterTileEntity.isToasting()) {
+            if (!heldItem.isEmpty()) {
                 Optional<ToasterCookingRecipe> optional = toasterTileEntity.findMatchingRecipe(heldItem);
                 if (optional.isPresent()) {
                     ToasterCookingRecipe recipe = optional.get();

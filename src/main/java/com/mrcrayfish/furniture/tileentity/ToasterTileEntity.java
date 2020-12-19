@@ -22,8 +22,6 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
     private final int[] cookingTimes = new int[] {0, 0};
     private final int[] cookingTotalTimes = new int[2];
     private final float[] experienceAmounts = new float[] {0F, 0F};
-
-    private int toastingTime = 0;
     private boolean toasting = false;
 
     public ToasterTileEntity() {
@@ -37,6 +35,12 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
                 cookingTimes[i] = 0;
                 cookingTotalTimes[i] = cookTime;
                 experienceAmounts[i] = experience;
+                CompoundNBT compound = new CompoundNBT();
+                this.writeItems(compound);
+                this.writeCookingTimes(compound);
+                this.writeCookingTotalTimes(compound);
+                this.writeExperience(compound);
+                TileEntityUtil.sendUpdatePacket(this, super.write(compound));
                 return true;
             }
         }
@@ -74,43 +78,46 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
 
     @Override
     public void tick() {
-        if (!world.isRemote()) {
+        if (toasting) {
             boolean anyChanged = false;
-            if (toasting) {
-                boolean anyDone = false;
-                int remaining = 0;
-                for (int i = 0; i < slots.size(); ++i) {
-                    if (slots.get(i).isEmpty())
-                        continue;
-                    ++remaining;
-                    if (cookingTimes[i] == cookingTotalTimes[i]) {
-                        --remaining;
-                        if (!world.isRemote) {
-                            Optional<ToasterCookingRecipe> optional = this.world.getRecipeManager().getRecipe(RecipeType.TOASTER_COOKING, new Inventory(this.slots.get(i)), this.world);
-                            if (optional.isPresent())
-                                world.addEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, optional.get().getRecipeOutput().copy()));
-                        } else
-                            anyChanged = true;
-                        slots.set(i, ItemStack.EMPTY);
-                        cookingTimes[i] = 0;
-                        cookingTotalTimes[i] = 0;
-                        if (!world.isRemote && !anyDone) {
-                            //                        world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, FurnitureSounds.toaster_down, SoundCategory.BLOCKS, 0.75F, 1.0F);
-                            anyDone = true;
-                        }
-                    } else {
-                        ++cookingTimes[i];
+            boolean soundPlayed = false;
+            int remaining = 0;
+            for (int i = 0; i < slots.size(); ++i) {
+                if (slots.get(i).isEmpty())
+                    continue;
+                ++remaining;
+                if (cookingTimes[i] == cookingTotalTimes[i]) {
+                    --remaining;
+                    Optional<ToasterCookingRecipe> optional = this.world.getRecipeManager().getRecipe(RecipeType.TOASTER_COOKING, new Inventory(this.slots.get(i)), this.world);
+                    if (optional.isPresent())
+                        world.addEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, optional.get().getRecipeOutput().copy()));
+                    anyChanged = true;
+                    slots.set(i, ItemStack.EMPTY);
+                    cookingTimes[i] = 0;
+                    cookingTotalTimes[i] = 0;
+                    if (!world.isRemote && !soundPlayed) {
+//                        world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, FurnitureSounds.toaster_down, SoundCategory.BLOCKS, 0.75F, 1.0F);
+                        soundPlayed = true;
                     }
+                } else {
+                    ++cookingTimes[i];
                 }
+            }
+
+            if (remaining == 0) {
+                toasting = false;
+                anyChanged = true;
             }
 
             if (anyChanged) {
                 CompoundNBT compound = new CompoundNBT();
                 this.writeItems(compound);
                 this.writeCookingTimes(compound);
+                this.writeToasting(compound);
                 TileEntityUtil.sendUpdatePacket(this, super.write(compound));
             }
         }
+
 
 //            if (toastingTime == 200) {
 ////                for (int i = 0; i < slots.size(); i++) {
@@ -143,6 +150,8 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
             for (int i = 0; i < Math.min(this.experienceAmounts.length, experience.length); i++)
                 this.experienceAmounts[i] = Float.intBitsToFloat(experience[i]);
         }
+        if (compound.contains("Toasting"))
+            toasting = compound.getBoolean("Toasting");
     }
 
     @Override
@@ -151,6 +160,7 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
         writeCookingTimes(compound);
         writeCookingTotalTimes(compound);
         writeExperience(compound);
+        writeToasting(compound);
         return super.write(compound);
     }
 
@@ -174,6 +184,11 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
         for (int i = 0; i < this.experienceAmounts.length; i++)
             experience[i] = Float.floatToIntBits(experience[i]);
         compound.putIntArray("Experience", experience);
+        return compound;
+    }
+
+    private CompoundNBT writeToasting(CompoundNBT compound) {
+        compound.putBoolean("Toasting", toasting);
         return compound;
     }
 
