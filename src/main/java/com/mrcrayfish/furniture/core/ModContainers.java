@@ -2,10 +2,7 @@ package com.mrcrayfish.furniture.core;
 
 import com.mrcrayfish.furniture.Reference;
 import com.mrcrayfish.furniture.inventory.container.*;
-import com.mrcrayfish.furniture.tileentity.CrateTileEntity;
-import com.mrcrayfish.furniture.tileentity.FreezerTileEntity;
-import com.mrcrayfish.furniture.tileentity.MailBoxTileEntity;
-import com.mrcrayfish.furniture.tileentity.PresentTileEntity;
+import com.mrcrayfish.furniture.tileentity.*;
 import com.mrcrayfish.furniture.util.Names;
 import net.minecraft.inventory.container.Container;
 import net.minecraft.inventory.container.ContainerType;
@@ -45,6 +42,9 @@ public class ModContainers
 
     public static final ContainerType<PresentContainer> PRESENT = register(Names.Container.PRESENT, (IContainerFactory<PresentContainer>) (windowId, playerInventory, data) ->
        new PresentContainer(windowId, playerInventory, new PresentInventory(playerInventory.player.getHeldItemMainhand())));
+
+    public static final ContainerType<ComputerContainer> COMPUTER = register(Names.Container.COMPUTER, (IContainerFactory<ComputerContainer>) (windowId, playerInventory, data) ->
+        new ComputerContainer(windowId, playerInventory, (ComputerTileEntity) playerInventory.player.world.getTileEntity(data.readBlockPos())));
 
     private static <T extends Container> ContainerType<T> register(String key, ContainerType.IFactory<T> factory) {
         ContainerType<T> type = new ContainerType<>(factory);

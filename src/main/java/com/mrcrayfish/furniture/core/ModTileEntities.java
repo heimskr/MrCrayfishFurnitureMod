@@ -38,6 +38,7 @@ public class ModTileEntities {
     public static final TileEntityType<TVTileEntity> TV = buildType(Names.TileEntity.TV, TileEntityType.Builder.create(TVTileEntity::new, ModBlocks.MODERN_TV));
     public static final TileEntityType<ToasterTileEntity> TOASTER = buildType(Names.TileEntity.TOASTER, TileEntityType.Builder.create(ToasterTileEntity::new, ModBlocks.TOASTER));
     public static final TileEntityType<ChoppingBoardTileEntity> CHOPPING_BOARD = buildType(Names.TileEntity.CHOPPING_BOARD, TileEntityType.Builder.create(ChoppingBoardTileEntity::new, ModBlocks.CHOPPING_BOARD));
+    public static final TileEntityType<ComputerTileEntity> COMPUTER = buildType(Names.TileEntity.COMPUTER, TileEntityType.Builder.create(ComputerTileEntity::new, ModBlocks.COMPUTER));
 
     private static <T extends TileEntity> TileEntityType<T> buildType(String id, TileEntityType.Builder<T> builder) {
         TileEntityType<T> type = builder.build(null); //TODO may not allow null

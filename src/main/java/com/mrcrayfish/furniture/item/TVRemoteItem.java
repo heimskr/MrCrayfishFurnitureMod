@@ -2,6 +2,7 @@ package com.mrcrayfish.furniture.item;
 
 import com.mrcrayfish.furniture.core.ModSounds;
 import com.mrcrayfish.furniture.tileentity.TVTileEntity;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.client.util.ITooltipFlag;
@@ -10,15 +11,15 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUseContext;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ActionResult;
-import net.minecraft.util.ActionResultType;
-import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
+import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.RayTraceContext;
 import net.minecraft.util.math.RayTraceResult;
 import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.util.text.ITextComponent;
+import net.minecraft.util.text.ITextProperties;
+import net.minecraft.util.text.TextFormatting;
+import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.World;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.api.distmarker.OnlyIn;
@@ -38,9 +39,14 @@ public class TVRemoteItem extends Item {
     @OnlyIn(Dist.CLIENT)
     public void addInformation(ItemStack stack, @Nullable World worldIn, List<ITextComponent> tooltip, ITooltipFlag flagIn) {
         if (Screen.hasShiftDown()) {
-            String info = I18n.format("cfm.tv_remote.info");
+//            String info = I18n.format("cfm.tv_remote.info");
 //            tooltip.addAll(Minecraft.getInstance().fontRenderer.listFormattedStringToWidth(info, 150));
+//            List<IReorderingProcessor> lines = Minecraft.getInstance().fontRenderer.trimStringToWidth(ITextProperties.func_240652_a_(info), 150);
+//            for (int i = 0; i < lines.size(); ++i) {
+//            }
+//            tooltip.add(new TranslationTextComponent(I18n.format("message.cfm.tv_remote.info")));
         } else {
+//            tooltip.add(new TranslationTextComponent(TextFormatting.YELLOW + I18n.format("message.cfm.info")));
 //            tooltip.add(TextFormatting.YELLOW + I18n.format("cfm.info"));
         }
     }

@@ -496,6 +496,7 @@ public class Names {
         public static final String FREEZER = Reference.MOD_ID + ":freezer";
         public static final String PHOTO_FRAME = Reference.MOD_ID + ":photo_frame";
         public static final String PRESENT = Reference.MOD_ID + ":present";
+        public static final String COMPUTER = Reference.MOD_ID + ":computer";
     }
 
     public static class TileEntity {
@@ -518,6 +519,7 @@ public class Names {
         public static final String TV = Reference.MOD_ID + ":tv";
         public static final String TOASTER = Reference.MOD_ID + ":toaster";
         public static final String CHOPPING_BOARD = Reference.MOD_ID + ":chopping_board";
+        public static final String COMPUTER = Reference.MOD_ID + ":computer";
     }
 
     public static class Sound {
