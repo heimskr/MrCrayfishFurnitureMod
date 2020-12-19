@@ -1,0 +1,22 @@
+{
+    "result": {
+        "item": "cfm:computer"
+    },
+    "pattern": [
+        "III",
+        "IGI",
+        "IRI"
+    ],
+    "type": "minecraft:crafting_shaped",
+    "key": {
+        "G": {
+            "item": "minecraft:glass_pane"
+        },
+        "R": {
+            "item": "minecraft:redstone"
+        },
+        "I": {
+            "item": "minecraft:iron_block"
+        }
+    }
+}
