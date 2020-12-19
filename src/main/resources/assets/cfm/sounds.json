@@ -46,5 +46,13 @@
     "block.fridge.close": {
         "subtitle": "subtitle.cfm.close_fridge",
         "sounds": [ "cfm:block/fridge/close" ]
+    },
+    "block.toaster.down": {
+        "subtitle": "subtitle.cfm.toaster_down",
+        "sounds": ["cfm:block/toaster/down"]
+    },
+    "block.toaster.up": {
+        "subtitle": "subtitle.cfm.toaster_up",
+        "sounds": ["cfm:block/toaster/up"]
     }
 }

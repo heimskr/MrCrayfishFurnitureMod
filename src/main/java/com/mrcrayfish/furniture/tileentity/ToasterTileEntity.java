@@ -1,5 +1,6 @@
 package com.mrcrayfish.furniture.tileentity;
 
+import com.mrcrayfish.furniture.core.ModSounds;
 import com.mrcrayfish.furniture.core.ModTileEntities;
 import com.mrcrayfish.furniture.gui.inventory.ISimpleInventory;
 import com.mrcrayfish.furniture.item.crafting.RecipeType;
@@ -14,6 +15,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.SoundCategory;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
@@ -67,6 +69,10 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
 
     public void startToasting() {
         this.toasting = true;
+        if (!world.isRemote) {
+            BlockPos pos = this.getPos();
+            world.playSound(null, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, ModSounds.BLOCK_TOASTER_DOWN, SoundCategory.BLOCKS, 0.75F, 1.0F);
+        }
         TileEntityUtil.markBlockForUpdate(world, pos);
     }
 
@@ -107,7 +113,8 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
                     cookingTimes[i] = 0;
                     cookingTotalTimes[i] = 0;
                     if (!world.isRemote && !soundPlayed) {
-//                        world.playSound(null, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5, FurnitureSounds.toaster_down, SoundCategory.BLOCKS, 0.75F, 1.0F);
+                        BlockPos pos = this.getPos();
+                        world.playSound(null, pos.getX() + 0.5, pos.getY() + 1.0, pos.getZ() + 0.5, ModSounds.BLOCK_TOASTER_UP, SoundCategory.BLOCKS, 0.75F, 1.0F);
                         soundPlayed = true;
                     }
                 } else {

@@ -15,8 +15,7 @@ import java.util.List;
  * Author: MrCrayfish
  */
 @Mod.EventBusSubscriber(modid = Reference.MOD_ID, bus = Mod.EventBusSubscriber.Bus.MOD)
-public class ModSounds
-{
+public class ModSounds {
     private static final List<SoundEvent> SOUNDS = new ArrayList<>();
 
     public static final SoundEvent BLOCK_CABINET_OPEN = register(Names.Sound.CABINET_OPEN);
@@ -31,9 +30,10 @@ public class ModSounds
     public static final SoundEvent BLOCK_DIVING_BOARD_BOUNCE = register(Names.Sound.DIVING_BOARD_BOUNCE);
     public static final SoundEvent BLOCK_FRIDGE_OPEN = register(Names.Sound.FRIDGE_OPEN);
     public static final SoundEvent BLOCK_FRIDGE_CLOSE = register(Names.Sound.FRIDGE_CLOSE);
+    public static final SoundEvent BLOCK_TOASTER_DOWN = register(Names.Sound.TOASTER_DOWN);
+    public static final SoundEvent BLOCK_TOASTER_UP = register(Names.Sound.TOASTER_UP);
 
-    private static SoundEvent register(String name)
-    {
+    private static SoundEvent register(String name) {
         SoundEvent event = new SoundEvent(new ResourceLocation(name));
         event.setRegistryName(name);
         SOUNDS.add(event);
@@ -42,8 +42,7 @@ public class ModSounds
 
     @SubscribeEvent
     @SuppressWarnings("unused")
-    public static void registerSounds(final RegistryEvent.Register<SoundEvent> event)
-    {
+    public static void registerSounds(final RegistryEvent.Register<SoundEvent> event) {
         SOUNDS.forEach(soundEvent -> event.getRegistry().register(soundEvent));
         SOUNDS.clear();
     }
