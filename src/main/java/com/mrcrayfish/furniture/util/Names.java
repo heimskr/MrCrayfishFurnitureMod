@@ -479,6 +479,7 @@ public class Names {
 
     public static class Item {
         public static final String SPATULA = Reference.MOD_ID + ":spatula";
+        public static final String KNIFE = Reference.MOD_ID + ":knife";
         public static final String BREAD_SLICE = Reference.MOD_ID + ":bread_slice";
         public static final String TOAST = Reference.MOD_ID + ":toast";
     }
@@ -515,6 +516,7 @@ public class Names {
         public static final String PRESENT = Reference.MOD_ID + ":present";
         public static final String TV = Reference.MOD_ID + ":tv";
         public static final String TOASTER = Reference.MOD_ID + ":toaster";
+        public static final String CHOPPING_BOARD = Reference.MOD_ID + ":chopping_board";
     }
 
     public static class Sound {

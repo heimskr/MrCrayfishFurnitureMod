@@ -37,6 +37,7 @@ public class ModTileEntities {
     public static final TileEntityType<PresentTileEntity> PRESENT = buildType(Names.TileEntity.PRESENT, TileEntityType.Builder.create(PresentTileEntity::new, ModBlocks.PRESENT_WHITE, ModBlocks.PRESENT_ORANGE, ModBlocks.PRESENT_MAGENTA, ModBlocks.PRESENT_LIGHT_BLUE, ModBlocks.PRESENT_YELLOW, ModBlocks.PRESENT_LIME, ModBlocks.PRESENT_PINK, ModBlocks.PRESENT_GRAY, ModBlocks.PRESENT_LIGHT_GRAY, ModBlocks.PRESENT_CYAN, ModBlocks.PRESENT_PURPLE, ModBlocks.PRESENT_BLUE, ModBlocks.PRESENT_BROWN, ModBlocks.PRESENT_GREEN, ModBlocks.PRESENT_RED, ModBlocks.PRESENT_BLACK));
     public static final TileEntityType<TVTileEntity> TV = buildType(Names.TileEntity.TV, TileEntityType.Builder.create(TVTileEntity::new, ModBlocks.MODERN_TV));
     public static final TileEntityType<ToasterTileEntity> TOASTER = buildType(Names.TileEntity.TOASTER, TileEntityType.Builder.create(ToasterTileEntity::new, ModBlocks.TOASTER));
+    public static final TileEntityType<ChoppingBoardTileEntity> CHOPPING_BOARD = buildType(Names.TileEntity.CHOPPING_BOARD, TileEntityType.Builder.create(ChoppingBoardTileEntity::new, ModBlocks.CHOPPING_BOARD));
 
     private static <T extends TileEntity> TileEntityType<T> buildType(String id, TileEntityType.Builder<T> builder) {
         TileEntityType<T> type = builder.build(null); //TODO may not allow null
