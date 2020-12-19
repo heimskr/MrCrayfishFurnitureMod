@@ -25,6 +25,7 @@ public class CommonProxy {
                 ((GrillTileEntity) tileEntity).flipItems();
             return stack;
         });
+        // TODO: dispenser behavior for the TV remote and knife
     }
 
     public void onSetupClient() {}

@@ -58,5 +58,9 @@
     "item.knife.chop": {
         "subtitle": "subtitle.cfm.knife_chop",
         "sounds": ["cfm:item/knife/chop"]
+    },
+    "block.modern_tv.white_noise": {
+        "subtitle": "subtitle.cfm.white_noise",
+        "sounds": ["cfm:block/modern_tv/white_noise"]
     }
 }

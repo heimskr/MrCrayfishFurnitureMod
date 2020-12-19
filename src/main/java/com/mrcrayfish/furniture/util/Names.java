@@ -482,6 +482,7 @@ public class Names {
         public static final String KNIFE = Reference.MOD_ID + ":knife";
         public static final String BREAD_SLICE = Reference.MOD_ID + ":bread_slice";
         public static final String TOAST = Reference.MOD_ID + ":toast";
+        public static final String TV_REMOTE = Reference.MOD_ID + ":tv_remote";
     }
 
     public static class Entity {
@@ -535,5 +536,6 @@ public class Names {
         public static final String TOASTER_DOWN = Reference.MOD_ID + ":block.toaster.down";
         public static final String TOASTER_UP = Reference.MOD_ID + ":block.toaster.up";
         public static final String KNIFE_CHOP = Reference.MOD_ID + ":item.knife.chop";
+        public static final String WHITE_NOISE = Reference.MOD_ID + ":block.modern_tv.white_noise";
     }
 }

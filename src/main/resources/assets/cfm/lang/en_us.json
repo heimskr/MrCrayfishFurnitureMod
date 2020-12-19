@@ -465,6 +465,7 @@
     "subtitle.cfm.toaster_down": "Toaster activates",
     "subtitle.cfm.toaster_up": "Toaster finishes",
     "subtitle.cfm.knife_chop": "Knife chops",
+    "subtitle.cfm.white_noise": "White noise",
     "message.cfm.mail_queue_full": "This player's mail queue is full. Try again later...",
     "message.cfm.present_empty": "You cannot wrap an empty present.",
     "message.cfm.present_place": "You somehow have no items in the present. You cannot use this present.",
@@ -472,5 +473,7 @@
     "message.cfm.present_wrap": "You cannot unwrap the present once signed.",
     "message.cfm.present_christmas": "§aMerry Christmas!§r from %s",
     "message.cfm.present_unsigned_info": "Unsigned",
-    "message.cfm.mail_signed_info": "from %s"
+    "message.cfm.mail_signed_info": "from %s",
+    "message.cfm.info": "Hold SHIFT for Info",
+    "message.cfm.tv_remote.info": "Allows you to wirelessly control a TV. To change the channel, simply right click in the direction of the TV. You can turn on/off the TV by sneaking instead."
 }
