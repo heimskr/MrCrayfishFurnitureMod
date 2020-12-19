@@ -1,5 +1,6 @@
 package com.mrcrayfish.furniture.proxy;
 
+import com.mrcrayfish.furniture.block.ChoppingBoardBlock;
 import com.mrcrayfish.furniture.client.GifCache;
 import com.mrcrayfish.furniture.client.ImageCache;
 import com.mrcrayfish.furniture.client.MailBoxEntry;
@@ -14,15 +15,12 @@ import com.mrcrayfish.furniture.core.ModBlocks;
 import com.mrcrayfish.furniture.core.ModContainers;
 import com.mrcrayfish.furniture.core.ModEntities;
 import com.mrcrayfish.furniture.core.ModTileEntities;
-import com.mrcrayfish.furniture.inventory.container.PresentContainer;
 import com.mrcrayfish.furniture.tileentity.*;
-import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
 import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
 import net.minecraft.tileentity.TileEntity;
@@ -35,7 +33,6 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
-import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +52,8 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.TREE, TreeTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.PHOTO_FRAME, PhotoFrameTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.TV, TVTileEntityRenderer::new);
-        ClientRegistry.bindTileEntityRenderer(ModTileEntities.TOASTER, ToastRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.TOASTER, ToasterTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.CHOPPING_BOARD, ChoppingBoardTileEntityRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.SEAT, SeatRenderer::new);
 

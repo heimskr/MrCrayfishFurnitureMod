@@ -78,7 +78,7 @@ public class ChoppingBoardBlock extends FurnitureTileBlock {
             ChoppingBoardTileEntity board = (ChoppingBoardTileEntity) tileEntity;
             if (!heldItem.isEmpty()) {
 //                if (Recipes.getChoppingBoardRecipeFromInput(heldItem) != null) {
-                if (false) {
+                if (true) {
                     if (board.getFood() == null) {
                         board.setFood(new ItemStack(heldItem.getItem(), 1));
                         TileEntityUtil.markBlockForUpdate(worldIn, pos);

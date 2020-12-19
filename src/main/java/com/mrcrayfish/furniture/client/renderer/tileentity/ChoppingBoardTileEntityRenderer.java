@@ -1,62 +1,63 @@
 package com.mrcrayfish.furniture.client.renderer.tileentity;
-/*
+
+import com.mojang.blaze3d.matrix.MatrixStack;
+import com.mrcrayfish.furniture.block.ChoppingBoardBlock;
 import com.mrcrayfish.furniture.tileentity.ChoppingBoardTileEntity;
-import com.mrcrayfish.furniture.tileentity.TileEntityChoppingBoard;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.GlStateManager;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
-import net.minecraft.entity.item.EntityItem;
+import net.minecraft.client.renderer.IRenderTypeBuffer;
+import net.minecraft.client.renderer.model.ItemCameraTransforms;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
+import net.minecraft.client.renderer.tileentity.TileEntityRendererDispatcher;
+import net.minecraft.entity.item.ItemEntity;
+import net.minecraft.item.ItemStack;
+import net.minecraft.util.Direction;
+import net.minecraft.util.math.vector.Vector3f;
 import org.lwjgl.opengl.GL11;
 
-public class ChoppingBoardTileEntityRenderer extends TileEntityRenderer<ChoppingBoardTileEntity>
-{
-    private EntityItem entityFood = new EntityItem(Minecraft.getMinecraft().world, 0D, 0D, 0D);
+public class ChoppingBoardTileEntityRenderer extends TileEntityRenderer<ChoppingBoardTileEntity> {
+    private ItemStack item = null;
+
+    public ChoppingBoardTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
+        super(rendererDispatcherIn);
+    }
 
     @Override
-    public void render(TileEntityChoppingBoard board, double x, double y, double z, float partialTicks, int destroyStage, float alpha)
-    {
-        int metadata = board.getBlockMetadata();
+    public void render(ChoppingBoardTileEntity board, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
+        if (board.getFood() != null) {
+            item = board.getFood();
 
-        if(board.getFood() != null)
-        {
-            entityFood.setItem(board.getFood());
-
-            GL11.glPushMatrix();
-            this.entityFood.hoverStart = 0.0F;
+            stack.push();
 
             float xOffset = 0.0F;
             float zOffset = 0.0F;
 
-            switch(metadata)
-            {
-                case 0:
+            Direction facing = board.getBlockState().get(ChoppingBoardBlock.DIRECTION);
+
+            switch(facing) {
+                case NORTH:
                     zOffset -= 0.1F;
                     break;
-                case 1:
+                case EAST:
                     xOffset += 0.3F;
                     zOffset += 0.2F;
                     break;
-                case 2:
+                case SOUTH:
                     zOffset += 0.5F;
                     break;
-                case 3:
+                case WEST:
                     xOffset -= 0.3F;
                     zOffset += 0.2F;
                     break;
             }
 
-            GL11.glDisable(GL11.GL_LIGHTING);
-
-            GL11.glTranslatef((float) x + 0.5F + xOffset, (float) y + 0.02F, (float) z + 0.3F + zOffset);
-            GL11.glRotatef(metadata * -90F, 0, 1, 0);
-            GL11.glRotatef(180, 0, 1, 1);
-            GlStateManager.translate(0, -0.15, 0);
-            Minecraft.getMinecraft().getRenderManager().renderEntity(entityFood, 0.0D, 0.0D, 0.075D, 0.0F, 0.0F, false);
-
-            GL11.glEnable(GL11.GL_LIGHTING);
-
-            GL11.glPopMatrix();
+            stack.translate(0.5F + xOffset, 0.02F, 0.3F + zOffset);
+            stack.rotate(Vector3f.YP.rotationDegrees(facing.getHorizontalIndex() * -90F));
+            stack.rotate(new Vector3f(0, 0, 1).rotationDegrees(180F));
+            stack.rotate(new Vector3f(1, 0, 0).rotationDegrees(90F));
+            stack.translate(0, -0.35F + 0.05F, 0.05);
+            stack.scale(0.45F, 0.45F, 0.45F);
+            Minecraft.getInstance().getItemRenderer().renderItem(item, ItemCameraTransforms.TransformType.FIXED, combinedLight, combinedOverlay, stack, buffer);
+            stack.pop();
         }
     }
 }
-//*/
