@@ -22,13 +22,6 @@ import javax.annotation.Nullable;
  */
 public class ModernTVBlock extends AbstractTVBlock {
     public static final BooleanProperty MOUNTED = BooleanProperty.create("mounted");
-
-//    private static final AxisAlignedBB[] SELECTION_BOX = new Bounds(6, 0, -5, 11, 18, 21).getRotatedBounds();
-//    private static final AxisAlignedBB[] SELECTION_BOX_MOUNTED = new Bounds(12, 2, -5, 16, 18, 21).getRotatedBounds();
-
-//    private static final AxisAlignedBB[] COLLISION_BOX = new Bounds(7, 0, -4, 10, 17, 20).getRotatedBounds();
-//    private static final AxisAlignedBB[] COLLISION_BOX_MOUNTED = new Bounds(13, 3, -4, 15, 17, 20).getRotatedBounds();
-
     private static final Bounds UNMOUNTED_BOUNDS = new Bounds(6, 0, -5, 11, 18, 21);
     private static final Bounds MOUNTED_BOUNDS = new Bounds(12, 2, -5, 16, 18, 21);
 
@@ -40,27 +33,9 @@ public class ModernTVBlock extends AbstractTVBlock {
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader world, BlockPos pos, ISelectionContext context) {
         if (state.get(MOUNTED))
-            return rotatedShape(MOUNTED_BOUNDS, state.get(DIRECTION));
+            return rotatedShape(MOUNTED_BOUNDS, state.get(DIRECTION).getOpposite()); // ???
         return rotatedShape(UNMOUNTED_BOUNDS, state.get(DIRECTION));
     }
-
-//    @Override
-//    public AxisAlignedBB getBoundingBox(BlockState state, IBlockAccess source, BlockPos pos) {
-//        Direrction facing = state.getValue(FACING);
-//        if (state.get(MOUNTED)) {
-//            return SELECTION_BOX_MOUNTED[facing.getHorizontalIndex()];
-//        }
-//        return SELECTION_BOX[facing.getHorizontalIndex()];
-//    }
-//
-//    @Override
-//    public void addCollisionBoxToList(IBlockState state, World worldIn, BlockPos pos, AxisAlignedBB entityBox, List<AxisAlignedBB> collidingBoxes, Entity entityIn, boolean p_185477_7_) {
-//        EnumFacing facing = state.getValue(FACING);
-//        if(state.getValue(MOUNTED))
-//            addCollisionBoxToList(pos, entityBox, collidingBoxes, COLLISION_BOX_MOUNTED[facing.getHorizontalIndex()]);
-//        else
-//            addCollisionBoxToList(pos, entityBox, collidingBoxes, COLLISION_BOX[facing.getHorizontalIndex()]);
-//    }
 
     @Nullable
     @Override
