@@ -4,6 +4,7 @@
         "cfm:spatula",
         "cfm:knife",
         "cfm:bread_slice",
-        "cfm:toast"
+        "cfm:toast",
+        "cfm:tv_remote"
     ]
 }
