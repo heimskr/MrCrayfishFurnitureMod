@@ -1,16 +1,10 @@
 package com.mrcrayfish.furniture.block;
 
-import com.mrcrayfish.furniture.api.RecipeAPI;
-import com.mrcrayfish.furniture.api.RecipeData;
+import com.mrcrayfish.furniture.item.crafting.ToasterCookingRecipe;
 import com.mrcrayfish.furniture.tileentity.ToasterTileEntity;
 import com.mrcrayfish.furniture.util.Bounds;
-import com.mrcrayfish.furniture.util.CollisionHelper;
-import com.mrcrayfish.furniture.util.TileEntityUtil;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.SoundType;
-import net.minecraft.block.material.Material;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
@@ -22,19 +16,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ActionResultType;
 import net.minecraft.util.Direction;
 import net.minecraft.util.Hand;
-import net.minecraft.util.SoundCategory;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.util.math.shapes.ISelectionContext;
 import net.minecraft.util.math.shapes.VoxelShape;
-import net.minecraft.util.math.vector.Vector3d;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import javax.swing.*;
-import java.util.List;
+import java.util.Optional;
 
 public class ToasterBlock extends FurnitureTileBlock {
 //    private static final AxisAlignedBB BOUNDING_BOX_NORTH = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 5 * 0.0625, 0.0, 3 * 0.0625, 11 * 0.0625, 0.45, 13 * 0.0625);
@@ -91,26 +81,27 @@ public class ToasterBlock extends FurnitureTileBlock {
         ItemStack heldItem = player.getHeldItem(hand);
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof ToasterTileEntity) {
-            ToasterTileEntity tileEntityToaster = (ToasterTileEntity) tileEntity;
-            if (!heldItem.isEmpty() && !tileEntityToaster.isToasting()) {
-                RecipeData data = RecipeAPI.getToasterRecipeFromInput(heldItem);
-                if (data != null) {
-                    if (tileEntityToaster.addSlice(new ItemStack(heldItem.getItem(), 1))) {
-                        TileEntityUtil.markBlockForUpdate(world, pos);
+            ToasterTileEntity toasterTileEntity = (ToasterTileEntity) tileEntity;
+            if (!heldItem.isEmpty() && !toasterTileEntity.isToasting()) {
+                Optional<ToasterCookingRecipe> optional = toasterTileEntity.findMatchingRecipe(heldItem);
+                if (optional.isPresent()) {
+                    ToasterCookingRecipe recipe = optional.get();
+                    if (toasterTileEntity.addSlice(heldItem, recipe.getCookTime(), recipe.getExperience()) && !player.abilities.isCreativeMode)
                         heldItem.shrink(1);
-                    }
-                } else
-                    tileEntityToaster.removeSlice();
+                } else {
+
+//                    toasterTileEntity.removeSlice();
+                }
             } else {
                 if (player.isSneaking()) {
-                    if (!tileEntityToaster.isToasting()) {
-                        tileEntityToaster.startToasting();
+                    if (!toasterTileEntity.isToasting()) {
+                        toasterTileEntity.startToasting();
                         world.updateComparatorOutputLevel(pos, this);
 //                        if (!worldIn.isRemote)
 //                            worldIn.playSound(pos.getX() + 0.5D, pos.getY() + 0.5D, pos.getZ() + 0.5D, FurnitureSounds.toaster_down, SoundCategory.BLOCKS, 0.75F, 1.0F, false);
                     }
-                } else if (!tileEntityToaster.isToasting())
-                    tileEntityToaster.removeSlice();
+                } else if (!toasterTileEntity.isToasting())
+                    toasterTileEntity.removeSlice();
             }
         }
         return ActionResultType.SUCCESS;

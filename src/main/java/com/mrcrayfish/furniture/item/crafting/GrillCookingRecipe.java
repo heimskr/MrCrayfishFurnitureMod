@@ -11,22 +11,18 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Author: MrCrayfish
  */
-public class GrillCookingRecipe extends AbstractCookingRecipe
-{
-    public GrillCookingRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn)
-    {
+public class GrillCookingRecipe extends AbstractCookingRecipe {
+    public GrillCookingRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn) {
         super(RecipeType.GRILL_COOKING, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
     }
 
     @Override
-    public ItemStack getIcon()
-    {
+    public ItemStack getIcon() {
         return new ItemStack(ModBlocks.GRILL_RED);
     }
 
     @Override
-    public IRecipeSerializer<?> getSerializer()
-    {
+    public IRecipeSerializer<?> getSerializer() {
         return ModRecipeSerializers.GRILL_COOKING;
     }
 }

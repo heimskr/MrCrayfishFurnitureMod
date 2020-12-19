@@ -11,18 +11,18 @@ import net.minecraft.util.ResourceLocation;
 /**
  * Author: MrCrayfish
  */
-public class FreezerSolidifyRecipe extends AbstractCookingRecipe {
-    public FreezerSolidifyRecipe(ResourceLocation id, String group, Ingredient ingredient, ItemStack stack, float experience, int freezeTime) {
-        super(RecipeType.FREEZER_SOLIDIFY, id, group, ingredient, stack, experience, freezeTime);
+public class ToasterCookingRecipe extends AbstractCookingRecipe {
+    public ToasterCookingRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn) {
+        super(RecipeType.TOASTER_COOKING, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
     }
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(ModBlocks.FREEZER_LIGHT);
+        return new ItemStack(ModBlocks.TOASTER);
     }
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return ModRecipeSerializers.FREEZER_SOLIDIFY;
+        return ModRecipeSerializers.TOASTER_COOKING;
     }
 }

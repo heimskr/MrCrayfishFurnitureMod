@@ -8,13 +8,12 @@ import net.minecraft.util.registry.Registry;
 /**
  * Author: MrCrayfish
  */
-public class RecipeType
-{
+public class RecipeType {
     public static final IRecipeType<GrillCookingRecipe> GRILL_COOKING = register("cfm:grill_cooking");
     public static final IRecipeType<FreezerSolidifyRecipe> FREEZER_SOLIDIFY = register("cfm:freezer_solidify");
+    public static final IRecipeType<ToasterCookingRecipe> TOASTER_COOKING = register("cfm:toaster_cooking");
 
-    static <T extends IRecipe<?>> IRecipeType<T> register(final String key)
-    {
+    static <T extends IRecipe<?>> IRecipeType<T> register(final String key) {
         return Registry.register(Registry.RECIPE_TYPE, new ResourceLocation(key), new IRecipeType<T>()
         {
             public String toString()

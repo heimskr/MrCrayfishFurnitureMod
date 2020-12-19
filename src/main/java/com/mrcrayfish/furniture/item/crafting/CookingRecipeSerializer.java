@@ -10,35 +10,28 @@ import net.minecraft.network.PacketBuffer;
 import net.minecraft.util.JSONUtils;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.crafting.CraftingHelper;
-import net.minecraftforge.registries.ForgeRegistries;
 
 import javax.annotation.Nullable;
-import java.util.Optional;
 
 /**
  * Author: MrCrayfish
  */
-public class CookingRecipeSerializer<T extends AbstractCookingRecipe> extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<T>
-{
+public class CookingRecipeSerializer<T extends AbstractCookingRecipe> extends net.minecraftforge.registries.ForgeRegistryEntry<IRecipeSerializer<?>> implements IRecipeSerializer<T> {
     private final IFactory<T> factory;
     private final int fallbackCookTime;
 
-    public CookingRecipeSerializer(IFactory<T> factory, int fallbackCookTime)
-    {
+    public CookingRecipeSerializer(IFactory<T> factory, int fallbackCookTime) {
         this.factory = factory;
         this.fallbackCookTime = fallbackCookTime;
     }
 
     @Override
-    public T read(ResourceLocation recipeId, JsonObject json)
-    {
+    public T read(ResourceLocation recipeId, JsonObject json) {
         String s = JSONUtils.getString(json, "group", "");
         JsonElement element = JSONUtils.getJsonObject(json, "ingredient");
         Ingredient ingredient = Ingredient.deserialize(element);
-        if(!json.has("result"))
-        {
+        if (!json.has("result"))
             throw new com.google.gson.JsonSyntaxException("Missing result, expected to find a string or object");
-        }
         ItemStack stack = CraftingHelper.getItemStack(JSONUtils.getJsonObject(json, "result"), true);
         float experience = JSONUtils.getFloat(json, "experience", 0.0F);
         int cookTime = JSONUtils.getInt(json, "cookingtime", this.fallbackCookTime);
@@ -47,8 +40,7 @@ public class CookingRecipeSerializer<T extends AbstractCookingRecipe> extends ne
 
     @Nullable
     @Override
-    public T read(ResourceLocation recipeId, PacketBuffer buffer)
-    {
+    public T read(ResourceLocation recipeId, PacketBuffer buffer) {
         String group = buffer.readString(32767);
         Ingredient ingredient = Ingredient.read(buffer);
         ItemStack stack = buffer.readItemStack();
@@ -58,8 +50,7 @@ public class CookingRecipeSerializer<T extends AbstractCookingRecipe> extends ne
     }
 
     @Override
-    public void write(PacketBuffer buffer, T recipe)
-    {
+    public void write(PacketBuffer buffer, T recipe) {
         buffer.writeString(recipe.getGroup());
         recipe.getIngredients().get(0).write(buffer);
         buffer.writeItemStack(recipe.getRecipeOutput());
@@ -67,8 +58,7 @@ public class CookingRecipeSerializer<T extends AbstractCookingRecipe> extends ne
         buffer.writeVarInt(recipe.getCookTime());
     }
 
-    public interface IFactory<T extends AbstractCookingRecipe>
-    {
+    public interface IFactory<T extends AbstractCookingRecipe> {
         T create(ResourceLocation location, String group, Ingredient ingredient, ItemStack result, float experience, int cookTime);
     }
 }
