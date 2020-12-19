@@ -42,4 +42,12 @@ public class CommonProxy {
     public void showPhotoFrameScreen(World world, BlockPos pos) {}
 
     public void showEditValueScreen(World world, BlockPos pos) {}
+
+    public boolean isSinglePlayer() {
+        return false;
+    }
+
+    public boolean isDedicatedServer() {
+        return true;
+    }
 }

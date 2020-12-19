@@ -516,6 +516,7 @@ public class Names
         public static final String PHOTO_FRAME = Reference.MOD_ID + ":photo_frame";
         public static final String PRESENT = Reference.MOD_ID + ":present";
         public static final String TV = Reference.MOD_ID + ":tv";
+        public static final String TOASTER = Reference.MOD_ID + ":toaster";
     }
 
     public static class Sound {

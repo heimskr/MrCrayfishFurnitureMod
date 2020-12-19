@@ -15,10 +15,7 @@ import com.mrcrayfish.furniture.core.ModContainers;
 import com.mrcrayfish.furniture.core.ModEntities;
 import com.mrcrayfish.furniture.core.ModTileEntities;
 import com.mrcrayfish.furniture.inventory.container.PresentContainer;
-import com.mrcrayfish.furniture.tileentity.DoorMatTileEntity;
-import com.mrcrayfish.furniture.tileentity.GrillTileEntity;
-import com.mrcrayfish.furniture.tileentity.IValueContainer;
-import com.mrcrayfish.furniture.tileentity.PhotoFrameTileEntity;
+import com.mrcrayfish.furniture.tileentity.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
@@ -38,6 +35,7 @@ import net.minecraftforge.common.util.Constants;
 import net.minecraftforge.fml.ModList;
 import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.client.registry.RenderingRegistry;
+import net.minecraftforge.fml.common.Mod;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,6 +55,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.TREE, TreeTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.PHOTO_FRAME, PhotoFrameTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.TV, TVTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.TOASTER, ToastRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.SEAT, SeatRenderer::new);
 
@@ -137,21 +136,13 @@ public class ClientProxy extends CommonProxy {
         Predicate<RenderType> translucentPredicate = renderType -> renderType == RenderType.getTranslucent();
         RenderTypeLookup.setRenderLayer(ModBlocks.FAIRY_LIGHT, translucentPredicate);
 
-
         this.registerColors();
 
-        if (!ModList.get().isLoaded("filters")) {
+        MinecraftForge.EVENT_BUS.register(ImageCache.INSTANCE);
+        MinecraftForge.EVENT_BUS.register(GifCache.INSTANCE);
+
+        if (!ModList.get().isLoaded("filters"))
             MinecraftForge.EVENT_BUS.register(new CreativeScreenEvents());
-            MinecraftForge.EVENT_BUS.register(ImageCache.INSTANCE);
-            MinecraftForge.EVENT_BUS.register(GifCache.INSTANCE);
-        } else {
-            //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "general"), new ItemStack(ModBlocks.CHAIR_OAK));
-            //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "storage"), new ItemStack(ModBlocks.CABINET_OAK));
-            //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "bedroom"), new ItemStack(ModBlocks.DESK_OAK));
-            //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "outdoors"), new ItemStack(ModBlocks.MAIL_BOX_OAK));
-            //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "kitchen"), new ItemStack(ModBlocks.KITCHEN_COUNTER_CYAN));
-            //Filters.get().register(FurnitureMod.GROUP, new ResourceLocation(Reference.MOD_ID, "items"), new ItemStack(ModItems.SPATULA));
-        }
     }
 
     private void registerColors() {
@@ -399,5 +390,15 @@ public class ClientProxy extends CommonProxy {
         TileEntity tileEntity = world.getTileEntity(pos);
         if (tileEntity instanceof IValueContainer)
             Minecraft.getInstance().displayGuiScreen(new EditValueContainerScreen((IValueContainer) tileEntity));
+    }
+
+    @Override
+    public boolean isSinglePlayer() {
+        return Minecraft.getInstance().isSingleplayer();
+    }
+
+    @Override
+    public boolean isDedicatedServer() {
+        return false;
     }
 }

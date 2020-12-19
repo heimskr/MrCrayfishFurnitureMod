@@ -42,8 +42,11 @@ public abstract class FurnitureTileBlock extends FurnitureBlock implements ITile
         } else if (tileEntity instanceof ISimpleInventory) {
             ISimpleInventory inv = (ISimpleInventory) tileEntity;
             NonNullList<ItemStack> stacks = NonNullList.create();
-            for (int i = 0; i < inv.getSize(); ++i)
-                stacks.add(inv.getItem(i));
+            for (int i = 0; i < inv.getSize(); ++i) {
+                ItemStack stack = inv.getItem(i);
+                if (stack != null)
+                    stacks.add(stack);
+            }
             InventoryHelper.dropItems(world, pos, stacks);
         }
         super.onReplaced(state, world, pos, newState, isMoving);

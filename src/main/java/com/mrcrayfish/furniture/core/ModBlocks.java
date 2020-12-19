@@ -436,6 +436,7 @@ public class ModBlocks {
     public static final Block MANTELPIECE = register(Names.Block.MANTELPIECE, new MantelpieceBlock(Block.Properties.from(Blocks.BRICKS).hardnessAndResistance(1.0F)));
     public static final Block CHIMNEY = register(Names.Block.CHIMNEY, new ChimneyBlock(Block.Properties.from(Blocks.BRICKS).tickRandomly().hardnessAndResistance(1.0F)));
     public static final Block MODERN_TV = register(Names.Block.MODERN_TV, new ModernTVBlock(Block.Properties.from(Blocks.ANVIL).hardnessAndResistance(1.0F)));
+    public static final Block TOASTER = register(Names.Block.TOASTER, new ToasterBlock(Block.Properties.from(Blocks.ANVIL).hardnessAndResistance(0.5F)));
 
     public static final Block PRESENT_WHITE = register(Names.Block.PRESENT_WHITE, new PresentBlock(DyeColor.WHITE, Block.Properties.from(Blocks.WHITE_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
     public static final Block PRESENT_ORANGE = register(Names.Block.PRESENT_ORANGE, new PresentBlock(DyeColor.ORANGE, Block.Properties.from(Blocks.ORANGE_WOOL)), block -> new PresentItem(block, new Item.Properties().group(FurnitureMod.GROUP)));
