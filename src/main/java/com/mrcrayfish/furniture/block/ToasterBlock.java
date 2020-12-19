@@ -73,11 +73,10 @@ public class ToasterBlock extends FurnitureTileBlock {
                 Optional<ToasterCookingRecipe> optional = toasterTileEntity.findMatchingRecipe(heldItem);
                 if (optional.isPresent()) {
                     ToasterCookingRecipe recipe = optional.get();
-                    if (toasterTileEntity.addSlice(heldItem, recipe.getCookTime(), recipe.getExperience()) && !player.abilities.isCreativeMode)
+                    ItemStack copy = heldItem.copy();
+                    copy.setCount(1);
+                    if (toasterTileEntity.addSlice(copy, recipe.getCookTime(), recipe.getExperience()) && !player.abilities.isCreativeMode)
                         heldItem.shrink(1);
-                } else {
-
-//                    toasterTileEntity.removeSlice();
                 }
             } else {
                 if (player.isSneaking()) {

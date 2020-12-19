@@ -35,7 +35,9 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
     public boolean addSlice(ItemStack item, int cookTime, float experience) {
         for(int i = 0; i < slots.size(); i++) {
             if (slots.get(i).isEmpty()) {
-                slots.set(i, item.copy());
+                ItemStack copy = item.copy();
+                copy.setCount(1); // item should already have a size of 1.
+                slots.set(i, copy);
                 cookingTimes[i] = 0;
                 cookingTotalTimes[i] = cookTime;
                 experienceAmounts[i] = experience;
