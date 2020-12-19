@@ -7,12 +7,14 @@ import com.mrcrayfish.furniture.item.crafting.ToasterCookingRecipe;
 import com.mrcrayfish.furniture.util.ItemStackHelper;
 import com.mrcrayfish.furniture.util.TileEntityUtil;
 import net.minecraft.block.BlockState;
+import net.minecraft.entity.item.ExperienceOrbEntity;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.tileentity.ITickableTileEntity;
 import net.minecraft.util.NonNullList;
+import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.common.util.Constants;
 
 import java.util.Optional;
@@ -89,8 +91,17 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
                 if (cookingTimes[i] == cookingTotalTimes[i]) {
                     --remaining;
                     Optional<ToasterCookingRecipe> optional = this.world.getRecipeManager().getRecipe(RecipeType.TOASTER_COOKING, new Inventory(this.slots.get(i)), this.world);
-                    if (optional.isPresent())
+                    if (optional.isPresent()) {
                         world.addEntity(new ItemEntity(world, pos.getX() + 0.5, pos.getY() + 0.6, pos.getZ() + 0.5, optional.get().getRecipeOutput().copy()));
+                        int amount = (int) experienceAmounts[i];
+                        BlockPos pos = this.getPos();
+                        double x = pos.getX(), y = pos.getY(), z = pos.getZ();
+                        while (amount > 0) {
+                            int splitAmount = ExperienceOrbEntity.getXPSplit(amount);
+                            amount -= splitAmount;
+                            this.world.addEntity(new ExperienceOrbEntity(this.world, x, y, z, splitAmount));
+                        }
+                    }
                     anyChanged = true;
                     slots.set(i, ItemStack.EMPTY);
                     cookingTimes[i] = 0;
@@ -117,21 +128,6 @@ public class ToasterTileEntity extends SyncClientTileEntity implements ITickable
                 TileEntityUtil.sendUpdatePacket(this, super.write(compound));
             }
         }
-
-
-//            if (toastingTime == 200) {
-////                for (int i = 0; i < slots.size(); i++) {
-//                    if (!slots.get(i).isEmpty()) {
-//
-//                    }
-////                }
-//                toastingTime = 0;
-//                toasting = false;
-//                TileEntityUtil.markBlockForUpdate(world, pos);
-//                world.updateComparatorOutputLevel(pos, ModBlocks.TOASTER);
-//            } else
-//                toastingTime++;
-//        }
     }
 
     @Override
