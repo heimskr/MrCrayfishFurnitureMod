@@ -54,5 +54,9 @@
     "block.toaster.up": {
         "subtitle": "subtitle.cfm.toaster_up",
         "sounds": ["cfm:block/toaster/up"]
+    },
+    "item.knife.chop": {
+        "subtitle": "subtitle.cfm.knife_chop",
+        "sounds": ["cfm:item/knife/chop"]
     }
 }

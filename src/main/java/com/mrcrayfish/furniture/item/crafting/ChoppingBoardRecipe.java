@@ -1,0 +1,25 @@
+package com.mrcrayfish.furniture.item.crafting;
+
+import com.mrcrayfish.furniture.core.ModBlocks;
+import com.mrcrayfish.furniture.core.ModRecipeSerializers;
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.AbstractCookingRecipe;
+import net.minecraft.item.crafting.IRecipeSerializer;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.ResourceLocation;
+
+public class ChoppingBoardRecipe extends AbstractCookingRecipe {
+    public ChoppingBoardRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn) {
+        super(RecipeType.CHOPPING_BOARD, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
+    }
+
+    @Override
+    public ItemStack getIcon() {
+        return new ItemStack(ModBlocks.CHOPPING_BOARD);
+    }
+
+    @Override
+    public IRecipeSerializer<?> getSerializer() {
+        return ModRecipeSerializers.CHOPPING_BOARD;
+    }
+}

@@ -1,6 +1,8 @@
 package com.mrcrayfish.furniture.block;
 
 import com.mrcrayfish.furniture.core.ModItems;
+import com.mrcrayfish.furniture.item.crafting.ChoppingBoardRecipe;
+import com.mrcrayfish.furniture.item.crafting.ToasterCookingRecipe;
 import com.mrcrayfish.furniture.tileentity.ChoppingBoardTileEntity;
 import com.mrcrayfish.furniture.util.Bounds;
 import com.mrcrayfish.furniture.util.TileEntityUtil;
@@ -26,6 +28,7 @@ import net.minecraft.world.IBlockReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
+import java.util.Optional;
 
 public class ChoppingBoardBlock extends FurnitureTileBlock {
 //    private static final AxisAlignedBB BOUNDING_BOX_ONE = CollisionHelper.getBlockBounds(EnumFacing.NORTH, 0.0, 0.0, 3 * 0.0625, 1.0, 1.5 * 0.0625, 13 * 0.0625);
@@ -77,8 +80,9 @@ public class ChoppingBoardBlock extends FurnitureTileBlock {
         if (tileEntity instanceof ChoppingBoardTileEntity) {
             ChoppingBoardTileEntity board = (ChoppingBoardTileEntity) tileEntity;
             if (!heldItem.isEmpty()) {
+                Optional<ChoppingBoardRecipe> optional = board.findMatchingRecipe(heldItem);
 //                if (Recipes.getChoppingBoardRecipeFromInput(heldItem) != null) {
-                if (true) {
+                if (optional.isPresent()) {
                     if (board.getFood() == null) {
                         board.setFood(new ItemStack(heldItem.getItem(), 1));
                         TileEntityUtil.markBlockForUpdate(worldIn, pos);

@@ -534,5 +534,6 @@ public class Names {
         public static final String FRIDGE_CLOSE = Reference.MOD_ID + ":block.fridge.close";
         public static final String TOASTER_DOWN = Reference.MOD_ID + ":block.toaster.down";
         public static final String TOASTER_UP = Reference.MOD_ID + ":block.toaster.up";
+        public static final String KNIFE_CHOP = Reference.MOD_ID + ":item.knife.chop";
     }
 }

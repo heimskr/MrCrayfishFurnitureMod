@@ -1,0 +1,10 @@
+{
+    "type": "cfm:chopping_board_chop",
+    "ingredient": {
+        "item": "minecraft:bread"
+    },
+    "result": {
+		"item": "cfm:bread_slice",
+		"count": 6
+    }
+}
