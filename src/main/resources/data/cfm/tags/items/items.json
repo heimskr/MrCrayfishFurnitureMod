@@ -1,6 +1,8 @@
 {
     "replace": false,
     "values": [
-        "cfm:spatula"
+        "cfm:spatula",
+        "cfm:bread_slice",
+        "cfm:toast"
     ]
 }

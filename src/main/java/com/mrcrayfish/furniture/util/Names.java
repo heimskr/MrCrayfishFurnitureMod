@@ -5,10 +5,8 @@ import com.mrcrayfish.furniture.Reference;
 /**
  * Author: MrCrayfish
  */
-public class Names
-{
-    public static class Block
-    {
+public class Names {
+    public static class Block {
         public static final String TABLE_OAK = Reference.MOD_ID + ":oak_table";
         public static final String TABLE_SPRUCE = Reference.MOD_ID + ":spruce_table";
         public static final String TABLE_BIRCH = Reference.MOD_ID + ":birch_table";
@@ -479,13 +477,13 @@ public class Names
         public static final String PRESENT_BLACK = Reference.MOD_ID + ":black_present";
     }
 
-    public static class Item
-    {
+    public static class Item {
         public static final String SPATULA = Reference.MOD_ID + ":spatula";
+        public static final String BREAD_SLICE = Reference.MOD_ID + ":bread_slice";
+        public static final String TOAST = Reference.MOD_ID + ":toast";
     }
 
-    public static class Entity
-    {
+    public static class Entity {
         public static final String SEAT = Reference.MOD_ID + ":seat";
     }
 

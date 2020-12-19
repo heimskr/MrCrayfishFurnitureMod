@@ -416,6 +416,8 @@
     "block.cfm.modern_tv": "Modern TV",
     "block.cfm.toaster": "Toaster",
     "item.cfm.spatula": "Spatula",
+    "item.cfm.bread_slice": "Bread Slice",
+    "item.cfm.toast": "Toast",
     "container.cfm.cabinet": "Cabinet",
     "container.cfm.bedside_cabinet": "Bedside Cabinet",
     "container.cfm.desk_cabinet": "Desk Cabinet",
