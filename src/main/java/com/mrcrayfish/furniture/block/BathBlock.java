@@ -3,7 +3,9 @@ package com.mrcrayfish.furniture.block;
 import com.mrcrayfish.furniture.FurnitureMod;
 import com.mrcrayfish.furniture.core.ModBlocks;
 import com.mrcrayfish.furniture.core.ModSounds;
+import com.mrcrayfish.furniture.entity.SeatEntity;
 import com.mrcrayfish.furniture.tileentity.BathTileEntity;
+import com.mrcrayfish.furniture.util.Bounds;
 import com.mrcrayfish.furniture.util.PlayerUtil;
 import com.mrcrayfish.furniture.util.TileEntityUtil;
 import net.minecraft.block.AbstractBlock;
@@ -27,6 +29,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
+import net.minecraft.util.math.shapes.ISelectionContext;
+import net.minecraft.util.math.shapes.VoxelShape;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
@@ -138,7 +142,7 @@ public class BathBlock extends FurnitureTileBlock {
                     TileEntityUtil.sendUpdatePacket(bath2);
                 }
             } else {
-
+                return SeatEntity.create(world, pos, 0.1, player);
 //                return SeatUtil.sitOnBlock(world, pos.getX(), pos.getY(), pos.getZ(), player, 0);
             }
 //            PacketHandler.instance.sendToAllAround(new MessageFillBath(bath1.getFluidAmount(), pos.getX(), pos.getY(), pos.getZ(), otherBathPos.getX(), otherBathPos.getY(), otherBathPos.getZ()), new TargetPoint(player.dimension, pos.getX(), pos.getY(), pos.getZ(), 128D));

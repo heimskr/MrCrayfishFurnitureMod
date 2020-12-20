@@ -16,7 +16,6 @@ import net.minecraft.util.math.vector.Vector3f;
 import net.minecraftforge.client.ForgeHooksClient;
 
 public class BathTileEntityRenderer extends TileEntityRenderer<BathTileEntity> {
-
     public BathTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
     }
@@ -37,7 +36,6 @@ public class BathTileEntityRenderer extends TileEntityRenderer<BathTileEntity> {
             float width = 16F * 0.0625F;
             float x = 0F * 0.0625F, y = 2.1F * 0.0625F, z = 2F * 0.0625F;
             float depth = 12F * 0.0625F;
-
 
             float minU = sprite.getMinU();
             float maxU = Math.min(minU + (sprite.getMaxU() - minU) * depth, sprite.getMaxU());
