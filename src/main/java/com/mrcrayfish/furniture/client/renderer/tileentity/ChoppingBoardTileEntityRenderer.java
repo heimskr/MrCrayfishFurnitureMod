@@ -13,17 +13,14 @@ import net.minecraft.util.Direction;
 import net.minecraft.util.math.vector.Vector3f;
 
 public class ChoppingBoardTileEntityRenderer extends TileEntityRenderer<ChoppingBoardTileEntity> {
-    private ItemStack item = null;
-
     public ChoppingBoardTileEntityRenderer(TileEntityRendererDispatcher rendererDispatcherIn) {
         super(rendererDispatcherIn);
     }
 
     @Override
     public void render(ChoppingBoardTileEntity board, float partialTicks, MatrixStack stack, IRenderTypeBuffer buffer, int combinedLight, int combinedOverlay) {
-        if (board.getFood() != null) {
-            item = board.getFood();
-
+        ItemStack item = board.getFood();
+        if (item != null) {
             stack.push();
 
             float xOffset = 0.0F;

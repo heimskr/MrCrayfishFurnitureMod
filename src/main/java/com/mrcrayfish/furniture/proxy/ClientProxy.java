@@ -20,6 +20,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.ScreenManager;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.RenderTypeLookup;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.item.BlockItem;
 import net.minecraft.nbt.CompoundNBT;
 import net.minecraft.nbt.ListNBT;
@@ -54,6 +55,7 @@ public class ClientProxy extends CommonProxy {
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.TV, TVTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.TOASTER, ToasterTileEntityRenderer::new);
         ClientRegistry.bindTileEntityRenderer(ModTileEntities.CHOPPING_BOARD, ChoppingBoardTileEntityRenderer::new);
+        ClientRegistry.bindTileEntityRenderer(ModTileEntities.BATH, BathTileEntityRenderer::new);
 
         RenderingRegistry.registerEntityRenderingHandler(ModEntities.SEAT, SeatRenderer::new);
 

@@ -18,70 +18,58 @@ import javax.annotation.Nullable;
 /**
  * Author: MrCrayfish
  */
-public abstract class FluidHandlerSyncedTileEntity extends TileEntity
-{
+public abstract class FluidHandlerSyncedTileEntity extends TileEntity {
     protected final FluidTank tank;
 
-    public FluidHandlerSyncedTileEntity(TileEntityType<?> tileEntityTypeIn, int capacity)
-    {
+    public FluidHandlerSyncedTileEntity(TileEntityType<?> tileEntityTypeIn, int capacity) {
         super(tileEntityTypeIn);
-        this.tank = new FluidTank(capacity)
-        {
+        this.tank = new FluidTank(capacity) {
             @Override
-            protected void onContentsChanged()
-            {
+            protected void onContentsChanged() {
                 FluidHandlerSyncedTileEntity.this.syncFluidToClient();
             }
         };
     }
 
-    public FluidTank getTank()
-    {
+    public FluidTank getTank() {
         return this.tank;
     }
 
-    private void syncFluidToClient()
-    {
+    private void syncFluidToClient() {
         TileEntityUtil.sendUpdatePacket(this, this.write(new CompoundNBT()));
     }
 
     @Override
-    public void read(BlockState blockState, CompoundNBT tag)
-    {
-        //TODO may need to implement fluid fix from Vehicle Mod. See FluidUtils#fixEmptyTag(NBTTagCompound tag)
+    public void read(BlockState blockState, CompoundNBT tag) {
+        // TODO:: may need to implement fluid fix from Vehicle Mod. See FluidUtils#fixEmptyTag(NBTTagCompound tag)
         super.read(blockState, tag);
         this.tank.readFromNBT(tag);
     }
 
     @Override
-    public CompoundNBT write(CompoundNBT tag)
-    {
+    public CompoundNBT write(CompoundNBT tag) {
         this.tank.writeToNBT(tag);
         return super.write(tag);
     }
 
     @Override
-    public CompoundNBT getUpdateTag()
-    {
+    public CompoundNBT getUpdateTag() {
         return this.write(new CompoundNBT());
     }
 
     @Nullable
     @Override
-    public SUpdateTileEntityPacket getUpdatePacket()
-    {
+    public SUpdateTileEntityPacket getUpdatePacket() {
         return new SUpdateTileEntityPacket(this.pos, 0, this.getUpdateTag());
     }
 
     @Override
-    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt)
-    {
+    public void onDataPacket(NetworkManager net, SUpdateTileEntityPacket pkt) {
         this.read(this.getBlockState(), pkt.getNbtCompound());
     }
 
     @Override
-    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing)
-    {
+    public <T> LazyOptional<T> getCapability(Capability<T> capability, @Nullable Direction facing) {
         if (capability == CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY)
             return LazyOptional.of(() -> this.tank).cast();
         return super.getCapability(capability, facing);

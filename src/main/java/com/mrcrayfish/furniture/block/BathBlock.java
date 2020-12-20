@@ -5,6 +5,7 @@ import com.mrcrayfish.furniture.core.ModBlocks;
 import com.mrcrayfish.furniture.core.ModSounds;
 import com.mrcrayfish.furniture.tileentity.BathTileEntity;
 import com.mrcrayfish.furniture.util.PlayerUtil;
+import com.mrcrayfish.furniture.util.TileEntityUtil;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
@@ -132,6 +133,10 @@ public class BathBlock extends FurnitureTileBlock {
             if (!heldItem.isEmpty()) {
                 FluidUtil.interactWithFluidHandler(player, hand, world, pos, hit.getFace());
                 bath2.setFluid(bath1.getFluid());
+                if (!world.isRemote) {
+                    TileEntityUtil.sendUpdatePacket(bath1);
+                    TileEntityUtil.sendUpdatePacket(bath2);
+                }
             } else {
 
 //                return SeatUtil.sitOnBlock(world, pos.getX(), pos.getY(), pos.getZ(), player, 0);

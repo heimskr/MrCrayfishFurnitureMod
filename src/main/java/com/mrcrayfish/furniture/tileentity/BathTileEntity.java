@@ -7,10 +7,9 @@ import net.minecraftforge.fluids.FluidAttributes;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.capability.TileFluidHandler;
 
-public class BathTileEntity extends TileFluidHandler {
+public class BathTileEntity extends FluidHandlerSyncedTileEntity {
     public BathTileEntity() {
-        super(ModTileEntities.BATH);
-        this.tank.setCapacity(FluidAttributes.BUCKET_VOLUME * 16);
+        super(ModTileEntities.BATH, FluidAttributes.BUCKET_VOLUME * 16);
     }
 
     public FluidStack getFluid() {
@@ -31,6 +30,10 @@ public class BathTileEntity extends TileFluidHandler {
 
     public boolean isFull() {
         return tank.getCapacity() == tank.getFluidAmount();
+    }
+
+    public boolean isEmpty() {
+        return tank.isEmpty();
     }
 
     public int getFluidAmount() {
