@@ -17,6 +17,8 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
+import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -68,6 +70,18 @@ public class ComputerScreen extends ContainerScreen<ComputerContainer> {
 
         this.itemNum = computer.getBrowsingInfo();
         this.recipes = container.computer.getWorld().getRecipeManager().getRecipesForType(RecipeType.MINEBAY);
+
+        for (int i = 0; i < recipes.size(); ++i) {
+            MineBayRecipe recipe = recipes.get(i);
+            FurnitureMod.LOGGER.warn("Recipe: " + recipe.getRecipeOutput().getTranslationKey() + " x " + recipe.getRecipeOutput().getCount());
+            NonNullList<Ingredient> ingredients = recipe.getIngredients();
+            for (int j = 0; j < ingredients.size(); ++j) {
+                Ingredient ingredient = ingredients.get(j);
+                FurnitureMod.LOGGER.warn("- Ingredient: " + (ingredient.isSimple()? "simple" : "simplen't"));
+                for (ItemStack stack: ingredient.getMatchingStacks())
+                    FurnitureMod.LOGGER.warn("  - Stack: " + stack.getTranslationKey() + " x " + stack.getCount());
+            }
+        }
     }
 
     @Override
@@ -129,7 +143,7 @@ public class ComputerScreen extends ContainerScreen<ComputerContainer> {
         ItemStack stock = getOutput(itemNum);
         if (stock != null) {
             itemRenderer.renderItemAndEffectIntoGUI(stock, 80, 16);
-            itemRenderer.renderItemOverlays(this.font, stock, 80, 16);
+             itemRenderer.renderItemOverlays(this.font, stock, 80, 16);
         }
 
         if (itemNum < recipes.size() - 1) {

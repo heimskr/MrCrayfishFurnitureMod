@@ -58,23 +58,15 @@ public class ComputerBlock extends FurnitureTileBlock {
     @Override
     public ActionResultType onBlockActivated(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand, BlockRayTraceResult hit) {
         TileEntity tileEntity = world.getTileEntity(pos);
-        FurnitureMod.LOGGER.warn("Hello.");
-
         if (tileEntity instanceof ComputerTileEntity) {
-            FurnitureMod.LOGGER.warn("It's a tile entity.");
-
             ComputerTileEntity computer = (ComputerTileEntity) tileEntity;
             if (!computer.isTrading()) {
-                FurnitureMod.LOGGER.warn("It's not trading.");
                 computer.setTrading(true);
                 if (!world.isRemote())
                     NetworkHooks.openGui((ServerPlayerEntity) player, computer, pos);
-            } else if (!world.isRemote()) {
-                FurnitureMod.LOGGER.warn("It's trading.");
+            } else if (!world.isRemote())
                 PlayerUtil.sendTranslatedMessage(player, "message.cfm.computer");
-            }
         }
-        else FurnitureMod.LOGGER.warn("It's not a tile entity.");
         return ActionResultType.SUCCESS;
     }
 
