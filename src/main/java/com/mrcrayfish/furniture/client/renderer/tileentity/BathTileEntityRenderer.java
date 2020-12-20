@@ -51,6 +51,8 @@ public class BathTileEntityRenderer extends TileEntityRenderer<BathTileEntity> {
             IVertexBuilder builder = buffer.getBuffer(RenderType.getTranslucent());
             Matrix4f matrix = stack.getLast().getMatrix();
 
+            light = 200;
+
             builder.pos(matrix, x, y + height, z).color(red, green, blue, 1.0F).tex(maxU, minV).lightmap(light).normal(0.0F, 1.0F, 0.0F).endVertex();
             builder.pos(matrix, x, y + height, z + depth).color(red, green, blue, 1.0F).tex(minU, minV).lightmap(light).normal(0.0F, 1.0F, 0.0F).endVertex();
             builder.pos(matrix, x + width, y + height, z + depth).color(red, green, blue, 1.0F).tex(minU, maxV).lightmap(light).normal(0.0F, 1.0F, 0.0F).endVertex();
