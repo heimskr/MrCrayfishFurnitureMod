@@ -1,0 +1,9 @@
+{
+    "type": "cfm:chopping_board_chop",
+    "ingredient": {
+        "item": "minecraft:egg"
+    },
+    "result": {
+		"item": "minecraft:slime_ball"
+    }
+}
