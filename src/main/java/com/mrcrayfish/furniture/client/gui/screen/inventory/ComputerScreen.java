@@ -63,17 +63,21 @@ public class ComputerScreen extends ContainerScreen<ComputerContainer> {
             this.buySlot = this.computer.getStackInSlot(0);
             if (!buySlot.isEmpty()) {
                 ItemStack money = getIngredient(itemNum);
-                if (money != null && buySlot.getItem() == money.getItem())
+                if (money != null) FurnitureMod.LOGGER.warn("The client thinks the cost is " + money.getTranslationKey() + " x " + money.getCount());
+                else FurnitureMod.LOGGER.warn("The client thinks the cost is null.");
+                if (money != null && buySlot.getItem() == money.getItem()) {
                     PacketHandler.instance.sendToServer(new MessageMineBayBuy(this.itemNum, this.computer.getPos().getX(), this.computer.getPos().getY(), this.computer.getPos().getZ()));
+                }
             }
         }));
 
         this.itemNum = computer.getBrowsingInfo();
         this.recipes = container.computer.getWorld().getRecipeManager().getRecipesForType(RecipeType.MINEBAY);
 
+        FurnitureMod.LOGGER.warn("=== CLIENT ===");
         for (int i = 0; i < recipes.size(); ++i) {
             MineBayRecipe recipe = recipes.get(i);
-            FurnitureMod.LOGGER.warn("Recipe: " + recipe.getRecipeOutput().getTranslationKey() + " x " + recipe.getRecipeOutput().getCount());
+            FurnitureMod.LOGGER.warn("Recipe " + i + ": " + recipe.getRecipeOutput().getTranslationKey() + " x " + recipe.getRecipeOutput().getCount());
             NonNullList<Ingredient> ingredients = recipe.getIngredients();
             for (int j = 0; j < ingredients.size(); ++j) {
                 Ingredient ingredient = ingredients.get(j);
@@ -146,8 +150,10 @@ public class ComputerScreen extends ContainerScreen<ComputerContainer> {
 
         ItemStack cost = getIngredient(itemNum);
         if (cost != null) {
-            itemRenderer.renderItemAndEffectIntoGUI(cost, 73, 40);
-            itemRenderer.renderItemOverlays(this.font, cost, 73, 40);
+            ItemStack copiedCost = cost.copy();
+            copiedCost.setCount(1);
+            itemRenderer.renderItemAndEffectIntoGUI(copiedCost, 73, 40);
+            itemRenderer.renderItemOverlays(this.font, copiedCost, 73, 40);
             itemRenderer.zLevel = 0.0F;
         }
 
