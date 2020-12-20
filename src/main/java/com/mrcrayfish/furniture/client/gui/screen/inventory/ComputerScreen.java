@@ -91,20 +91,10 @@ public class ComputerScreen extends ContainerScreen<ComputerContainer> {
     }
 
     private ItemStack getIngredient(int index) {
-        MineBayRecipe recipe;
         try {
-            recipe = recipes.get(index);
+            return recipes.get(index).getInput();
         } catch (IndexOutOfBoundsException ioob) {
-            FurnitureMod.LOGGER.warn("Index out of bounds: [" + index + "].0.0 (recipes.size(): " + recipes.size() + ")");
-            return null;
-        }
-
-        try {
-            return recipe.getIngredients().get(0).getMatchingStacks()[0];
-        } catch (ArrayIndexOutOfBoundsException aioob) {
-            FurnitureMod.LOGGER.warn("Array index out of bounds: " + index + ".0.[0]");
-        } catch (IndexOutOfBoundsException ioob) {
-            FurnitureMod.LOGGER.warn("Index out of bounds: " + index + ".[0].0");
+            FurnitureMod.LOGGER.warn("Recipe index out of bounds: " + index);
         }
         return null;
     }
@@ -113,7 +103,7 @@ public class ComputerScreen extends ContainerScreen<ComputerContainer> {
         try {
             return recipes.get(index).getRecipeOutput();
         } catch (IndexOutOfBoundsException ioob) {
-            FurnitureMod.LOGGER.warn("Index out of bounds: [" + index + "].0 (recipes.size(): " + recipes.size() + ")");
+            FurnitureMod.LOGGER.warn("Recipe index out of bounds: " + index);
         }
         return null;
     }
