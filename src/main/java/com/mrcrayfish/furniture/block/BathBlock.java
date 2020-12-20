@@ -2,19 +2,15 @@ package com.mrcrayfish.furniture.block;
 
 import com.mrcrayfish.furniture.core.ModBlocks;
 import com.mrcrayfish.furniture.core.ModSounds;
-import com.mrcrayfish.furniture.network.PacketHandler;
 import com.mrcrayfish.furniture.tileentity.BathTileEntity;
-import com.mrcrayfish.furniture.util.CollisionHelper;
 import com.mrcrayfish.furniture.util.PlayerUtil;
 import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
@@ -22,22 +18,17 @@ import net.minecraft.potion.PotionUtils;
 import net.minecraft.potion.Potions;
 import net.minecraft.state.BooleanProperty;
 import net.minecraft.state.DirectionProperty;
-import net.minecraft.state.IntegerProperty;
 import net.minecraft.state.StateContainer;
 import net.minecraft.state.properties.BlockStateProperties;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.*;
-import net.minecraft.util.math.AxisAlignedBB;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.BlockRayTraceResult;
-import net.minecraft.util.math.RayTraceResult;
-import net.minecraft.util.text.TranslationTextComponent;
 import net.minecraft.world.IBlockReader;
+import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
 
 import javax.annotation.Nullable;
-import java.util.List;
-import java.util.Random;
 
 public class BathBlock extends FurnitureTileBlock {
 //    public static final IntegerProperty WATER_LEVEL = IntegerProperty.create("level", 0, 16);
@@ -56,19 +47,34 @@ public class BathBlock extends FurnitureTileBlock {
 
     public BathBlock(AbstractBlock.Properties properties) {
         super(properties);
+        this.setDefaultState(this.getStateContainer().getBaseState().with(TOP, false));
+    }
+
+    @Override
+    public boolean isValidPosition(BlockState state, IWorldReader worldIn, BlockPos pos) {
+        return super.isValidPosition(state, worldIn, pos);
+//        BlockState bs = worldIn.getBlockState(pos.offset(placer))
+//        return worldIn.isAirBlock(pos);
     }
 
     @Nullable
     @Override
     public BlockState getStateForPlacement(BlockItemUseContext context) {
-        BlockState state = super.getStateForPlacement(context);
-        return state.with(DIRECTION, context.getPlacementHorizontalFacing());
+        Direction direction = context.getPlacementHorizontalFacing();
+        BlockPos pos = context.getPos();
+        BlockPos offset = pos.offset(direction);
+//        BlockState state = super.getStateForPlacement(context);
+//        return state.with(DIRECTION, context.getPlacementHorizontalFacing());
+        return context.getWorld().getBlockState(offset).isReplaceable(context)? this.getDefaultState().with(DIRECTION, direction) : null;
     }
 
     @Override
     public void onBlockPlacedBy(World world, BlockPos pos, BlockState state, @Nullable LivingEntity placer, ItemStack stack) {
-        System.out.println("Salutations from onBlockPlacedBy");
-        world.setBlockState(pos.offset(placer.getHorizontalFacing()), ModBlocks.BATH.getDefaultState().with(TOP, true).with(DIRECTION, state.get(DIRECTION)));
+        super.onBlockPlacedBy(world, pos, state, placer, stack);
+        if (!world.isRemote) {
+            world.setBlockState(pos.offset(placer.getHorizontalFacing()), ModBlocks.BATH.getDefaultState().with(TOP, true).with(DIRECTION, state.get(DIRECTION)));
+            state.updateNeighbours(world, pos, 3);
+        }
 //        if (placer instanceof PlayerEntity)
 //            Triggers.trigger(Triggers.PLACE_BATHTROOM_FURNITURE, (EntityPlayer) placer);
     }
