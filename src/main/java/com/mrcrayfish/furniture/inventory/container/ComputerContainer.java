@@ -1,6 +1,7 @@
 package com.mrcrayfish.furniture.inventory.container;
 
 import com.mrcrayfish.furniture.core.ModContainers;
+import com.mrcrayfish.furniture.tileentity.ComputerTileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.container.Container;
@@ -8,14 +9,14 @@ import net.minecraft.inventory.container.Slot;
 import net.minecraft.item.ItemStack;
 
 public class ComputerContainer extends Container {
-    private IInventory computerInventory;
+    public ComputerTileEntity computer;
 
-    public ComputerContainer(int windowId, IInventory playerInventory, IInventory computerInventory) {
+    public ComputerContainer(int windowId, IInventory playerInventory, ComputerTileEntity computer) {
         super(ModContainers.COMPUTER, windowId);
-        this.computerInventory = computerInventory;
-        computerInventory.openInventory(null);
+        this.computer = computer;
+        computer.openInventory(null);
 
-        this.addSlot(new Slot(computerInventory, 0, 119, 40));
+        this.addSlot(new Slot(computer, 0, 119, 40));
 
         for (int i = 0; i < 3; i++)
             for (int j = 0; j < 9; ++j)
@@ -26,7 +27,7 @@ public class ComputerContainer extends Container {
     }
 
     public boolean canInteractWith(PlayerEntity player) {
-        return this.computerInventory.isUsableByPlayer(player);
+        return this.computer.isUsableByPlayer(player);
     }
 
     @Override

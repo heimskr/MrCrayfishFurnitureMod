@@ -63,6 +63,7 @@ public class ClientProxy extends CommonProxy {
         ScreenManager.registerFactory(ModContainers.FREEZER, FreezerScreen::new);
         //ScreenManager.registerFactory(ModContainers.PHOTO_FRAME, PhotoFrameScreen::new);
         ScreenManager.registerFactory(ModContainers.PRESENT, PresentScreen::new);
+        ScreenManager.registerFactory(ModContainers.COMPUTER, ComputerScreen::new);
 
         Predicate<RenderType> leavesPredicate = renderType -> this.useFancyGraphics() ? renderType == RenderType.getCutoutMipped() : renderType == RenderType.getSolid();
         RenderTypeLookup.setRenderLayer(ModBlocks.HEDGE_OAK, leavesPredicate);

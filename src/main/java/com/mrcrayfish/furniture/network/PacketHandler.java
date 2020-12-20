@@ -33,6 +33,9 @@ public class PacketHandler {
         register(MessageUpdatePhotoFrame.class, new MessageUpdatePhotoFrame());
         register(MessageSignItem.class, new MessageSignItem());
         register(MessageUpdateValueContainer.class, new MessageUpdateValueContainer());
+        register(MessageMineBayBrowse.class, new MessageMineBayBrowse());
+        register(MessageMineBayBuy.class, new MessageMineBayBuy());
+        register(MessageMineBayClosed.class, new MessageMineBayClosed());
     }
 
     private static <T> void register(Class<T> clazz, IMessage<T> message) {
