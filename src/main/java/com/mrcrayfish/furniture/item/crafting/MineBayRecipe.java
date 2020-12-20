@@ -9,8 +9,8 @@ import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.util.ResourceLocation;
 
 public class MineBayRecipe extends AbstractCookingRecipe {
-    public MineBayRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn) {
-        super(RecipeType.MINEBAY, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
+    public MineBayRecipe(ResourceLocation id, String group, Ingredient ingredient, ItemStack result, float experience, int cookTime) {
+        super(RecipeType.MINEBAY, id, group, ingredient, result, experience, cookTime);
     }
 
     @Override

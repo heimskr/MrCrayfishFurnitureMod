@@ -81,16 +81,25 @@ public class ComputerScreen extends ContainerScreen<ComputerContainer> {
         try {
             recipe = recipes.get(index);
         } catch (IndexOutOfBoundsException ioob) {
-            FurnitureMod.LOGGER.warn("Index out of bounds: [" + index + "].0 (recipes.size(): " + recipes.size() + ")");
+            FurnitureMod.LOGGER.warn("Index out of bounds: [" + index + "].0.0 (recipes.size(): " + recipes.size() + ")");
             return null;
         }
 
         try {
-            return recipes.get(index).getIngredients().get(0).getMatchingStacks()[0];
+            return recipe.getIngredients().get(0).getMatchingStacks()[0];
         } catch (ArrayIndexOutOfBoundsException aioob) {
-            FurnitureMod.LOGGER.warn("Array index out of bounds: 0");
+            FurnitureMod.LOGGER.warn("Array index out of bounds: " + index + ".0.[0]");
         } catch (IndexOutOfBoundsException ioob) {
-            FurnitureMod.LOGGER.warn("Index out of bounds: " + index + ".[0]");
+            FurnitureMod.LOGGER.warn("Index out of bounds: " + index + ".[0].0");
+        }
+        return null;
+    }
+
+    private ItemStack getOutput(int index) {
+        try {
+            return recipes.get(index).getRecipeOutput();
+        } catch (IndexOutOfBoundsException ioob) {
+            FurnitureMod.LOGGER.warn("Index out of bounds: [" + index + "].0 (recipes.size(): " + recipes.size() + ")");
         }
         return null;
     }
@@ -110,37 +119,38 @@ public class ComputerScreen extends ContainerScreen<ComputerContainer> {
         itemRenderer.zLevel = 100.0F;
 
         if (1 <= itemNum) {
-            ItemStack pre = getIngredient(itemNum - 1);
+            ItemStack pre = getOutput(itemNum - 1);
             if (pre != null) {
                 itemRenderer.renderItemAndEffectIntoGUI(pre, 57, 16);
                 itemRenderer.renderItemOverlays(this.font, pre, 57, 16);
             }
         }
 
-        ItemStack stock = getIngredient(itemNum);
+        ItemStack stock = getOutput(itemNum);
         if (stock != null) {
             itemRenderer.renderItemAndEffectIntoGUI(stock, 80, 16);
             itemRenderer.renderItemOverlays(this.font, stock, 80, 16);
         }
 
         if (itemNum < recipes.size() - 1) {
-            ItemStack post = getIngredient(itemNum + 1);
+            ItemStack post = getOutput(itemNum + 1);
             if (post != null) {
                 itemRenderer.renderItemAndEffectIntoGUI(post, 103, 16);
                 itemRenderer.renderItemOverlays(this.font, post, 103, 16);
             }
         }
 
-        if (stock != null) {
-            itemRenderer.renderItemAndEffectIntoGUI(stock, 73, 40);
-            itemRenderer.renderItemOverlays(this.font, stock, 73, 40);
+        ItemStack cost = getIngredient(itemNum);
+        if (cost != null) {
+            itemRenderer.renderItemAndEffectIntoGUI(cost, 73, 40);
+            itemRenderer.renderItemOverlays(this.font, cost, 73, 40);
             itemRenderer.zLevel = 0.0F;
         }
 
         RenderSystem.disableLighting();
 
-        if (stock != null) {
-            int price = stock.getCount();
+        if (cost != null) {
+            int price = cost.getCount();
             this.font.drawString(stack, "x" + price, 90, 44, 0);
         }
 
