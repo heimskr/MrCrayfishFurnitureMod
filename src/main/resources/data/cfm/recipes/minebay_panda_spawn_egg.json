@@ -1,0 +1,10 @@
+{
+    "type": "cfm:minebay",
+    "ingredient": {
+		"item": "minecraft:emerald",
+		"count": 32
+    },
+    "result": {
+		"item": "minecraft:panda_spawn_egg"
+    }
+}

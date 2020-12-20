@@ -1,16 +1,19 @@
 package com.mrcrayfish.furniture.network.message;
 
+import com.mrcrayfish.furniture.FurnitureMod;
+import com.mrcrayfish.furniture.item.crafting.MineBayRecipe;
+import com.mrcrayfish.furniture.item.crafting.RecipeType;
 import com.mrcrayfish.furniture.tileentity.ComputerTileEntity;
-import io.netty.buffer.ByteBuf;
 import net.minecraft.entity.item.ItemEntity;
 import net.minecraft.entity.player.ServerPlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.Ingredient;
 import net.minecraft.network.PacketBuffer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.math.BlockPos;
 import net.minecraftforge.fml.network.NetworkEvent;
-import org.apache.logging.log4j.core.jmx.Server;
 
+import java.util.List;
 import java.util.function.Supplier;
 
 public class MessageMineBayBuy implements IMessage<MessageMineBayBuy> {
@@ -47,21 +50,30 @@ public class MessageMineBayBuy implements IMessage<MessageMineBayBuy> {
                 ComputerTileEntity computer = (ComputerTileEntity) tileEntity;
                 ItemStack buySlot = computer.getStackInSlot(0);
                 if (buySlot.isEmpty())
-                    return null;
+                    return;
 
-                RecipeData[] data = Recipes.getMineBayItems();
-                if (message.itemNum < 0 || message.itemNum >= data.length)
-                    return null;
+                List<MineBayRecipe> data = player.world.getRecipeManager().getRecipesForType(RecipeType.MINEBAY);
 
-                RecipeData recipe = data[message.itemNum];
-                int price = recipe.getPrice();
-                if (recipe.getCurrency().getItem() == buySlot.getItem() && buySlot.getCount() >= price) {
-                    computer.takeEmeraldFromSlot(price);
-                    ItemEntity item = new ItemEntity(player.world, player.getPosX(), player.getPosY() + 1, player.getPosZ(), data[message.itemNum].getInput().copy());
-                    player.world.addEntity(item);
-//                    Triggers.trigger(Triggers.MINEBAY_PURCHASE, player);
+                if (message.itemNum < 0 || data.size() <= message.itemNum) {
+                    FurnitureMod.LOGGER.warn("Invalid message.itemNum: " + message.itemNum);
+                    return;
                 }
-            }
+
+                MineBayRecipe recipe = data.get(message.itemNum);
+                Ingredient ingredient = recipe.getIngredients().get(0);
+                ItemStack[] stacks = ingredient.getMatchingStacks();
+                if (stacks.length != 1) {
+                    FurnitureMod.LOGGER.warn("ingredient.getMatchingStacks().length == " + stacks.length);
+                } else {
+                    ItemStack cost = stacks[0];
+                    int price = cost.getCount();
+                    if (cost.getItem() == buySlot.getItem() && price <= buySlot.getCount()) {
+                        computer.takeEmeraldFromSlot(price);
+                        player.world.addEntity(new ItemEntity(player.world, player.getPosX(), player.getPosY() + 1, player.getPosZ(), recipe.getRecipeOutput().copy()));
+//                        Triggers.trigger(Triggers.MINEBAY_PURCHASE, player);
+                    }
+                }
+            } else FurnitureMod.LOGGER.warn("Tile entity isn't a ComputerTileEntity");
         });
         supplier.get().setPacketHandled(true);
     }

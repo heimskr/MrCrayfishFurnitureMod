@@ -23,6 +23,8 @@ public class ModRecipeSerializers {
     public static final CookingRecipeSerializer<FreezerSolidifyRecipe> FREEZER_SOLIDIFY = register("cfm:freezer_solidify", new CookingRecipeSerializer<>(FreezerSolidifyRecipe::new, 100));
     public static final CookingRecipeSerializer<ToasterCookingRecipe> TOASTER_COOKING = register("cfm:toaster_cooking", new CookingRecipeSerializer<>(ToasterCookingRecipe::new, 100));
     public static final CookingRecipeSerializer<ChoppingBoardRecipe> CHOPPING_BOARD = register("cfm:chopping_board_chop", new CookingRecipeSerializer<>(ChoppingBoardRecipe::new, 0));
+    // Everything's a cooking recipe if you ~Believe~ hard enough. Everything.
+    public static final CookingRecipeSerializer<MineBayRecipe> MINEBAY = register("cfm:minebay", new CookingRecipeSerializer<>(MineBayRecipe::new, 0));
 
     private static <T extends IRecipeSerializer<? extends IRecipe<?>>> T register(String name, T t) {
         t.setRegistryName(new ResourceLocation(name));

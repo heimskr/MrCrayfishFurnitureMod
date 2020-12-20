@@ -1,0 +1,10 @@
+{
+    "type": "cfm:minebay",
+    "ingredient": {
+		"item": "minecraft:emerald",
+		"count": 4
+    },
+    "result": {
+		"item": "minecraft:saddle"
+    }
+}

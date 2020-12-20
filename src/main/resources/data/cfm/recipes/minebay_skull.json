@@ -1,0 +1,10 @@
+{
+    "type": "cfm:minebay",
+    "ingredient": {
+		"item": "minecraft:emerald",
+		"count": 8
+    },
+    "result": {
+		"item": "minecraft:skeleton_skull"
+    }
+}

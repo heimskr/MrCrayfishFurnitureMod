@@ -1,0 +1,25 @@
+{
+    "type": "cfm:minebay",
+    "ingredient": {
+		"item": "minecraft:iron_ingot"
+    },
+    "result": {
+		"item": "minecraft:firework_rocket",
+		"count": 4,
+		"nbt": {
+			"display": {
+				"Name": "§cChristmas§a Firework"
+			},
+			"Fireworks": {
+				"Explosions": [
+					{
+						"Trail": true,
+						"Type": false,
+						"Colors": [11743532, 3887386]
+					}
+				],
+				"Flight": true
+			}
+		}
+    }
+}

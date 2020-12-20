@@ -24,3 +24,4 @@ run
 classes
 .DS_Store
 logs
+.vscode
