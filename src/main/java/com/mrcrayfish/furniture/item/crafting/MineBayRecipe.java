@@ -10,16 +10,16 @@ import net.minecraft.util.ResourceLocation;
 
 public class MineBayRecipe extends AbstractCookingRecipe {
     public MineBayRecipe(ResourceLocation idIn, String groupIn, Ingredient ingredientIn, ItemStack resultIn, float experienceIn, int cookTimeIn) {
-        super(RecipeType.CHOPPING_BOARD, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
+        super(RecipeType.MINEBAY, idIn, groupIn, ingredientIn, resultIn, experienceIn, cookTimeIn);
     }
 
     @Override
     public ItemStack getIcon() {
-        return new ItemStack(ModBlocks.CHOPPING_BOARD);
+        return new ItemStack(ModBlocks.COMPUTER);
     }
 
     @Override
     public IRecipeSerializer<?> getSerializer() {
-        return ModRecipeSerializers.CHOPPING_BOARD;
+        return ModRecipeSerializers.MINEBAY;
     }
 }
