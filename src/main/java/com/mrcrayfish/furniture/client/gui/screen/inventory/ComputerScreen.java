@@ -72,7 +72,7 @@ public class ComputerScreen extends ContainerScreen<ComputerContainer> {
         }));
 
         this.itemNum = computer.getBrowsingInfo();
-        this.recipes = container.computer.getWorld().getRecipeManager().getRecipesForType(RecipeType.MINEBAY);
+        this.recipes = MineBayRecipe.sort(container.computer.getWorld().getRecipeManager().getRecipesForType(RecipeType.MINEBAY));
 
         FurnitureMod.LOGGER.warn("=== CLIENT ===");
         for (int i = 0; i < recipes.size(); ++i) {

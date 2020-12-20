@@ -55,7 +55,7 @@ public class MessageMineBayBuy implements IMessage<MessageMineBayBuy> {
                     return;
                 }
 
-                List<MineBayRecipe> recipes = player.world.getRecipeManager().getRecipesForType(RecipeType.MINEBAY);
+                List<MineBayRecipe> recipes = MineBayRecipe.sort(player.world.getRecipeManager().getRecipesForType(RecipeType.MINEBAY));
 
                 FurnitureMod.LOGGER.warn("=== SERVER ===");
                 for (int i = 0; i < recipes.size(); ++i) {

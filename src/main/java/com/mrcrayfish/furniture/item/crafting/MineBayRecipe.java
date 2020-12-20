@@ -9,6 +9,11 @@ import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
 public class MineBayRecipe implements IRecipe<IInventory> {
     protected final IRecipeType<?> type;
     protected final ResourceLocation id;
@@ -22,6 +27,20 @@ public class MineBayRecipe implements IRecipe<IInventory> {
         this.group = group;
         this.input = input;
         this.result = result;
+    }
+
+    private int hashItemStack(ItemStack stack) {
+        return Arrays.hashCode(new int[] {stack.getTranslationKey().hashCode(), stack.getCount(), stack.getTag() == null? 0 : stack.getTag().hashCode()});
+    }
+
+    // The server and client won't necessarily agree on the ordering from getRecipesForType, so it can be necessary to make them sortable.
+    @Override
+    public int hashCode() {
+        return Arrays.hashCode(new int[] {hashItemStack(input), hashItemStack(result)});
+    }
+
+    public static List<MineBayRecipe> sort(List<MineBayRecipe> list) {
+        return list.stream().sorted(Comparator.comparing(MineBayRecipe::hashCode)).collect(Collectors.toList());
     }
 
     @Override
