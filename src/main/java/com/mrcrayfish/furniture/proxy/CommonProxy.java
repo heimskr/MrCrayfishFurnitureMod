@@ -44,6 +44,8 @@ public class CommonProxy {
 
     public void showEditValueScreen(World world, BlockPos pos) {}
 
+//    public void showComputerScreen(World world, BlockPos pos) {}
+
     public boolean isSinglePlayer() {
         return false;
     }

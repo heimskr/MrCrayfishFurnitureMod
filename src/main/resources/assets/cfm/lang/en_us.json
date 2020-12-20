@@ -444,6 +444,7 @@
     "gui.button.cfm.enable_filters": "Enable All Filters",
     "gui.button.cfm.disable_filters": "Disable All Filters",
     "gui.button.cfm.wrap": "Wrap",
+    "gui.button.cfm.buy": "Buy",
     "gui.tag_filter.cfm.general": "General",
     "gui.tag_filter.cfm.storage": "Storage",
     "gui.tag_filter.cfm.bedroom": "Bedroom",

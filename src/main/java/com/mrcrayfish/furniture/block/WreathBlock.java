@@ -44,8 +44,7 @@ public class WreathBlock extends FurnitureBlock {
 
     @Override
     public VoxelShape getShape(BlockState state, IBlockReader worldIn, BlockPos pos, ISelectionContext context) {
-        AxisAlignedBB rotated = BOUNDS.getRotation(state.get(DIRECTION));
-        return Block.makeCuboidShape(rotated.minX * 16F, rotated.minY * 16F, rotated.minZ * 16F, rotated.maxX * 16F, rotated.maxY * 16F, rotated.maxZ * 16F);
+        return BOUNDS.rotatedShape(state.get(DIRECTION));
     }
 
     @Override

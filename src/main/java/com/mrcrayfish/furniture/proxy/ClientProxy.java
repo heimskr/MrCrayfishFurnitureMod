@@ -391,6 +391,13 @@ public class ClientProxy extends CommonProxy {
             Minecraft.getInstance().displayGuiScreen(new EditValueContainerScreen((IValueContainer) tileEntity));
     }
 
+//    @Override
+//    public void showComputerScreen(World world, BlockPos pos) {
+//        TileEntity tileEntity = world.getTileEntity(pos);
+//        if (tileEntity instanceof ComputerTileEntity)
+//            Minecraft.getInstance().displayGuiScreen(new ComputerScreen());
+//    }
+
     @Override
     public boolean isSinglePlayer() {
         return Minecraft.getInstance().isSingleplayer();
