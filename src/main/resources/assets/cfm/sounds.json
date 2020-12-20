@@ -62,5 +62,9 @@
     "block.modern_tv.white_noise": {
         "subtitle": "subtitle.cfm.white_noise",
         "sounds": ["cfm:block/modern_tv/white_noise"]
+    },
+    "block.bath.tap": {
+        "subtitle": "subtitle.cfm.bath_tap",
+        "sounds": ["cfm:block/bath/tap"]
     }
 }

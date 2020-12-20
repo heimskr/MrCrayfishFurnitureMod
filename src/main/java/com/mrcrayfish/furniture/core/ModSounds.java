@@ -34,6 +34,7 @@ public class ModSounds {
     public static final SoundEvent BLOCK_TOASTER_UP = register(Names.Sound.TOASTER_UP);
     public static final SoundEvent ITEM_KNIFE_CHOP = register(Names.Sound.KNIFE_CHOP);
     public static final SoundEvent WHITE_NOISE = register(Names.Sound.WHITE_NOISE);
+    public static final SoundEvent BLOCK_BATH_TAP = register(Names.Sound.BATH_TAP);
 
     private static SoundEvent register(String name) {
         SoundEvent event = new SoundEvent(new ResourceLocation(name));

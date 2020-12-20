@@ -520,6 +520,7 @@ public class Names {
         public static final String TOASTER = Reference.MOD_ID + ":toaster";
         public static final String CHOPPING_BOARD = Reference.MOD_ID + ":chopping_board";
         public static final String COMPUTER = Reference.MOD_ID + ":computer";
+        public static final String BATH = Reference.MOD_ID + ":bath";
     }
 
     public static class Sound {
@@ -539,5 +540,6 @@ public class Names {
         public static final String TOASTER_UP = Reference.MOD_ID + ":block.toaster.up";
         public static final String KNIFE_CHOP = Reference.MOD_ID + ":item.knife.chop";
         public static final String WHITE_NOISE = Reference.MOD_ID + ":block.modern_tv.white_noise";
+        public static final String BATH_TAP = Reference.MOD_ID + ":block.bath.tap";
     }
 }

@@ -1,0 +1,12 @@
+{
+	"variants": {
+		"facing=north,top=false": {"model": "cfm:block/bath_bottom_pre", "y": 270},
+		"facing=east,top=false":  {"model": "cfm:block/bath_bottom_pre", "y":   0},
+		"facing=south,top=false": {"model": "cfm:block/bath_bottom_pre", "y":  90},
+		"facing=west,top=false":  {"model": "cfm:block/bath_bottom_pre", "y": 180},
+		"facing=north,top=true": {"model": "cfm:block/bath_top_pre", "y": 270},
+		"facing=east,top=true":  {"model": "cfm:block/bath_top_pre", "y":   0},
+		"facing=south,top=true": {"model": "cfm:block/bath_top_pre", "y":  90},
+		"facing=west,top=true":  {"model": "cfm:block/bath_top_pre", "y": 180}
+	}
+}
