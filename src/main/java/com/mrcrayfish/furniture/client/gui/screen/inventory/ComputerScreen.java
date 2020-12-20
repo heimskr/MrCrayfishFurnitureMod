@@ -17,8 +17,6 @@ import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.Ingredient;
-import net.minecraft.util.NonNullList;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.util.text.ITextComponent;
 import net.minecraft.util.text.TranslationTextComponent;
@@ -63,29 +61,14 @@ public class ComputerScreen extends ContainerScreen<ComputerContainer> {
             this.buySlot = this.computer.getStackInSlot(0);
             if (!buySlot.isEmpty()) {
                 ItemStack money = getIngredient(itemNum);
-                if (money != null) FurnitureMod.LOGGER.warn("The client thinks the cost is " + money.getTranslationKey() + " x " + money.getCount());
-                else FurnitureMod.LOGGER.warn("The client thinks the cost is null.");
-                if (money != null && buySlot.getItem() == money.getItem()) {
+
+                if (money != null && buySlot.getItem() == money.getItem())
                     PacketHandler.instance.sendToServer(new MessageMineBayBuy(this.itemNum, this.computer.getPos().getX(), this.computer.getPos().getY(), this.computer.getPos().getZ()));
-                }
             }
         }));
 
         this.itemNum = computer.getBrowsingInfo();
         this.recipes = MineBayRecipe.sort(container.computer.getWorld().getRecipeManager().getRecipesForType(RecipeType.MINEBAY));
-
-        FurnitureMod.LOGGER.warn("=== CLIENT ===");
-        for (int i = 0; i < recipes.size(); ++i) {
-            MineBayRecipe recipe = recipes.get(i);
-            FurnitureMod.LOGGER.warn("Recipe " + i + ": " + recipe.getRecipeOutput().getTranslationKey() + " x " + recipe.getRecipeOutput().getCount());
-            NonNullList<Ingredient> ingredients = recipe.getIngredients();
-            for (int j = 0; j < ingredients.size(); ++j) {
-                Ingredient ingredient = ingredients.get(j);
-                FurnitureMod.LOGGER.warn("- Ingredient: " + (ingredient.isSimple()? "simple" : "simplen't"));
-                for (ItemStack stack: ingredient.getMatchingStacks())
-                    FurnitureMod.LOGGER.warn("  - Stack: " + stack.getTranslationKey() + " x " + stack.getCount());
-            }
-        }
     }
 
     @Override

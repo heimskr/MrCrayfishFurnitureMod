@@ -13,12 +13,12 @@
 			"Fireworks": {
 				"Explosions": [
 					{
-						"Trail": true,
-						"Type": false,
+						"Trail": 1,
+						"Type": 0,
 						"Colors": [11743532, 3887386]
 					}
 				],
-				"Flight": true
+				"Flight": 1
 			}
 		}
     }

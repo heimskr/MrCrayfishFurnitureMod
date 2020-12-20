@@ -1,14 +1,15 @@
 {
     "type": "cfm:minebay",
     "ingredient": {
-        "item": "minecraft:iron_ingot"
+        "item": "minecraft:emerald",
+        "count": 8
     },
     "result": {
         "item": "minecraft:enchanted_book",
 		"nbt": {
             "StoredEnchantments": [
                 {
-                    "id": 33,
+                    "id": "minecraft:silk_touch",
                     "lvl": 1
                 }
             ]
