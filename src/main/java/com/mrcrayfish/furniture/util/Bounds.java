@@ -52,7 +52,8 @@ public class Bounds {
     }
 
     public VoxelShape rotatedShape(Direction facing) {
-        return new Bounds(getRotation(facing)).toShape();
+        AxisAlignedBB rotated = getRotation(facing);
+        return Block.makeCuboidShape(rotated.minX * 16F, rotated.minY * 16F, rotated.minZ * 16F, rotated.maxX * 16F, rotated.maxY * 16F, rotated.maxZ * 16F);
     }
 
     public AxisAlignedBB[] getRotatedBounds() {
