@@ -1,5 +1,6 @@
 package com.mrcrayfish.furniture.block;
 
+import com.mrcrayfish.furniture.FurnitureMod;
 import com.mrcrayfish.furniture.core.ModBlocks;
 import com.mrcrayfish.furniture.core.ModSounds;
 import com.mrcrayfish.furniture.tileentity.BathTileEntity;
@@ -11,6 +12,7 @@ import net.minecraft.block.Blocks;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItemUseContext;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particles.ParticleTypes;
@@ -27,6 +29,12 @@ import net.minecraft.util.math.BlockRayTraceResult;
 import net.minecraft.world.IBlockReader;
 import net.minecraft.world.IWorldReader;
 import net.minecraft.world.World;
+import net.minecraftforge.common.capabilities.Capability;
+import net.minecraftforge.common.util.LazyOptional;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidUtil;
+import net.minecraftforge.fluids.capability.IFluidHandlerItem;
+import net.minecraftforge.items.ItemHandlerHelper;
 
 import javax.annotation.Nullable;
 
@@ -117,113 +125,33 @@ public class BathBlock extends FurnitureTileBlock {
 
         TileEntity tileEntity1 = world.getTileEntity(pos);
         TileEntity tileEntity2 = world.getTileEntity(otherBathPos);
-        if(tileEntity1 instanceof BathTileEntity && tileEntity2 instanceof BathTileEntity) {
+        if (tileEntity1 instanceof BathTileEntity && tileEntity2 instanceof BathTileEntity) {
             BathTileEntity bath1 = (BathTileEntity) tileEntity1;
             BathTileEntity bath2 = (BathTileEntity) tileEntity2;
 
             if (!heldItem.isEmpty()) {
-                if (heldItem.getItem() == Items.BUCKET) {
-                    if(bath1.hasWater()) {
-                        if (!world.isRemote()) {
-                            if (!player.isCreative()) {
-                                if (heldItem.getCount() > 1) {
-                                    if(player.inventory.addItemStackToInventory(new ItemStack(Items.WATER_BUCKET)))
-                                        heldItem.shrink(1);
-                                } else
-                                    player.setHeldItem(hand, new ItemStack(Items.WATER_BUCKET));
-                            }
-                            bath1.removeFluidLevel();
-                            bath2.removeFluidLevel();
-                            world.updateComparatorOutputLevel(pos, this);
-                        } else
-                            player.playSound(SoundEvents.ITEM_BUCKET_FILL, 1.0F, 1.0F);
-                    }
-                } else if(heldItem.getItem() == Items.WATER_BUCKET) {
-                    if(!bath1.isFull()) {
-                        if (!world.isRemote()) {
-                            bath1.addFluidLevel();
-                            bath2.addFluidLevel();
-                            if (!player.isCreative())
-                                player.setHeldItem(hand, new ItemStack(Items.BUCKET));
-                            world.updateComparatorOutputLevel(pos, this);
-                        } else {
-                            player.playSound(SoundEvents.ITEM_BUCKET_EMPTY, 1.0F, 1.0F);
-                            world.addParticle(ParticleTypes.SPLASH, pos.getX() + 0.5, pos.getY() + 0.75 + bath1.getFluidAmount() * 0.0265, pos.getZ() + 0.5, 0, 0.1, 0);
-                        }
-                    }
-                } else if(heldItem.getItem() == Items.GLASS_BOTTLE) {
-                    if(bath1.hasWater()) {
-                        if (!world.isRemote()) {
-                            if (!player.isCreative()) {
-                                if (heldItem.getCount() > 1) {
-                                    if (player.inventory.addItemStackToInventory(PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER)))
-                                        heldItem.shrink(1);
-                                } else
-                                    player.setHeldItem(hand, PotionUtils.addPotionToItemStack(new ItemStack(Items.POTION), Potions.WATER));
-                            }
-                            bath1.removeFluidLevel();
-                            bath2.removeFluidLevel();
-                            world.updateComparatorOutputLevel(pos, this);
-                        } else
-                            player.playSound(SoundEvents.ITEM_BOTTLE_FILL, 1.0F, 1.0F);
-                    }
-                } else if(PotionUtils.getPotionFromItem(heldItem) == Potions.WATER) {
-                    if (!bath1.isFull()) {
-                        if (!world.isRemote()) {
-                            bath1.addFluidLevel();
-                            bath2.addFluidLevel();
-                            if (!player.isCreative()) {
-                                if (heldItem.getItem() == Items.POTION)
-                                    player.setHeldItem(hand, new ItemStack(Items.GLASS_BOTTLE));
-                                else
-                                    player.setHeldItem(hand, ItemStack.EMPTY);
-                            }
-                            world.updateComparatorOutputLevel(pos, this);
-                        } else {
-                            player.playSound(SoundEvents.ITEM_BOTTLE_EMPTY, 1.0F, 1.0F);
-                            world.addParticle(ParticleTypes.SPLASH, pos.getX() + 0.5, pos.getY() + 0.75 + bath1.getFluidAmount() * 0.0265, pos.getZ() + 0.5, 0, 0.1, 0);
-                        }
-                    }
-                } else if (!bath1.isFull()) {
-                    if (hasWaterSource(world, pos)) {
-                        if (state.get(TOP)) {
-                            if (!world.isRemote) {
-                                bath1.addFluidLevel();
-                                bath2.addFluidLevel();
-                                world.removeBlock(pos.add(0, -2, 0), false);
-                                world.updateComparatorOutputLevel(pos, this);
-                            } else
-                                world.playSound(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, ModSounds.BLOCK_BATH_TAP, SoundCategory.BLOCKS, 0.75F, 0.8F, true);
-                        }
-                    } else if (!world.isRemote())
-                        PlayerUtil.sendTranslatedMessage(player, "message.cfm.bath");
-                }
+                FluidUtil.interactWithFluidHandler(player, hand, world, pos, hit.getFace());
+                bath2.setFluid(bath1.getFluid());
             } else {
-                if (player.isSneaking()) {
-                    if (!bath1.isFull()) {
-                        if (hasWaterSource(world, pos)) {
-                            if (state.get(TOP)) {
-                                if (!world.isRemote()) {
-                                    bath1.addFluidLevel();
-                                    bath2.addFluidLevel();
-                                    world.removeBlock(pos.add(0, -2, 0), false);
-                                    world.updateComparatorOutputLevel(pos, this);
-                                } else
-                                    world.playSound(pos.getX() + 0.5, pos.getY() + 1, pos.getZ() + 0.5, ModSounds.BLOCK_BATH_TAP, SoundCategory.BLOCKS, 0.75F, 0.8F, true);
-                            }
-                        } else if (!world.isRemote())
-                            PlayerUtil.sendTranslatedMessage(player, "cfm.message.bath");
-                    }
-                    return ActionResultType.SUCCESS;
-                }
-//                else return SeatUtil.sitOnBlock(world, pos.getX(), pos.getY(), pos.getZ(), player, 0);
+
+//                return SeatUtil.sitOnBlock(world, pos.getX(), pos.getY(), pos.getZ(), player, 0);
             }
 //            PacketHandler.instance.sendToAllAround(new MessageFillBath(bath1.getFluidAmount(), pos.getX(), pos.getY(), pos.getZ(), otherBathPos.getX(), otherBathPos.getY(), otherBathPos.getZ()), new TargetPoint(player.dimension, pos.getX(), pos.getY(), pos.getZ(), 128D));
 //            world.markBlockRangeForRenderUpdate(pos, pos);
 //            world.markBlockRangeForRenderUpdate(otherBathPos, otherBathPos);
+        } else {
+            FurnitureMod.LOGGER.warn("At least one tile entity is missing.");
         }
         return ActionResultType.SUCCESS;
+    }
 
+    public boolean isFluidContainer(ItemStack stack) {
+        LazyOptional<IFluidHandlerItem> optional = FluidUtil.getFluidHandler(ItemHandlerHelper.copyStackWithSize(stack, 1));
+        if (optional.isPresent()) {
+            IFluidHandlerItem handler = optional.resolve().get();
+        }
+
+        return false;
     }
 
     @Override

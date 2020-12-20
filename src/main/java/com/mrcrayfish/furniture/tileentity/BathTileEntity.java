@@ -13,8 +13,20 @@ public class BathTileEntity extends TileFluidHandler {
         this.tank.setCapacity(FluidAttributes.BUCKET_VOLUME * 16);
     }
 
-    public boolean hasWater() {
+    public FluidStack getFluid() {
+        return tank.getFluid();
+    }
+
+    public void setFluid(FluidStack stack) {
+        tank.setFluid(stack.copy());
+    }
+
+    public boolean hasFluid() {
         return 0 < tank.getFluidAmount();
+    }
+
+    public boolean hasBucketAmount() {
+        return FluidAttributes.BUCKET_VOLUME <= tank.getFluidAmount();
     }
 
     public boolean isFull() {
